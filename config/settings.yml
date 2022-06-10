@@ -1,4 +1,7 @@
 plugins:
-  plugin_name_enabled:
+  discourse_global_filter_enabled:
     default: true
     client: true
+  global_filters:
+    type: tag_list
+    default: ""
