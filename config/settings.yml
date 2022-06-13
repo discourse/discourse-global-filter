@@ -4,4 +4,5 @@ plugins:
     client: true
   global_filters:
     type: tag_list
+    client: true
     default: ""

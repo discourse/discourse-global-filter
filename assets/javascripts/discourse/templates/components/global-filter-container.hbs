@@ -1,5 +1,5 @@
 <div class="global-filter-container">
   {{#each globalFilters as |filter|}}
-    {{global-filter-item onSelect=(action "selectFilter")}}
+    {{global-filter-item filter=filter}}
   {{/each}}
 </div>

@@ -10,6 +10,8 @@
 
 enabled_site_setting :discourse_global_filter_enabled
 
+register_asset 'stylesheets/common/global-filter.scss'
+
 after_initialize do
   PLUGIN_NAME = "discourse-global-filter"
 end

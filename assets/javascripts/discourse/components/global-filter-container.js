@@ -4,16 +4,8 @@ import discourseComputed from "discourse-common/utils/decorators";
 export default Component.extend({
   classNames: ["global-filter-container"],
 
-  init() {
-    this._super(...arguments);
-    debugger;
-  },
-
-  didInsertElement() {
-    this._super(...arguments);
-  },
-
-  willDestroyElement() {
-    this._super(...arguments);
+  @discourseComputed("siteSettings.global_filters")
+  globalFilters() {
+    return this.siteSettings.global_filters.split("|");
   },
 });
