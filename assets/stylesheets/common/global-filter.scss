@@ -4,5 +4,9 @@
 
   .global-filter-item {
     padding: 1rem;
+
+    .active {
+      background-color: var(--tertiary-medium);
+    }
   }
 }
