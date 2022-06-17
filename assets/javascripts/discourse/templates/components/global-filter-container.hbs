@@ -1,5 +1,7 @@
-<div class="global-filter-container">
-  {{#each globalFilters as |filter|}}
-    {{global-filter-item filter=filter}}
-  {{/each}}
-</div>
+{{#if globalFilters}}
+  <div class="global-filter-container">
+    {{#each globalFilters as |filter|}}
+      {{global-filter-item filter=filter}}
+    {{/each}}
+  </div>
+{{/if}}

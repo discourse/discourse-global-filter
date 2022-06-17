@@ -9,11 +9,6 @@ export default Component.extend({
   router: service(),
   classNames: ["global-filter-item"],
 
-  @discourseComputed("siteSettings.global_filters")
-  globalFilters() {
-    return this.siteSettings.global_filters.split("|");
-  },
-
   @discourseComputed("currentUser.custom_fields.global_filter_preference")
   highlightActive(tagPreference) {
     if (this.filter === tagPreference) {
