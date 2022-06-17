@@ -5,7 +5,10 @@ export default Component.extend({
   classNames: ["global-filter-container"],
 
   @discourseComputed("siteSettings.global_filters")
-  globalFilters() {
-    return this.siteSettings.global_filters.split("|");
+  globalFilters(filters) {
+    if (filters.length === 0) {
+      return false;
+    }
+    return filters.split("|");
   },
 });
