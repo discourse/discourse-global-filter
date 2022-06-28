@@ -1,12 +1,11 @@
 import Component from "@ember/component";
 import { action } from "@ember/object";
 import discourseComputed from "discourse-common/utils/decorators";
-import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import DiscourseURL from "discourse/lib/url";
 
 export default Component.extend({
-  router: service(),
   classNames: ["global-filter-item"],
 
   @discourseComputed("currentUser.custom_fields.global_filter_preference")
@@ -23,7 +22,7 @@ export default Component.extend({
   },
 
   _filterTopicsByTag(tag) {
-    this.router.transitionTo("tag.show", tag);
+    DiscourseURL.routeTo(`/tag/${tag}`);
   },
 
   _persistTagToServer(tag) {

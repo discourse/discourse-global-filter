@@ -1,4 +1,4 @@
-import DiscourseURL, { getCategoryAndTagUrl } from "discourse/lib/url";
+import { run } from "@ember/runloop";
 
 export default {
   name: "global-filter-preference",
@@ -6,7 +6,7 @@ export default {
   initialize(container) {
     const siteSettings = container.lookup("site-settings:main");
     const currentUser = container.lookup("current-user:main");
-    let userGlobalFilterPref =
+    const userGlobalFilterPref =
       currentUser?.custom_fields?.global_filter_preference;
 
     if (
@@ -17,33 +17,19 @@ export default {
     }
 
     const router = container.lookup("router:main");
-    const routesToRedirectOn = siteSettings.top_menu.split("|");
-    routesToRedirectOn.push("/");
+    router.on("routeWillChange", (transition) => {
+      const routesToRedirectOn = siteSettings.top_menu.split("|");
+      const localName = transition.to?.localName;
 
-    router.on("routeDidChange", () => {
-      if (routesToRedirectOn.includes(router.currentRoute.localName)) {
-        // grab the global_filter_preference in case it was updated
-        userGlobalFilterPref =
-          currentUser.custom_fields.global_filter_preference;
-
-        let url = "";
-
-        url = getCategoryAndTagUrl(
-          this.currentCategory,
-          !this.noSubcategories,
-          userGlobalFilterPref
-        );
-
-        if (router.currentURL !== "/") {
-          url += `/l/${router.currentRoute.localName}`;
-        }
-
-        if (router.currentRoute.queryParams) {
-          const params = router.currentURL.split("?");
-          url += `?${params[1]}`;
-        }
-
-        DiscourseURL.routeTo(url);
+      if (localName && routesToRedirectOn.includes(localName)) {
+        run(router, function () {
+          return router.replaceWith(
+            `/tag/${userGlobalFilterPref}/l/${localName}`,
+            {
+              queryParams: transition.to.queryParams,
+            }
+          );
+        });
       }
     });
   },
