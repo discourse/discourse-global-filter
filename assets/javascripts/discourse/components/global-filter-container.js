@@ -6,7 +6,7 @@ export default Component.extend({
 
   @discourseComputed("siteSettings.global_filters")
   globalFilters(filters) {
-    if (filters.length === 0) {
+    if (!filters) {
       return false;
     }
     return filters.split("|");

@@ -40,22 +40,4 @@ after_initialize do
   register_editable_user_custom_field(GlobalFilter::GLOBAL_FILTER_PREFERENCE)
   register_user_custom_field_type(GlobalFilter::GLOBAL_FILTER_PREFERENCE, :string)
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
-
-  TopicQuery.add_custom_filter(:include_tags) do |results, topic_query|
-    user_custom_fields = topic_query&.user&.custom_fields
-    if user_custom_fields&.has_key?(GlobalFilter::GLOBAL_FILTER_PREFERENCE)
-      tag_id = Tag.find_by(name: user_custom_fields[GlobalFilter::GLOBAL_FILTER_PREFERENCE])&.id
-      return if !tag_id.present?
-
-      results = results.where(<<~SQL, tag_id: tag_id)
-      topics.id IN (
-        SELECT topic_tags.topic_id
-        FROM topic_tags
-        INNER JOIN tags ON tags.id = topic_tags.tag_id
-        WHERE tags.id IN (:tag_id)
-      )
-      SQL
-    end
-    results
-  end
 end
