@@ -32,6 +32,8 @@ export default {
       const routeName = transition.to?.name;
 
       if (ROUTES_TO_REDIRECT_ON.includes(routeName)) {
+        console.log(routeName);
+        console.log(transition.to.queryParams);
         const globalFilters = siteSettings.global_filters.split("|");
         const tag = transition.to?.params?.tag_id;
         const additionalTags = transition.to?.params?.additional_tags;

@@ -31,6 +31,10 @@ acceptance("Discourse Global Filter - Filter Container", function (needs) {
         },
       });
     });
+
+    server.put("/global_filter/filter_tags/support/assign.json", () => {
+      return helper.response({ success: true });
+    });
   });
 
   test("is present when a tag is included in global_filters", async function (assert) {
