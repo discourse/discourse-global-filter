@@ -151,8 +151,8 @@ export default {
 
 function applyFilterStyles(router, globalFilters) {
   const filter = router.currentRoute.params?.tag_id;
-  const filterBodyClass = `global-filter-tag-${filter}`;
   globalFilters.forEach((item) => {
+    const filterBodyClass = `global-filter-tag-${item}`;
     if (item === filter) {
       document.getElementById(`global-filter-${item}`).classList.add("active");
       document.body.classList.add(filterBodyClass);
