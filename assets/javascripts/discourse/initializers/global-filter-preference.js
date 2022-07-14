@@ -25,7 +25,7 @@ export default {
     const currentUser = container.lookup("current-user:main");
     const router = container.lookup("router:main");
 
-    router.on("didTransition", () => {
+    router.on("routeDidChange", () => {
       applyFilterStyles(router, globalFilters);
     });
 
