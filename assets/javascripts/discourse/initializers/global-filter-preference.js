@@ -81,7 +81,7 @@ export default {
           } else {
             filterPref =
               transition.from?.params?.tag_id ||
-              this._firstGlobalFilterFromTopic(router, globalFilters) ||
+              this._firstGlobalFilterFromParent(router, globalFilters) ||
               globalFilters[0];
             this._redirectToFilterPref(
               transition,
@@ -156,7 +156,7 @@ export default {
     // select the first tag from the parent that matches a global filter
     let tags =
       router.currentRoute.params?.tag_id ||
-      this._firstGlobalFilterFromTopic(router, globalFilters);
+      this._firstGlobalFilterFromParent(router, globalFilters);
 
     if (!tags) {
       return;
@@ -179,7 +179,7 @@ export default {
     });
   },
 
-  _firstGlobalFilterFromTopic(router, globalFilters) {
+  _firstGlobalFilterFromParent(router, globalFilters) {
     let tags = router.currentRoute?.parent?.attributes?.tags || null;
     if (tags) {
       tags = tags.filter((tag) => globalFilters.includes(tag));
