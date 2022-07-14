@@ -1,4 +1,4 @@
-import { run } from "@ember/runloop";
+import { next, run } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
@@ -26,7 +26,7 @@ export default {
     const router = container.lookup("router:main");
 
     router.on("routeDidChange", () => {
-      applyFilterStyles(router, globalFilters);
+      next(() => this._applyFilterStyles(router, globalFilters));
     });
 
     router.on("routeWillChange", (transition) => {
@@ -79,7 +79,10 @@ export default {
               additionalTags || false
             );
           } else {
-            filterPref = globalFilters[0];
+            filterPref =
+              transition.from?.params?.tag_id ||
+              this._firstGlobalFilterFromParent(router, globalFilters) ||
+              globalFilters[0];
             this._redirectToFilterPref(
               transition,
               router,
@@ -147,19 +150,41 @@ export default {
   _setClientFilterPref(tag, user) {
     return user.set("custom_fields.global_filter_preference", tag);
   },
-};
 
-function applyFilterStyles(router, globalFilters) {
-  const filter = router.currentRoute.params?.tag_id;
-  globalFilters.forEach((item) => {
-    const filterBodyClass = `global-filter-tag-${item}`;
-    if (item === filter) {
-      document.getElementById(`global-filter-${item}`).classList.add("active");
-      document.body.classList.add(filterBodyClass);
+  _applyFilterStyles(router, globalFilters) {
+    // if there is not a tag_id in the params
+    // select the first tag from the parent that matches a global filter
+    let tags =
+      router.currentRoute.params?.tag_id ||
+      this._firstGlobalFilterFromParent(router, globalFilters);
+
+    if (!tags) {
       return;
     }
 
-    document.getElementById(`global-filter-${item}`).classList.remove("active");
-    document.body.classList.remove(filterBodyClass);
-  });
-}
+    globalFilters.forEach((item) => {
+      const filterBodyClass = `global-filter-tag-${item}`;
+      if (item === tags) {
+        document
+          .getElementById(`global-filter-${item}`)
+          .classList.add("active");
+        document.body.classList.add(filterBodyClass);
+        return;
+      }
+
+      document
+        .getElementById(`global-filter-${item}`)
+        .classList.remove("active");
+      document.body.classList.remove(filterBodyClass);
+    });
+  },
+
+  _firstGlobalFilterFromParent(router, globalFilters) {
+    let tags = router.currentRoute?.parent?.attributes?.tags || null;
+    if (tags) {
+      tags = tags.filter((tag) => globalFilters.includes(tag));
+      tags = tags[0];
+    }
+    return tags;
+  },
+};
