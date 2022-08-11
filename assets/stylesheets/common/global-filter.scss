@@ -10,3 +10,12 @@
     }
   }
 }
+
+.global-filter-composer-container {
+  display: flex;
+  margin-bottom: 4px;
+
+  .global-filter-composer-item {
+    margin-right: 1rem;
+  }
+}

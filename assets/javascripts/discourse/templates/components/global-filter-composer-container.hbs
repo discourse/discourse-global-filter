@@ -1,0 +1,5 @@
+{{#if (and globalFilters this.siteSettings)}}
+  {{#each globalFilters as |filter|}}
+    <GlobalFilterComposerItem @filter={{filter}} @composer={{this.composer}}/>
+  {{/each}}
+{{/if}}
