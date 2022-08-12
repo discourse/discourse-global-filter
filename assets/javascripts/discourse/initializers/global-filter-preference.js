@@ -184,6 +184,10 @@ export default {
     if (tags) {
       tags = tags.filter((tag) => globalFilters.includes(tag));
       tags = tags[0];
+    } else {
+      document.querySelectorAll(".global-filter-item").forEach((filter) => {
+        filter.querySelector("button").classList.remove("active");
+      });
     }
     return tags;
   },
