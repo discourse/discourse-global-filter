@@ -17,7 +17,10 @@ export default {
 
   initialize(container) {
     const siteSettings = container.lookup("site-settings:main");
-    if (!siteSettings.discourse_global_filter_enabled) {
+    if (
+      !siteSettings.discourse_global_filter_enabled ||
+      !siteSettings.global_filters.length
+    ) {
       return;
     }
 
