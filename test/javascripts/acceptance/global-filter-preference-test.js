@@ -90,7 +90,7 @@ acceptance(
     test("redirects to tag when selected", async function (assert) {
       await visit("/");
       await click(
-        ".global-filter-container .global-filter-item #global-filter-support"
+        ".global-filter-container #global-filter-support button"
       );
 
       assert.equal(
