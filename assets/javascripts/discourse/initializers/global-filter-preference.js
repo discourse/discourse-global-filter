@@ -46,7 +46,7 @@ export default {
         let tagCombination;
 
         if (additionalTags && tag) {
-          tagCombination = additionalTags + `\${tag}`;
+          tagCombination = tag + "/" + additionalTags;
         }
 
         if (currentUser) {

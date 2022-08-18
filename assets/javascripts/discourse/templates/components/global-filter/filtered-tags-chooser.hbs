@@ -1,0 +1,18 @@
+{{#if @additionalTags}}
+  <li>
+    <TagsIntersectionChooser
+      @currentCategory={{@currentCategory}}
+      @mainTag={{null}}
+      @additionalTags={{@additionalTags}}
+      @options={{@options}}
+    />
+  </li>
+{{else}}
+  <li>
+    <TagDrop
+      @currentCategory={{@category}}
+      @noSubcategories={{@noSubcategories}}
+      @tagId={{null}}
+    />
+  </li>
+{{/if}}
