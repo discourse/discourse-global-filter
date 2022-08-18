@@ -1,7 +1,7 @@
 {{#if globalFilters}}
   <div class="global-filter-container">
     {{#each globalFilters as |filter|}}
-      {{global-filter-item filter=filter}}
+      {{global-filter-item filter=filter id=(concat "global-filter-" filter)}}
     {{/each}}
   </div>
 {{/if}}

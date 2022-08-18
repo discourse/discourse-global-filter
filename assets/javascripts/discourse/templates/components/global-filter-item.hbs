@@ -1,5 +1,6 @@
 {{d-button
   action=(action "selectFilter" filter)
   translatedLabel=spacedTag
-  id=(concat "global-filter-" filter)
 }}
+
+<PluginOutlet @name="below-global-filter-item"  @args={{hash filter=filter}} />
