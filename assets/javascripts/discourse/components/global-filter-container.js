@@ -2,7 +2,7 @@ import Component from "@ember/component";
 import discourseComputed from "discourse-common/utils/decorators";
 
 export default Component.extend({
-  classNames: ["global-filter-container"],
+  tagName: "",
 
   @discourseComputed("siteSettings.global_filters")
   globalFilters(filters) {

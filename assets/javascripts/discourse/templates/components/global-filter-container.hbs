@@ -1,6 +1,6 @@
 {{#if globalFilters}}
   {{plugin-outlet name="above-global-filter-container"}}
-  <div class="global-filter-container">
+  <div class="global-filter-button-container">
     {{#each globalFilters as |filter|}}
       {{global-filter-item filter=filter id=(concat "global-filter-" filter)}}
     {{/each}}
