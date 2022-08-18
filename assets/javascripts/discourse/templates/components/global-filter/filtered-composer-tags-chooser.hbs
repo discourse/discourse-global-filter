@@ -1,0 +1,9 @@
+{{#if @canEditTags}}
+  <MiniTagChooser
+    @value={{@value}}
+    @onChange={{@onChange}}
+    @options={{@options}}
+    @hiddenValues={{this.hiddenValues}}
+  />
+  <PopupInputTip @validation={{@tagValidation}} />
+{{/if}}
