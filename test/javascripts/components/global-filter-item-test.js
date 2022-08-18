@@ -55,8 +55,8 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
     await click(".global-filter-container .global-filter-item button");
 
     assert.ok(
-      exists(".global-filter-container .global-filter-item button.active"),
-      "button is active"
+      exists(".global-filter-container .global-filter-item.active"),
+      "item is active"
     );
   });
 });
