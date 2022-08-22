@@ -19,3 +19,19 @@
     margin-right: 1rem;
   }
 }
+
+.navigation-container ol > li > details.tags-intersection-chooser {
+  // hide default tag chooser
+  display: none;
+}
+
+.composer-fields .title-and-category details.mini-tag-chooser:first-of-type {
+  // hide default composer tag chooser
+  display: none;
+}
+
+.composer-fields .title-and-category details.mini-tag-chooser {
+  // because we are dynamically showing and hiding elements the max-width
+  // was not being calculated properly. `Unset` sets the value to expected width
+  max-width: unset !important;
+}

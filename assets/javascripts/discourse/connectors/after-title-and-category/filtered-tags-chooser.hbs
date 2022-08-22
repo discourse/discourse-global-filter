@@ -1,0 +1,11 @@
+<GlobalFilter::FilteredComposerTagsChooser
+  @tagValidation={{tagValidation}}
+  @canEditTags={{canEditTags}}
+  @value={{model.tags}}
+  @onChange={{action (mut model.tags)}}
+  @options={{hash
+    disabled=disabled
+    categoryId=model.categoryId
+    minimum=model.minimumRequiredTags
+  }}
+/>
