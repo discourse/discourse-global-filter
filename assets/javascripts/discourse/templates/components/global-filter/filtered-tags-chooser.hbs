@@ -1,18 +1,41 @@
-{{#if @additionalTags}}
-  <li>
-    <TagsIntersectionChooser
-      @currentCategory={{@currentCategory}}
-      @mainTag={{null}}
-      @additionalTags={{@additionalTags}}
-      @options={{@options}}
-    />
-  </li>
-{{else}}
-  <li>
-    <TagDrop
-      @currentCategory={{@category}}
-      @noSubcategories={{@noSubcategories}}
-      @tagId={{null}}
-    />
-  </li>
+{{#each @categoryBreadcrumbs as |breadcrumb|}}
+  {{#if breadcrumb.hasOptions}}
+    <li class="filtered-category-drop">
+      <CategoryDrop
+        @category={{breadcrumb.category}}
+        @categories={{null}}
+        @tagId={{@tagId}}
+        @editingCategory={{@editingCategory}}
+        @editingCategoryTab={{@editingCategoryTab}}
+        @options={{hash
+          parentCategory=breadcrumb.parentCategory
+          subCategory=breadcrumb.isSubcategory
+          noSubcategories=breadcrumb.noSubcategories
+          autoFilterable=false
+          filterable=false
+        }}
+      />
+    </li>
+  {{/if}}
+{{/each}}
+
+{{#if @showTagsSection}}
+  {{#if @additionalTags}}
+    <li class="filtered-tags-intersection-drop">
+      <TagsIntersectionChooser
+        @currentCategory={{@currentCategory}}
+        @mainTag={{null}}
+        @additionalTags={{@additionalTags}}
+        @options={{@options}}
+      />
+    </li>
+  {{else}}
+    <li class="filtered-tag-drop">
+      <TagDrop
+        @currentCategory={{@category}}
+        @noSubcategories={{@noSubcategories}}
+        @tagId={{null}}
+      />
+    </li>
+  {{/if}}
 {{/if}}

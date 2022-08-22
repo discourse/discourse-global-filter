@@ -15,30 +15,32 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
   needs.site({ can_tag_topics: true });
 
   needs.pretender((server, helper) => {
-    server.get("/tag/support/notifications", () =>
-      helper.response({
-        tag_notification: { id: "support", notification_level: 2 },
-      })
-    );
-
-    server.get("/tag/support/l/latest.json", () => {
-      return helper.response({
-        users: [],
-        primary_groups: [],
-        topic_list: {
-          can_create_topic: true,
-          draft: null,
-          draft_key: "new_topic",
-          draft_sequence: 1,
-          per_page: 30,
-          tags: [],
-          topics: [],
-        },
+    ["support", "feature"].forEach((tag) => {
+      server.get(`/tag/${tag}/notifications`, () => {
+        return helper.response({
+          tag_notification: { id: tag, notification_level: 2 },
+        });
       });
-    });
 
-    server.put("/global_filter/filter_tags/support/assign.json", () => {
-      return helper.response({ success: true });
+      server.get(`/tag/${tag}/l/latest.json`, () => {
+        return helper.response({
+          users: [],
+          primary_groups: [],
+          topic_list: {
+            can_create_topic: true,
+            draft: null,
+            draft_key: "new_topic",
+            draft_sequence: 1,
+            per_page: 30,
+            tags: [],
+            topics: [],
+          },
+        });
+      });
+
+      server.put(`/global_filter/filter_tags/${tag}/assign.json`, () => {
+        return helper.response({ success: true });
+      });
     });
   });
 

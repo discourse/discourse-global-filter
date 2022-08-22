@@ -2,3 +2,6 @@ en:
   js:
     discourse_global_filter_enabled:
       placeholder: placeholder
+    global_filter:
+      admin:
+        title: "Global Filters"
