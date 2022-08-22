@@ -41,4 +41,3 @@ after_initialize do
   register_user_custom_field_type(GlobalFilter::GLOBAL_FILTER_PREFERENCE, :string)
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
 end
-
