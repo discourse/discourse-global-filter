@@ -1,8 +1,7 @@
 <GlobalFilter::FilteredTagsChooser
-  @mainTag={{this.parentView.mainTag}}
-  @currentCategory={{this.parentView.currentCategory}}
-  @options={{this.parentView.options}}
-  @additionalTags={{this.parentView.additionalTags}}
-  @noSubcategories={{this.parentView.noSubcategories}}
-  @tagId={{this.parentView.tagId}}
+  @currentCategory={{this.currentCategory}}
+  @options={{hash categoryId=this.currentCategory.id}}
+  @additionalTags={{this.additionalTags}}
+  @noSubcategories={{this.noSubcategories}}
+  @tagId={{this.tagId}}
 />

@@ -2,8 +2,7 @@
   <MiniTagChooser
     @value={{@value}}
     @onChange={{@onChange}}
-    @options={{@options}}
-    @hiddenFromPreview={{this.hiddenValues}}
+    @options={{hash @options hiddenValues=this.hiddenValues}}
   />
   <PopupInputTip @validation={{@tagValidation}} />
 {{/if}}

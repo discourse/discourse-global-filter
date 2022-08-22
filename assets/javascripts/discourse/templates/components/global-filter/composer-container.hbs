@@ -1,12 +1,7 @@
 {{#if this.canDisplay}}
   <div class="global-filter-composer-container">
-    {{#if this.globalFilters}}
-      {{#each this.globalFilters as |filter|}}
-        <GlobalFilter::ComposerItem
-          @filter={{filter}}
-          @composer={{@composer}}
-        />
-      {{/each}}
-    {{/if}}
+    {{#each this.globalFilters as |filter|}}
+      <GlobalFilter::ComposerItem @filter={{filter}} @composer={{@composer}} />
+    {{/each}}
   </div>
 {{/if}}

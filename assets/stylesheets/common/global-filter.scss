@@ -20,11 +20,9 @@
   }
 }
 
-.navigation-container {
+.navigation-container ol > li > details.tags-intersection-chooser {
   // hide default tag chooser
-  li:nth-child(2) {
-    display: none;
-  }
+  display: none;
 }
 
 .composer-fields .title-and-category details.mini-tag-chooser:first-of-type {
