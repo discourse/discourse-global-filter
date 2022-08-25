@@ -1,12 +1,9 @@
-<div class="global-filter-composer-item">
-  <div class={{concat "global-filter-composer-tag-" @filter}}>
-    <label>
-      <Input
-        @type="checkbox"
-        @checked={{this.checked}}
-        {{on "click" (action "toggleTag")}}
-      />
-      {{@filter}}
-    </label>
-  </div>
-</div>
+<label class={{concat "global-filter-composer-item global-filter-composer-tag-" @filter}}>
+  <Input
+    @type="checkbox"
+    @checked={{this.checked}}
+    {{on "click" (action "toggleTag")}}
+  />
+  <span class="pre-label"></span>
+  <span class="tag-label">{{this.spacedTag}}</span>
+</label>
