@@ -169,14 +169,14 @@ export default {
       const filterBodyClass = `global-filter-tag-${item}`;
       if (item === tags) {
         document
-          .getElementById(`global-filter-${item}`)
+          .querySelector(`#global-filter-${item} > .btn`)
           .classList.add("active");
         document.body.classList.add(filterBodyClass);
         return;
       }
 
       document
-        .getElementById(`global-filter-${item}`)
+        .querySelector(`#global-filter-${item} > .btn`)
         .classList.remove("active");
       document.body.classList.remove(filterBodyClass);
     });
@@ -187,10 +187,6 @@ export default {
     if (tags) {
       tags = tags.filter((tag) => globalFilters.includes(tag));
       tags = tags[0];
-    } else {
-      document.querySelectorAll(".global-filter-item").forEach((filter) => {
-        filter.querySelector("button").classList.remove("active");
-      });
     }
     return tags;
   },

@@ -1,11 +1,11 @@
-.global-filter-container {
+.global-filter-button-container {
   display: flex;
   justify-content: center;
 
   .global-filter-item {
     padding: 1rem;
 
-    .active {
+    .btn.active {
       background-color: var(--tertiary-medium);
     }
   }
