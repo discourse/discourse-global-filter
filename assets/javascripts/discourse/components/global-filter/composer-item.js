@@ -3,6 +3,7 @@ import { action } from "@ember/object";
 
 export default class GlobalFilterComposerItem extends Component {
   checked = this.args.composer.tags?.includes(this.args.filter) ? true : false;
+  spacedTag = this.args.filter.replace(/-|_/g, " ");
 
   @action
   toggleTag() {
