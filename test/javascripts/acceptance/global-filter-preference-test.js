@@ -85,15 +85,22 @@ acceptance(
       server.put("/global_filter/filter_tags/support/assign.json", () => {
         return helper.response({ success: true });
       });
+
+      server.get(
+        "/global_filter/filter_tags/categories_for_global_filter.json",
+        () => {
+          return helper.response({ success: true });
+        }
+      );
     });
 
-    test("redirects to tag when selected", async function (assert) {
+    test("redirects to category when selected", async function (assert) {
       await visit("/");
       await click(".global-filter-container #global-filter-support button");
 
       assert.equal(
         currentURL(),
-        "/tag/support",
+        "/categories?tag=support",
         "it redirects to the right tag"
       );
     });

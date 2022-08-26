@@ -20,8 +20,14 @@
   }
 }
 
-.navigation-container ol > li > details.tags-intersection-chooser {
-  // hide default tag chooser
+.navigation-container {
+  .filtered-category-drop {
+    margin-right: inherit;
+  }
+}
+
+ol.category-breadcrumb > li:not(.filtered-tags-chooser) {
+  // hide default category and tag-drop chooser
   display: none;
 }
 
@@ -34,4 +40,19 @@
   // because we are dynamically showing and hiding elements the max-width
   // was not being calculated properly. `Unset` sets the value to expected width
   max-width: unset !important;
+}
+
+.filter-tag-admin-pane {
+  .filter-tag-name {
+    float: left;
+    width: 15%;
+    margin-right: 12px;
+  }
+
+  .filter-tag-category-chooser {
+    float: left;
+    width: 80%;
+    padding-right: 20px;
+    margin-bottom: 15px;
+  }
 }

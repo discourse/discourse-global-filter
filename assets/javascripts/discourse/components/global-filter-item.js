@@ -1,9 +1,10 @@
 import Component from "@ember/component";
 import { action } from "@ember/object";
 import discourseComputed from "discourse-common/utils/decorators";
-import DiscourseURL from "discourse/lib/url";
+import { inject as service } from "@ember/service";
 
 export default Component.extend({
+  router: service(),
   classNames: ["global-filter-item"],
 
   @discourseComputed("filter")
@@ -13,6 +14,6 @@ export default Component.extend({
 
   @action
   selectFilter(tag) {
-    DiscourseURL.routeTo(`/tag/${tag}`);
+    this.router.transitionTo(`/categories?tag=${tag}`);
   },
 });

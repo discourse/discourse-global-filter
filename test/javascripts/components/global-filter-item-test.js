@@ -41,6 +41,13 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
         return helper.response({ success: true });
       });
     });
+
+    server.get(
+      "/global_filter/filter_tags/categories_for_global_filter.json",
+      () => {
+        return helper.response({ success: true });
+      }
+    );
   });
 
   test("is present when included in global_filters", async function (assert) {

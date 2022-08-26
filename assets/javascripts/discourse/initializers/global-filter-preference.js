@@ -1,6 +1,7 @@
 import { next, run } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import { withPluginApi } from "discourse/lib/plugin-api";
 
 const ROUTES_TO_REDIRECT_ON = [
   "discovery.latest",
@@ -32,12 +33,31 @@ export default {
       next(() => this._applyFilterStyles(router, globalFilters));
     });
 
+    // set expectation of us updating category chooser content
+    withPluginApi("1.3.0", (api) => setFilteredCategoriesForGlobalFilter(api));
+
     router.on("routeWillChange", (transition) => {
+      const routeName = transition.to?.name;
+
+      // set the custom category options per global filter
+      if (routeName === "discovery.categories") {
+        ajax(
+          "/global_filter/filter_tags/categories_for_global_filter.json"
+        ).then((model) => {
+          categoryDropdown = model.categories;
+        });
+      }
+
       if (transition.queryParamsOnly) {
         return;
       }
 
-      const routeName = transition.to?.name;
+      if (transition.to?.queryParams?.tag) {
+        this._setClientAndServerFilterPref(
+          transition.to.queryParams.tag,
+          currentUser
+        );
+      }
 
       if (ROUTES_TO_REDIRECT_ON.includes(routeName)) {
         const additionalTags = transition.to?.params?.additional_tags;
@@ -155,10 +175,11 @@ export default {
   },
 
   _applyFilterStyles(router, globalFilters) {
-    // if there is not a tag_id in the params
+    // if there is not a tag_id or tag in the params
     // select the first tag from the parent that matches a global filter
     let tags =
       router.currentRoute.params?.tag_id ||
+      router.currentRoute.queryParams?.tag ||
       this._firstGlobalFilterFromParent(router, globalFilters);
 
     if (!tags) {
@@ -191,3 +212,10 @@ export default {
     return tags;
   },
 };
+
+let categoryDropdown = [];
+function setFilteredCategoriesForGlobalFilter(api) {
+  api.modifySelectKit("category-drop").appendContent(() => {
+    return categoryDropdown;
+  });
+}
