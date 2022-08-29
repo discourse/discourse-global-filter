@@ -32,6 +32,7 @@ after_initialize do
     '../app/serializers/filter_tag_serializer.rb',
     '../app/serializers/admin_filter_tag_index_serializer.rb',
     '../lib/category_list_serializer_extension.rb',
+    '../lib/topic_list_serializer_extension.rb',
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   GlobalFilter::Engine.routes.draw do
@@ -55,9 +56,14 @@ after_initialize do
 
   reloadable_patch do
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
+    TopicListSerializer.class_eval { prepend GlobalFilter::TopicListSerializerExtension }
   end
 
   add_to_serializer(:category_list, :filter_tag) do
+    object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || ""
+  end
+
+  add_to_serializer(:topic_list, :filter_tag) do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || ""
   end
 

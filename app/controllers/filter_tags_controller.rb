@@ -12,6 +12,6 @@ class GlobalFilter::FilterTagsController < ::ApplicationController
   end
 
   def categories_for_global_filter
-    render_serialized(CategoryList.new(guardian), CategoryListSerializer, root: false)
+    render_serialized(CategoryList.new(guardian, tag: "a-tag-for-all-our-fr", include_topics: true), CategoryListSerializer, root: false)
   end
 end
