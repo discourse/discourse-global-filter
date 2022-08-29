@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class GlobalFilter::FilterTagsController < ::ApplicationController
-  requires_login
 
   def assign
     params.require([:user_id, :tag])
@@ -12,6 +11,6 @@ class GlobalFilter::FilterTagsController < ::ApplicationController
   end
 
   def categories_for_global_filter
-    render_serialized(CategoryList.new(guardian, tag: "a-tag-for-all-our-fr", include_topics: true), CategoryListSerializer, root: false)
+    render_serialized(CategoryList.new(guardian), CategoryListSerializer, root: false)
   end
 end
