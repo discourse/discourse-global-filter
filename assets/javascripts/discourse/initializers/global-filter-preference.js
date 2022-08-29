@@ -52,7 +52,7 @@ export default {
         return;
       }
 
-      if (transition.to?.queryParams?.tag) {
+      if (currentUser && transition.to?.queryParams?.tag) {
         this._setClientAndServerFilterPref(
           transition.to.queryParams.tag,
           currentUser
