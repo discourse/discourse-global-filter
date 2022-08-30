@@ -10,7 +10,7 @@ RSpec.describe GlobalFilter::CategoryListSerializerExtension do
   fab!(:filter_tag) { Fabricate(:filter_tag) }
 
   before do
-    filter_tag.update(category_ids: [category, private_category].join("|"))
+    filter_tag.update(category_ids: [category.id, private_category.id].join("|"))
   end
 
   it "only includes categories allowed per permissions" do
