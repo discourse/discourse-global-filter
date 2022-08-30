@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class GlobalFilter::FilterTagsController < ::ApplicationController
-  requires_login
 
   def assign
     params.require([:user_id, :tag])
