@@ -55,7 +55,6 @@ after_initialize do
 
   reloadable_patch do
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
-    TopicListSerializer.class_eval { prepend GlobalFilter::TopicListSerializerExtension }
   end
 
   add_to_serializer(:category_list, :filter_tag) do
