@@ -32,7 +32,6 @@ after_initialize do
     '../app/serializers/filter_tag_serializer.rb',
     '../app/serializers/admin_filter_tag_index_serializer.rb',
     '../lib/category_list_serializer_extension.rb',
-    '../lib/topic_list_serializer_extension.rb',
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   GlobalFilter::Engine.routes.draw do
@@ -61,23 +60,6 @@ after_initialize do
 
   add_to_serializer(:category_list, :filter_tag) do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || ""
-  end
-
-  if TopicQuery.respond_to?(:results_filter_callbacks)
-    remove_non_global_filter_topics = Proc.new do |list_type, result, user, options|
-      global_filter = options[:tag] || user&.custom_fields&.dig('global_filter_preference')
-      p global_filter.inspect
-      result = result.where(<<~SQL, name: global_filter)
-      topics.id IN (
-        SELECT topic_tags.topic_id
-        FROM topic_tags
-        INNER JOIN tags ON tags.id = topic_tags.tag_id
-        WHERE tags.name = :name
-      )
-      SQL
-    end
-
-    TopicQuery.results_filter_callbacks << remove_non_global_filter_topics
   end
 
   DiscourseEvent.on(:site_setting_changed) do |name, old_value, new_value|
