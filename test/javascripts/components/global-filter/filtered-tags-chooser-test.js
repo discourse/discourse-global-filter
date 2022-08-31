@@ -6,17 +6,11 @@ import selectKit from "discourse/tests/helpers/select-kit-helper";
 acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
   needs.settings({
     discourse_global_filter_enabled: true,
-    global_filters: "support",
+    global_filters: "support|feature",
     tagging_enabled: true,
   });
 
   needs.pretender((server, helper) => {
-    server.get("/tag/support/notifications", () =>
-      helper.response({
-        tag_notification: { id: "support", notification_level: 2 },
-      })
-    );
-
     server.get("/tag/support/l/latest.json", () => {
       return helper.response({
         users: [],
@@ -27,14 +21,10 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
           draft_key: "new_topic",
           draft_sequence: 1,
           per_page: 30,
-          tags: [],
           topics: [],
+          tags: [],
         },
       });
-    });
-
-    server.put("/global_filter/filter_tags/support/assign.json", () => {
-      return helper.response({ success: true });
     });
   });
 
