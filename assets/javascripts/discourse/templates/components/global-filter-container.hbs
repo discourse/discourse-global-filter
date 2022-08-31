@@ -3,7 +3,6 @@
   <div class="global-filter-button-container">
     {{#each globalFilters as |filter|}}
       <GlobalFilter::FilterItem @filter={{filter}} />
-      {{!-- {{global-filter-item filter=filter id=(concat "global-filter-" filter)}} --}}
     {{/each}}
   </div>
 {{/if}}
