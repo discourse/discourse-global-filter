@@ -42,6 +42,11 @@ ol.category-breadcrumb > li:not(.filtered-tags-chooser) {
   max-width: unset !important;
 }
 
+.filtered-tags-chooser .filtered-tag-drop li[data-value="no-tags"] {
+  // hide no-tags option from tag-dropdown
+  display: none;
+}
+
 .filter-tag-admin-pane {
   .filter-tag-name {
     float: left;
