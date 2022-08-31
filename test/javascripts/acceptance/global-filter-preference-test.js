@@ -1,6 +1,7 @@
 import { click, currentURL, visit } from "@ember/test-helpers";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
+import { setDefaultHomepage } from "discourse/lib/utilities";
 
 acceptance(
   "Discourse Global Filter - Filter Preference Initializer",
@@ -94,14 +95,26 @@ acceptance(
       );
     });
 
-    test("redirects to category when selected", async function (assert) {
+    test("redirects to default homepage when selected", async function (assert) {
+      await visit("/");
+      await click(".global-filter-container #global-filter-support button");
+
+      assert.equal(
+        currentURL(),
+        "/tag/support",
+        "it redirects to the right tag"
+      );
+    });
+
+    test("redirects to categories if it is default homepage when selected", async function (assert) {
+      setDefaultHomepage("categories");
       await visit("/");
       await click(".global-filter-container #global-filter-support button");
 
       assert.equal(
         currentURL(),
         "/categories?tag=support",
-        "it redirects to the right tag"
+        "it redirects to categories with the right tag"
       );
     });
 
