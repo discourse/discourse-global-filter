@@ -1,5 +1,5 @@
 import { click, currentURL, visit } from "@ember/test-helpers";
-import { acceptance } from "discourse/tests/helpers/qunit-helpers";
+import { acceptance, query } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 
@@ -97,10 +97,10 @@ acceptance(
 
     test("redirects to default homepage when selected", async function (assert) {
       await visit("/");
-      await click(".global-filter-container #global-filter-support button");
-
-      assert.equal(
-        currentURL(),
+      assert.strictEqual(
+        query(".global-filter-container #global-filter-support a").getAttribute(
+          "href"
+        ),
         "/tag/support",
         "it redirects to the right tag"
       );
@@ -109,10 +109,10 @@ acceptance(
     test("redirects to categories if it is default homepage when selected", async function (assert) {
       setDefaultHomepage("categories");
       await visit("/");
-      await click(".global-filter-container #global-filter-support button");
-
-      assert.equal(
-        currentURL(),
+      assert.strictEqual(
+        query(".global-filter-container #global-filter-support a").getAttribute(
+          "href"
+        ),
         "/categories?tag=support",
         "it redirects to categories with the right tag"
       );
