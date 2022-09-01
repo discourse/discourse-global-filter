@@ -179,5 +179,15 @@ acceptance(
         "creates intersection with filter preference and additional tag"
       );
     });
+
+    test("/categories redirects to include GFT query param", async function (assert) {
+      await visit("/categories");
+
+      assert.equal(
+        currentURL(),
+        "/categories?tag=support",
+        "it redirects to the user's global_filter_preference"
+      );
+    });
   }
 );
