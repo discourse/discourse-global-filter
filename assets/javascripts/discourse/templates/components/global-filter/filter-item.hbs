@@ -1,7 +1,7 @@
 <div id={{(concat "global-filter-" @filter)}} class="global-filter-item">
-  <a data-auto-route="true" href={{this.route}} class="global-filter-button">
-    {{spacedTag}}
+  <a data-auto-route="true" href={{this.route}} class="global-filter-button btn">
+    <span class="d-button-label">{{spacedTag}}</span>
   </a>
+  {{plugin-outlet name="below-global-filter-item" args=(hash filter=@filter)}}
 </div>
 
-{{plugin-outlet name="below-global-filter-item" args=(hash filter=filter)}}
