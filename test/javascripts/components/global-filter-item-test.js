@@ -1,4 +1,4 @@
-import { click, visit } from "@ember/test-helpers";
+import { visit } from "@ember/test-helpers";
 import {
   acceptance,
   exists,
@@ -7,7 +7,6 @@ import {
 import { test } from "qunit";
 
 acceptance("Discourse Global Filter - Filter Item", function (needs) {
-  needs.user();
   needs.settings({
     discourse_global_filter_enabled: true,
     global_filters: "support|feature",
@@ -15,12 +14,6 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
 
   needs.pretender((server, helper) => {
     ["support", "feature"].forEach((tag) => {
-      server.get(`/tag/${tag}/notifications`, () => {
-        return helper.response({
-          tag_notification: { id: tag, notification_level: 2 },
-        });
-      });
-
       server.get(`/tag/${tag}/l/latest.json`, () => {
         return helper.response({
           users: [],
@@ -36,18 +29,7 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
           },
         });
       });
-
-      server.put(`/global_filter/filter_tags/${tag}/assign.json`, () => {
-        return helper.response({ success: true });
-      });
     });
-
-    server.get(
-      "/global_filter/filter_tags/categories_for_global_filter.json",
-      () => {
-        return helper.response({ success: true });
-      }
-    );
   });
 
   test("is present when included in global_filters", async function (assert) {
@@ -59,15 +41,12 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
     assert.deepEqual(tags, this.siteSettings.global_filters.split("|"));
   });
 
-  test("adds active class to filter when selected", async function (assert) {
-    await visit("/");
-    await click(
-      ".global-filter-container #global-filter-feature .global-filter-button"
-    );
+  test("adds active class to filter", async function (assert) {
+    await visit("/tag/support");
 
     assert.ok(
       exists(
-        ".global-filter-container #global-filter-feature .global-filter-button.active"
+        ".global-filter-container #global-filter-support .global-filter-button.active"
       ),
       "item is active"
     );

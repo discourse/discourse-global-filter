@@ -190,14 +190,14 @@ export default {
       const filterBodyClass = `global-filter-tag-${item}`;
       if (item === tags) {
         document
-          .querySelector(`#global-filter-${item} > .btn`)
+          .querySelector(`#global-filter-${item} > a`)
           .classList.add("active");
         document.body.classList.add(filterBodyClass);
         return;
       }
 
       document
-        .querySelector(`#global-filter-${item} > .btn`)
+        .querySelector(`#global-filter-${item} > a`)
         .classList.remove("active");
       document.body.classList.remove(filterBodyClass);
     });

@@ -13,6 +13,7 @@ export default class GlobalFilterComposerItem extends Component {
     super(...arguments);
 
     const tagParam = this.router.currentRoute?.queryParams?.tag;
+
     if (tagParam) {
       const composer = this.args.composer;
       if (composer.tags) {
