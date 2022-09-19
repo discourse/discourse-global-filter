@@ -1,7 +1,12 @@
 {{#if this.canDisplay}}
   <div class="global-filter-composer-container">
     {{#each this.globalFilters as |filter|}}
-      <GlobalFilter::ComposerItem @filter={{filter}} @composer={{@composer}} />
+      <GlobalFilter::ComposerItem
+        @filter={{filter}}
+        @composer={{@composer}}
+        @checked={{this.checked}}
+        @tagParam={{this.tagParam}}
+      />
     {{/each}}
   </div>
 {{/if}}
