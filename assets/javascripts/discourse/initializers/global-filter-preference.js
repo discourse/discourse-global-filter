@@ -30,7 +30,9 @@ export default {
     const router = container.lookup("router:main");
 
     router.on("routeDidChange", () => {
-      next(() => this._applyFilterStyles(router, globalFilters, currentUser));
+      next(() =>
+        this._applyFilterStyles(router, globalFilters, currentUser, container)
+      );
     });
 
     // set expectation of us updating category chooser content
@@ -169,15 +171,18 @@ export default {
     return user.set("custom_fields.global_filter_preference", tag);
   },
 
-  _applyFilterStyles(router, globalFilters, currentUser) {
+  _applyFilterStyles(router, globalFilters, currentUser, container) {
     // if there is not a filter pref for the current user, tag_id or tag in the params
     // select the first tag from the parent that matches a global filter
     let tags;
     const filterPref = currentUser?.custom_fields?.global_filter_preference;
-    if (globalFilters.includes(filterPref)) {
+    const topic = container.lookup("controller:topic");
+    const topicTags = topic.model?.tags;
+    if (topicTags && topicTags.includes(filterPref)) {
       tags = filterPref;
     } else {
-      router.currentRoute.params?.tag_id ||
+      tags =
+        router.currentRoute.params?.tag_id ||
         router.currentRoute.queryParams?.tag ||
         this._firstGlobalFilterFromParent(router, globalFilters);
     }
