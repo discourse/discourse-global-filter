@@ -1,4 +1,4 @@
-import { click, visit } from "@ember/test-helpers";
+import { click, settled, visit } from "@ember/test-helpers";
 import {
   acceptance,
   query,
@@ -69,6 +69,12 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
     await visit("/");
     await click("#create-topic");
 
+    await settled();
+    assert.strictEqual(
+      query(".global-filter-composer-tag-support input").checked,
+      true,
+      "support filter is checked by default"
+    );
     // uncheck support filter
     await click(".global-filter-composer-tag-support input");
     // check feature filter
