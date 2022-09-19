@@ -172,11 +172,15 @@ export default {
   _applyFilterStyles(router, globalFilters, currentUser) {
     // if there is not a filter pref for the current user, tag_id or tag in the params
     // select the first tag from the parent that matches a global filter
-    let tags =
-      currentUser?.custom_fields?.global_filter_preference ||
+    let tags;
+    const filterPref = currentUser?.custom_fields?.global_filter_preference;
+    if (globalFilters.includes(filterPref)) {
+      tags = filterPref;
+    } else {
       router.currentRoute.params?.tag_id ||
-      router.currentRoute.queryParams?.tag ||
-      this._firstGlobalFilterFromParent(router, globalFilters);
+        router.currentRoute.queryParams?.tag ||
+        this._firstGlobalFilterFromParent(router, globalFilters);
+    }
 
     if (!tags) {
       return;
