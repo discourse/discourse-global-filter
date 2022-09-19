@@ -64,4 +64,21 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
       "item is checked"
     );
   });
+
+  test("toggling filter items removes/adds correct tags", async function (assert) {
+    await visit("/");
+    await click("#create-topic");
+
+    // uncheck support filter
+    await click(".global-filter-composer-tag-support input");
+    // check feature filter
+    await click(".global-filter-composer-tag-feature input");
+
+    let composer = this.owner.lookup("controller:composer");
+    assert.ok(
+      composer.get("model").tags,
+      ["feature"],
+      "expected filter is present"
+    );
+  });
 });
