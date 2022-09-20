@@ -31,6 +31,7 @@ after_initialize do
     '../app/models/filter_tag.rb',
     '../app/serializers/filter_tag_serializer.rb',
     '../app/serializers/admin_filter_tag_index_serializer.rb',
+    '../jobs/scheduled/update_category_stats.rb',
     '../lib/category_list_serializer_extension.rb',
   ].each { |path| load File.expand_path(path, __FILE__) }
 
