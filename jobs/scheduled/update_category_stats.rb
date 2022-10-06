@@ -34,8 +34,8 @@ module Jobs
               .group(:id, :category_id, :posts_count)
               .visible
 
-            # build a json object so that each we can then generate a topic/post count for each category. This object we will insert into filter_tag_category_mappings
-            # that can then be looked up in a custom theme instead of relying on the standard category.post_count
+            # build a json object so that we can generate a topic/post count for each category for the current GFT.
+            # This object will be inserted into the filter_tag_category_mappings table that we can then use in the category_list serializer
 
             # for each category and its sub categories get topics tagged with GFT
             posts_count = topics_for_category.pluck(:posts_count).sum

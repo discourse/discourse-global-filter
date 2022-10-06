@@ -15,7 +15,7 @@ module GlobalFilter::CategoryListSerializerExtension
   def update_topic_and_post_count(category_stats)
     category_stats.keys.map(&:to_i).each do |id|
       category_stats_for_category = category_stats[id.to_s]
-      Category.find(id).update(post_count: category_stats_for_category["posts_count"], topic_count: category_stats_for_category["topic_count"])
+      Category.find(id).update(post_count: category_stats_for_category.fetch("posts_count") || 0, topic_count: category_stats_for_category.fetch("topic_count") || 0)
     end
   end
 end
