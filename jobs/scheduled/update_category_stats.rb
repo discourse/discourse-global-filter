@@ -18,6 +18,7 @@ module Jobs
 
         tag_id = Tag.find_by(name: gft).id
 
+        total_topic_count_for_filter_tag = 0
         category_stats_for_filter = {}
         # loop through each category included in GFT
         filter_category_ids.each do |category_id|
@@ -40,11 +41,28 @@ module Jobs
             # for each category and its sub categories get topics tagged with GFT
             posts_count = topics_for_category.pluck(:posts_count).sum
             counts = { cas => { topic_count: topics_for_category.length, posts_count: posts_count } }
-            category_stats_for_filter = category_stats_for_filter.merge(counts)
+            category_stats_for_filter = category_stats_for_filter.deep_merge(counts)
           end
+
+          # For parent categories, calculate topic counts
+          category_and_subcategory_topics = Topic
+            .joins(:tags)
+            .where(category_id: category_and_subcategory_ids)
+            .where("topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)")
+            .where(tags: tag_id)
+            .visible
+
+          total_topic_count_for_filter_tag += category_and_subcategory_topics.length
+          parent_category_topic_totals = { category_id => {
+            topics_year: category_and_subcategory_topics.created_since(1.year.ago).count,
+            topics_month: category_and_subcategory_topics.created_since(1.month.ago).count,
+            topics_week: category_and_subcategory_topics.created_since(1.week.ago).count,
+            topics_day: category_and_subcategory_topics.created_since(1.day.ago).count,
+          } }
+          category_stats_for_filter = category_stats_for_filter.deep_merge(parent_category_topic_totals)
         end
 
-        filter_tag.update!(category_stats: category_stats_for_filter)
+        filter_tag.update!(category_stats: category_stats_for_filter, total_topic_count: total_topic_count_for_filter_tag)
       end
     end
   end
