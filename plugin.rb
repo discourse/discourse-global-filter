@@ -33,6 +33,7 @@ after_initialize do
     '../app/serializers/admin_filter_tag_index_serializer.rb',
     '../jobs/scheduled/update_category_stats.rb',
     '../lib/category_list_serializer_extension.rb',
+    '../lib/category_detailed_serializer_extension.rb',
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   GlobalFilter::Engine.routes.draw do
@@ -56,6 +57,19 @@ after_initialize do
 
   reloadable_patch do
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
+    CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
+  end
+
+  add_to_serializer(:site, :filter_tags_total_topic_count) do
+    counts = {}
+    GlobalFilter::FilterTag.find_each do |gft|
+      counts[gft.name] = gft.total_topic_count
+    end
+    counts
+  end
+
+  add_to_serializer(:category_detailed, :filter_tag) do
+    scope.user&.custom_fields&.dig('global_filter_preference') || ""
   end
 
   add_to_serializer(:category_list, :filter_tag) do
