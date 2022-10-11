@@ -5,10 +5,13 @@
     class="global-filter-button btn"
   >
     <span class="d-button-label">
-      {{spacedTag}}
-    </span>
-    <span class="filter-item-total-topic-count">
-      {{this.totalFilterTagCount}}
+      <span>
+        {{spacedTag}}
+        <br>
+        <span class="filter-item-total-topic-count">
+          {{this.totalFilterTagCount}}
+        </span>
+      </span>
     </span>
   </a>
   {{plugin-outlet name="below-global-filter-item" args=(hash filter=@filter)}}
