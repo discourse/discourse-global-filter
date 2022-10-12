@@ -9,6 +9,7 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
     global_filters: "support|feature",
     tagging_enabled: true,
   });
+  needs.site({ filter_tags_total_topic_count: 0 });
 
   needs.pretender((server, helper) => {
     server.get("/tag/support/l/latest.json", () => {
