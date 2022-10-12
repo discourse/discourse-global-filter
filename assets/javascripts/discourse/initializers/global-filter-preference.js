@@ -223,4 +223,8 @@ function setFilteredCategoriesForGlobalFilter(api) {
   api.modifySelectKit("category-drop").appendContent(() => {
     return categoryDropdown;
   });
+
+  api.modifySelectKit("category-chooser").replaceContent(() => {
+    return categoryDropdown;
+  });
 }
