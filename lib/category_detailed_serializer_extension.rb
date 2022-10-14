@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module GlobalFilter::CategoryDetailedSerializerExtension
+  def topic_count
+    object.global_filter_tags_category_stats[filter_tag].fetch("topic_count", 0)
+  end
+
+  def post_count
+    object.global_filter_tags_category_stats[filter_tag].fetch("posts_count", 0)
+  end
+
   def topics_day
     total_count_for_category_per('topics_day')
   end
@@ -18,9 +26,6 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   end
 
   def total_count_for_category_per(time)
-    category_stats = GlobalFilter::FilterTag.find_by(name: filter_tag)&.category_stats
-    return 0 if category_stats.nil? || category_stats[object.id.to_s].nil?
-
-    category_stats[object.id.to_s]&.fetch(time, 0)
+    object.global_filter_tags_category_stats[filter_tag].fetch(time, 0)
   end
 end

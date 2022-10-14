@@ -5,46 +5,20 @@ module Jobs
     every 1.day
 
     def execute(args = nil)
-      # We have to calculate category totals per GFT as some categories may
-      # be shared across GFTs and will contain unique topics leading to different topic/post counts
-      # for a category based on what GFT it belongs to.
+      filter_tags = SiteSetting.find_by(name: "global_filters").value.split("|")
 
-      # loop through each GFT
-      SiteSetting.find_by(name: "global_filters").value.split("|").each do |gft|
-        filter_tag = GlobalFilter::FilterTag.find_by(name: gft)
-        filter_category_ids = filter_tag.category_ids.split("|")
-        filter_category_ids = Category.pluck(:id) if filter_category_ids.empty?
-        filter_category_ids = filter_category_ids.map(&:to_i)
+      # Calculate topic / post totals for each GFT for each category
+      Category.find_each do |c|
+        category_and_subcategory_ids = [c.id]
+        category_and_subcategory_ids << Category.find(c.id).subcategories&.pluck(:id)
+        category_and_subcategory_ids = category_and_subcategory_ids.flatten
 
-        tag_id = Tag.find_by(name: gft).id
+        per_filter_category_stats = {}
+        filter_tags.each do |gft|
+          category_stats_for_filter = {}
+          filter_tag = GlobalFilter::FilterTag.find_by(name: gft)
+          tag_id = Tag.find_by(name: gft).id
 
-        total_topic_count_for_filter_tag = 0
-        category_stats_for_filter = {}
-        # loop through each category included in GFT
-        filter_category_ids.each do |category_id|
-          category_and_subcategory_ids = [category_id]
-          category_and_subcategory_ids << Category.find(category_id).subcategories&.pluck(:id)
-          category_and_subcategory_ids = category_and_subcategory_ids.flatten
-
-          category_and_subcategory_ids.each do |cas|
-            topics_for_category = Topic
-              .joins(:tags)
-              .where(category_id: cas)
-              .where("topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)")
-              .where(tags: tag_id)
-              .group(:id, :category_id, :posts_count)
-              .visible
-
-            # build a json object so that we can generate a topic/post count for each category for the current GFT.
-            # This object will be inserted into the filter_tag_category_mappings table that we can then use in the category_list serializer
-
-            # for each category and its sub categories get topics tagged with GFT
-            posts_count = topics_for_category.pluck(:posts_count).sum
-            counts = { cas => { topic_count: topics_for_category.length, posts_count: posts_count } }
-            category_stats_for_filter = category_stats_for_filter.deep_merge(counts)
-          end
-
-          # For parent categories, calculate topic counts
           category_and_subcategory_topics = Topic
             .joins(:tags)
             .where(category_id: category_and_subcategory_ids)
@@ -52,17 +26,45 @@ module Jobs
             .where(tags: tag_id)
             .visible
 
-          total_topic_count_for_filter_tag += category_and_subcategory_topics.length
-          parent_category_topic_totals = { category_id => {
+          posts_count = category_and_subcategory_topics.pluck(:posts_count).sum
+          counts = { topic_count: category_and_subcategory_topics.count, posts_count: posts_count }
+          category_stats_for_filter = category_stats_for_filter.deep_merge(counts)
+
+          category_topic_totals = {
             topics_year: category_and_subcategory_topics.created_since(1.year.ago).count,
             topics_month: category_and_subcategory_topics.created_since(1.month.ago).count,
             topics_week: category_and_subcategory_topics.created_since(1.week.ago).count,
             topics_day: category_and_subcategory_topics.created_since(1.day.ago).count,
-          } }
-          category_stats_for_filter = category_stats_for_filter.deep_merge(parent_category_topic_totals)
+          }
+          category_stats_for_filter = category_stats_for_filter.deep_merge(category_topic_totals)
+
+          per_filter_category_stats = per_filter_category_stats.deep_merge({ gft => category_stats_for_filter })
         end
 
-        filter_tag.update!(category_stats: category_stats_for_filter, total_topic_count: total_topic_count_for_filter_tag)
+        Category.find(c.id).update!(global_filter_tags_category_stats: per_filter_category_stats)
+      end
+
+      # Calculate topic totals per GFT
+      filter_tags.each do |gft|
+        filter_tag = GlobalFilter::FilterTag.find_by(name: gft)
+        tag_id = Tag.find_by(name: gft).id
+        filter_category_ids = filter_tag.category_ids.split("|")
+        filter_category_ids = Category.pluck(:id) if filter_category_ids.empty?
+        filter_category_ids = filter_category_ids.map(&:to_i)
+        category_ids_with_sub_categories = []
+        filter_category_ids.each do |fc|
+          category_ids_with_sub_categories = category_ids_with_sub_categories.push(*Category.find(fc).subcategories.pluck(:id))
+          category_ids_with_sub_categories = category_ids_with_sub_categories << fc
+        end
+
+        category_and_subcategory_topics = Topic
+          .joins(:tags)
+          .where(category_id: category_ids_with_sub_categories)
+          .where("topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)")
+          .where(tags: tag_id)
+          .visible
+
+        filter_tag.update!(total_topic_count: category_and_subcategory_topics.count)
       end
     end
   end

@@ -3,6 +3,10 @@
 class GlobalFilter::FilterTag < ::ActiveRecord::Base
   self.table_name = "filter_tag_category_mappings"
 
+  self.ignored_columns = [
+    :category_stats, # TODO(2023-04-01): remove
+  ]
+
   def self.categories_for_tag(tag, scope)
     filter_tag = self.find_by(name: tag)
     return [] if !filter_tag&.category_ids&.present?
