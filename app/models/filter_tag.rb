@@ -9,7 +9,6 @@ class GlobalFilter::FilterTag < ::ActiveRecord::Base
 
   def self.categories_for_tags(tags, scope)
     filter_tags = self.where(name: tags)
-    filter_tags_category_ids = []
     filter_tags_category_ids = filter_tags&.pluck(:category_ids).flat_map do |c|
       c.present? ? c.split("|") : Category.secured(scope).pluck(:id)
     end
