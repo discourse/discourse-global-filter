@@ -69,11 +69,11 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :filter_tag) do
-    scope.user&.custom_fields&.dig('global_filter_preference') || ""
+    scope.user&.custom_fields&.dig('global_filter_preference') || GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_list, :filter_tag) do
-    object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || ""
+    object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || GlobalFilter::FilterTag.first.name
   end
 
   DiscourseEvent.on(:site_setting_changed) do |name, old_value, new_value|
