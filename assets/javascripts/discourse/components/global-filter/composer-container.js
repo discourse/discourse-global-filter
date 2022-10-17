@@ -18,19 +18,4 @@ export default class GlobalFilterComposerContainer extends Component {
     }
     return filters.split("|");
   }
-
-  constructor() {
-    super(...arguments);
-
-    if (this.tagParam) {
-      const composer = this.args.composer;
-      if (composer.tags) {
-        if (composer.tags.includes(this.tagParam)) {
-          composer.tags.push(this.tagParam);
-        }
-      } else {
-        this.args.composer.set("tags", makeArray(this.tagParam));
-      }
-    }
-  }
 }

@@ -89,7 +89,7 @@ acceptance(
       });
 
       server.get(
-        "/global_filter/filter_tags/categories_for_global_filter.json",
+        "/global_filter/filter_tags/categories_for_current_filter.json",
         () => {
           return helper.response({ success: true });
         }

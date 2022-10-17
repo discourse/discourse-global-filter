@@ -38,7 +38,8 @@ after_initialize do
 
   GlobalFilter::Engine.routes.draw do
     put '/filter_tags/:tag/assign' => 'filter_tags#assign'
-    get '/filter_tags/categories_for_global_filter' => 'filter_tags#categories_for_global_filter'
+    get '/filter_tags/categories_for_current_filter' => 'filter_tags#categories_for_current_filter'
+    get '/filter_tags/categories_for_filter_tags' => 'filter_tags#categories_for_filter_tags'
   end
 
   Discourse::Application.routes.prepend do

@@ -3,7 +3,7 @@
 module GlobalFilter::CategoryListSerializerExtension
 
   def categories
-    filtered_categories = GlobalFilter::FilterTag.categories_for_tag(filter_tag, scope)
-    filtered_categories.any? ? filtered_categories : object.categories
+    tags = options[:tags] || filter_tag
+    GlobalFilter::FilterTag.categories_for_tags(tags, scope)
   end
 end

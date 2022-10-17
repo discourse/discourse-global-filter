@@ -44,7 +44,7 @@ export default {
       // set the custom category options per global filter
       if (routeName === "discovery.categories") {
         ajax(
-          "/global_filter/filter_tags/categories_for_global_filter.json"
+          "/global_filter/filter_tags/categories_for_current_filter.json"
         ).then((model) => {
           categoryDropdown = model.categories;
         });
