@@ -1,5 +1,4 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import SearchAdvancedOptions from "discourse/components/search-advanced-options";
 
 const PLUGIN_ID = "discourse-global-filter";
 
