@@ -7,9 +7,12 @@ class GlobalFilter::FilterTag < ::ActiveRecord::Base
     :category_stats, # TODO(2023-04-01): remove
   ]
 
-  def self.categories_for_tag(tag, scope)
-    filter_tag = self.find_by(name: tag)
-    return [] if !filter_tag&.category_ids&.present?
-    Category.secured(scope).where(id: filter_tag.category_ids.split("|")).to_a
+  def self.categories_for_tags(tags, scope)
+    filter_tags = self.where(name: tags)
+    filter_tags_category_ids = filter_tags&.pluck(:category_ids).flat_map do |c|
+      c.present? ? c.split("|") : Category.secured(scope).pluck(:id)
+    end
+
+    Category.secured(scope).where(id: filter_tags_category_ids).to_a
   end
 end

@@ -16,6 +16,13 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
 
   needs.pretender((server, helper) => {
     ["support", "feature"].forEach((tag) => {
+      server.get(
+        `/global_filter/filter_tags/categories_for_filter_tags.json`,
+        () => {
+          return helper.response({ success: true });
+        }
+      );
+
       server.get(`/tag/${tag}/notifications`, () => {
         return helper.response({
           tag_notification: { id: tag, notification_level: 2 },
@@ -67,9 +74,10 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
 
   test("toggling filter items removes/adds correct tags", async function (assert) {
     await visit("/");
-    await click("#create-topic");
-
     await settled();
+    await click("#create-topic");
+    await settled();
+
     assert.strictEqual(
       query(".global-filter-composer-tag-support input").checked,
       true,
@@ -77,8 +85,10 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
     );
     // uncheck support filter
     await click(".global-filter-composer-tag-support input");
+    await settled();
     // check feature filter
     await click(".global-filter-composer-tag-feature input");
+    await settled();
 
     let composer = this.owner.lookup("controller:composer");
     assert.ok(

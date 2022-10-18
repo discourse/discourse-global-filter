@@ -1,5 +1,8 @@
 import Component from "@glimmer/component";
 import { action } from "@ember/object";
+import { ajax } from "discourse/lib/ajax";
+import { withPluginApi } from "discourse/lib/plugin-api";
+import { popupAjaxError } from "discourse/lib/ajax-error";
 
 export default class GlobalFilterComposerItem extends Component {
   spacedTag = this.args.filter.replace(/-|_/g, " ");
@@ -17,11 +20,26 @@ export default class GlobalFilterComposerItem extends Component {
 
   @action
   toggleTag() {
-    const filterIndex = this.args.composer.tags.indexOf(this.args.filter);
-    if (filterIndex >= 0) {
-      this.args.composer.tags.pop(filterIndex);
+    if (this.args.composer.tags.includes(this.args.filter)) {
+      const filterIndex = this.args.composer.tags.indexOf(this.args.filter);
+      this.args.composer.tags.splice(filterIndex, 1);
     } else {
       this.args.composer.tags.push(this.args.filter);
     }
+
+    let categories = [];
+    withPluginApi("1.3.0", (api) => {
+      ajax(`/global_filter/filter_tags/categories_for_filter_tags.json`, {
+        data: { tags: this.args.composer.tags },
+      })
+        .then((model) => {
+          categories = model.categories;
+        })
+        .catch(popupAjaxError);
+
+      api.modifySelectKit("category-chooser").replaceContent(() => {
+        return categories;
+      });
+    });
   }
 }

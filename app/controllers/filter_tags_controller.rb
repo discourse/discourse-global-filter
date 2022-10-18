@@ -10,7 +10,16 @@ class GlobalFilter::FilterTagsController < ::ApplicationController
     custom_field.update!(value: params[:tag])
   end
 
-  def categories_for_global_filter
+  def categories_for_current_filter
     render_serialized(CategoryList.new(guardian), CategoryListSerializer, root: false)
+  end
+
+  def categories_for_filter_tags
+    render_serialized(
+      CategoryList.new(guardian),
+      CategoryListSerializer,
+      root: false,
+      tags: params[:tags]
+    )
   end
 end
