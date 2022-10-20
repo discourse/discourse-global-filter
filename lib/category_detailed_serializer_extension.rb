@@ -2,11 +2,11 @@
 
 module GlobalFilter::CategoryDetailedSerializerExtension
   def topic_count
-    object.global_filter_tags_category_stats[filter_tag].fetch("topic_count", 0)
+    object.global_filter_tags_category_stats[filter_tag]&.fetch("topic_count", 0) || 0
   end
 
   def post_count
-    object.global_filter_tags_category_stats[filter_tag].fetch("posts_count", 0)
+    object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_count", 0) || 0
   end
 
   def topics_day
@@ -26,6 +26,6 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   end
 
   def total_count_for_category_per(time)
-    object.global_filter_tags_category_stats[filter_tag].fetch(time, 0)
+    object.global_filter_tags_category_stats[filter_tag]&.fetch(time, 0) || 0
   end
 end
