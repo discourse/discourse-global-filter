@@ -37,8 +37,10 @@ export default class GlobalFilterComposerItem extends Component {
         })
         .catch(popupAjaxError);
 
-      api.modifySelectKit("category-chooser").replaceContent(() => {
-        return categories;
+      api.modifySelectKit("category-chooser").replaceContent((component) => {
+        if (!component.selectKit.filter) {
+          return categories;
+        }
       });
     });
   }

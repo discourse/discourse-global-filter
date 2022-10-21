@@ -182,8 +182,8 @@ export default {
       tags = filterPref;
     } else {
       tags =
-        router.currentRoute.params?.tag_id ||
-        router.currentRoute.queryParams?.tag ||
+        router.currentRoute?.params?.tag_id ||
+        router.currentRoute?.queryParams?.tag ||
         this._firstGlobalFilterFromParent(router, globalFilters);
     }
 
