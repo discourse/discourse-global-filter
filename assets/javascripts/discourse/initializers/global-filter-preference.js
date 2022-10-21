@@ -182,8 +182,8 @@ export default {
       tags = filterPref;
     } else {
       tags =
-        router.currentRoute.params?.tag_id ||
-        router.currentRoute.queryParams?.tag ||
+        router.currentRoute?.params?.tag_id ||
+        router.currentRoute?.queryParams?.tag ||
         this._firstGlobalFilterFromParent(router, globalFilters);
     }
 
@@ -221,10 +221,6 @@ export default {
 let categoryDropdown = [];
 function setFilteredCategoriesForGlobalFilter(api) {
   api.modifySelectKit("category-drop").appendContent(() => {
-    return categoryDropdown;
-  });
-
-  api.modifySelectKit("category-chooser").replaceContent(() => {
     return categoryDropdown;
   });
 }

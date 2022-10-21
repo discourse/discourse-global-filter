@@ -1,5 +1,7 @@
 import Component from "@glimmer/component";
 import { inject as service } from "@ember/service";
+import { ajax } from "discourse/lib/ajax";
+import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default class GlobalFilterComposerContainer extends Component {
   @service siteSettings;
@@ -16,5 +18,21 @@ export default class GlobalFilterComposerContainer extends Component {
       return false;
     }
     return filters.split("|");
+  }
+
+  constructor() {
+    super(...arguments);
+
+    withPluginApi("1.3.0", (api) => {
+      ajax(
+        `/global_filter/filter_tags/categories_for_current_filter.json`
+      ).then((model) => {
+        api.modifySelectKit("category-chooser").replaceContent((component) => {
+          if (!component.selectKit.filter) {
+            return model.categories;
+          }
+        });
+      });
+    });
   }
 }

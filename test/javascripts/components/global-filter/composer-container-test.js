@@ -11,6 +11,13 @@ acceptance("Discourse Global Filter - Composer Container", function (needs) {
   needs.site({ filter_tags_total_topic_count: 0 });
 
   needs.pretender((server, helper) => {
+    server.get(
+      "/global_filter/filter_tags/categories_for_current_filter.json",
+      () => {
+        return helper.response({ categories: [] });
+      }
+    );
+
     server.get("/tag/support/notifications", () =>
       helper.response({
         tag_notification: { id: "support", notification_level: 2 },
