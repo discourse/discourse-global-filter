@@ -6,7 +6,6 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 export default class GlobalFilterComposerContainer extends Component {
   @service siteSettings;
   @service router;
-  @service site;
 
   tagParam = this.router.currentRoute?.queryParams?.tag;
   canDisplay =
