@@ -7,21 +7,20 @@ export default class extends Controller {
   @action
   setCategoryIdsForTag(filterTag, categories) {
     let categoryIds = [];
-    let categoriesAndParents = [];
+    let categoriesAndParents = new Set(categories);
 
-    categoriesAndParents.push(categories);
     categories.map((c) => {
       categoryIds.push(c.id);
 
       // if category has parent, include parent
       if (c.parent_category_id) {
         categoryIds.push(c.parent_category_id);
-        categoriesAndParents.push(c.parentCategory);
+        categoriesAndParents.add(c.parentCategory);
 
         // check if category is subsubcategory
         if (c.parentCategory.parent_category_id) {
           categoryIds.push(c.parentCategory.parent_category_id);
-          categoriesAndParents.push(c.parentCategory.parentCategory);
+          categoriesAndParents.add(c.parentCategory.parentCategory);
         }
       }
     });
@@ -38,7 +37,7 @@ export default class extends Controller {
       }
     )
       .then(() => {
-        const uniqCategories = Array.from(new Set(categoriesAndParents.flat()));
+        const uniqCategories = Array.from(categoriesAndParents);
         filterTag.set("categories", uniqCategories);
       })
       .catch(popupAjaxError);
