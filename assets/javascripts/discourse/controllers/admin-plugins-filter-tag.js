@@ -23,7 +23,7 @@ export default class extends Controller {
     });
 
     const data = {
-      category_ids: category_ids,
+      category_ids,
     };
 
     return ajax(
