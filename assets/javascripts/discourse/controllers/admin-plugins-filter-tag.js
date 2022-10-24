@@ -6,24 +6,27 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 export default class extends Controller {
   @action
   setCategoryIdsForTag(filterTag, categories) {
-    let category_ids = [];
+    let categoryIds = [];
+    let categoriesAndParents = new Set(categories);
 
     categories.map((c) => {
-      category_ids.push(c.id);
+      categoryIds.push(c.id);
 
       // if category has parent, include parent
       if (c.parent_category_id) {
-        category_ids.push(c.parent_category_id);
+        categoryIds.push(c.parent_category_id);
+        categoriesAndParents.add(c.parentCategory);
 
         // check if category is subsubcategory
         if (c.parentCategory.parent_category_id) {
-          category_ids.push(c.parentCategory.parent_category_id);
+          categoryIds.push(c.parentCategory.parent_category_id);
+          categoriesAndParents.add(c.parentCategory.parentCategory);
         }
       }
     });
 
     const data = {
-      category_ids,
+      category_ids: categoryIds,
     };
 
     return ajax(
@@ -34,7 +37,8 @@ export default class extends Controller {
       }
     )
       .then(() => {
-        filterTag.set("categories", categories);
+        const uniqCategories = Array.from(categoriesAndParents);
+        filterTag.set("categories", uniqCategories);
       })
       .catch(popupAjaxError);
   }

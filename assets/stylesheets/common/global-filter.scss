@@ -44,13 +44,12 @@ ol.category-breadcrumb > li:not(.filtered-tags-chooser) {
 .filter-tag-admin-pane {
   .filter-tag-name {
     float: left;
-    width: 15%;
+    width: 200px;
     margin-right: 12px;
   }
 
   .filter-tag-category-chooser {
-    float: left;
-    width: 80%;
+    width: 75%;
     padding-right: 20px;
     margin-bottom: 15px;
   }
