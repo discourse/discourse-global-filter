@@ -34,6 +34,7 @@ after_initialize do
     '../jobs/scheduled/update_category_stats.rb',
     '../lib/category_list_serializer_extension.rb',
     '../lib/category_detailed_serializer_extension.rb',
+
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   GlobalFilter::Engine.routes.draw do

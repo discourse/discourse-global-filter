@@ -13,6 +13,6 @@ class GlobalFilter::FilterTag < ::ActiveRecord::Base
       c.present? ? c.split("|") : Category.secured(scope).pluck(:id)
     end
 
-    Category.secured(scope).where(id: filter_tags_category_ids).to_a
+    Category.secured(scope).where(id: filter_tags_category_ids)
   end
 end
