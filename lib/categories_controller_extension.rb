@@ -2,7 +2,7 @@
 
 module GlobalFilter::CategoriesControllerExtension
 
-  def index 
+  def index
     discourse_expires_in 1.minute
 
     @description = SiteSetting.site_description
