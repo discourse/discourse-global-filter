@@ -38,7 +38,6 @@ export default class extends Controller {
       }
     )
       .then(() => {
-        console.log(categoriesAndParents);
         const uniqCategories = Array.from(new Set(categoriesAndParents.flat()));
         filterTag.set("categories", uniqCategories);
       })
