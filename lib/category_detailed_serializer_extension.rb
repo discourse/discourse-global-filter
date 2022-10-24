@@ -28,4 +28,10 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   def total_count_for_category_per(time)
     object.global_filter_tags_category_stats[filter_tag]&.fetch(time, 0) || 0
   end
+
+  def subcategory_list
+    filter_tag_ids = GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
+    filtered_categories = object.subcategory_list.present? ? object.subcategory_list.filter { |c| filter_tag_ids.include?(c.id) } : []
+    filtered_categories
+  end
 end
