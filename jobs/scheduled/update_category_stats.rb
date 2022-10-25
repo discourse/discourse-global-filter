@@ -2,7 +2,7 @@
 
 module Jobs
   class ::GlobalFilter::UpdateCategoryStats < ::Jobs::Scheduled
-    every 1.day
+    every 1.hour
 
     def execute(args = nil)
       filter_tags = SiteSetting.find_by(name: "global_filters").value.split("|")
