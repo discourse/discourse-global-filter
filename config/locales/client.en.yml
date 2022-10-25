@@ -5,3 +5,5 @@ en:
     global_filter:
       admin:
         title: "Global Filters"
+      require_tag_on_topic_creation:
+        error: "An application must be selected to create a topic."
