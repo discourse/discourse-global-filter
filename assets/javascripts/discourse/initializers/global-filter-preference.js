@@ -47,6 +47,7 @@ export default {
           "/global_filter/filter_tags/categories_for_current_filter.json"
         ).then((model) => {
           categoryDropdown = model.categories;
+          subcategoryDropdown = model.subcategories;
         });
       }
 
@@ -219,8 +220,24 @@ export default {
 };
 
 let categoryDropdown = [];
+let subcategoryDropdown = [];
 function setFilteredCategoriesForGlobalFilter(api) {
-  api.modifySelectKit("category-drop").appendContent(() => {
-    return categoryDropdown;
+  api.modifySelectKit("category-drop").replaceContent((component) => {
+    const componentParentClasslist = document.getElementById(
+      component.elementId
+    )?.parentElement?.classList;
+    if (componentParentClasslist.contains("gft-parent-categories-picker")) {
+      return categoryDropdown;
+    }
+
+    if (componentParentClasslist.contains("gft-child-categories-picker")) {
+      const filteredChildren = component.content.filter((c) => {
+        const categoriesByName = subcategoryDropdown.map(
+          (item) => item["name"]
+        );
+        return categoriesByName.includes(c.name);
+      });
+      return filteredChildren;
+    }
   });
 }
