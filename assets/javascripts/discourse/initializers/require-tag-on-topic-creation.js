@@ -1,5 +1,5 @@
-import bootbox from "bootbox";
 import I18n from "I18n";
+import { Promise } from "rsvp";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default {
@@ -22,7 +22,10 @@ export default {
           ) {
             resolve();
           } else {
-            bootbox.alert(I18n.t("global_filter.require_tag_on_topic_creation.error"));
+            const dialog = api.container.lookup("service:dialog");
+            dialog.alert(
+              I18n.t("global_filter.require_tag_on_topic_creation.error")
+            );
             reject();
           }
         });
