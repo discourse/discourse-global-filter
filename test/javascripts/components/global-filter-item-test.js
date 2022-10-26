@@ -33,6 +33,11 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
       });
     });
 
+    server.get(
+      "/global_filter/filter_tags/categories_for_current_filter.json",
+      () => helper.response({ categories: [], subcategories: [] })
+    );
+
     server.get("/tag/support/notifications", () =>
       helper.response({
         tag_notification: { id: "support", notification_level: 2 },

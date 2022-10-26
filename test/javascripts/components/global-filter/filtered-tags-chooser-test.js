@@ -27,6 +27,11 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
         },
       });
     });
+
+    server.get(
+      "/global_filter/filter_tags/categories_for_current_filter.json",
+      () => helper.response({ categories: [], subcategories: [] })
+    );
   });
 
   test("hides the selected global filter tag from the tag-drop chooser", async function (assert) {
