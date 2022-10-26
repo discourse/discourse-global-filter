@@ -34,7 +34,7 @@ after_initialize do
     '../jobs/scheduled/update_category_stats.rb',
     '../lib/category_list_serializer_extension.rb',
     '../lib/category_detailed_serializer_extension.rb',
-
+    '../lib/category_list_extension.rb',
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   GlobalFilter::Engine.routes.draw do
@@ -59,6 +59,7 @@ after_initialize do
 
   reloadable_patch do
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
+    CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
     CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
   end
 
