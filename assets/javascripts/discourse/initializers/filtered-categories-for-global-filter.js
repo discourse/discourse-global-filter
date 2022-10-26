@@ -13,6 +13,7 @@ export default {
           pluginId: PLUGIN_ID,
           queryParams: ["tag"],
         });
+
         api.modifyClass("route:discovery/categories", {
           pluginId: PLUGIN_ID,
 

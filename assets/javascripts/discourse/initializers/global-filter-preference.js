@@ -1,7 +1,6 @@
 import { next, run } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import { withPluginApi } from "discourse/lib/plugin-api";
 
 const ROUTES_TO_REDIRECT_ON = [
   "discovery.latest",
@@ -35,21 +34,8 @@ export default {
       );
     });
 
-    // set expectation of us updating category chooser content
-    withPluginApi("1.3.0", (api) => setFilteredCategoriesForGlobalFilter(api));
-
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
-
-      // set the custom category options per global filter
-      if (routeName === "discovery.categories") {
-        ajax(
-          "/global_filter/filter_tags/categories_for_current_filter.json"
-        ).then((model) => {
-          categoryDropdown = model.categories;
-          subcategoryDropdown = model.subcategories;
-        });
-      }
 
       if (transition.queryParamsOnly) {
         return;
@@ -218,26 +204,3 @@ export default {
     return tags;
   },
 };
-
-let categoryDropdown = [];
-let subcategoryDropdown = [];
-function setFilteredCategoriesForGlobalFilter(api) {
-  api.modifySelectKit("category-drop").replaceContent((component) => {
-    const componentParentClasslist = document.getElementById(
-      component.elementId
-    )?.parentElement?.classList;
-    if (componentParentClasslist.contains("gft-parent-categories-picker")) {
-      return categoryDropdown;
-    }
-
-    if (componentParentClasslist.contains("gft-child-categories-picker")) {
-      const filteredChildren = component.content.filter((c) => {
-        const categoriesByName = subcategoryDropdown.map(
-          (item) => item["name"]
-        );
-        return categoriesByName.includes(c.name);
-      });
-      return filteredChildren;
-    }
-  });
-}
