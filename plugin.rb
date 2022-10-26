@@ -78,6 +78,10 @@ after_initialize do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || GlobalFilter::FilterTag.first.name
   end
 
+  add_to_serializer(:category_list, :subcategories) do
+    GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(&:parent_category_id)
+  end
+
   DiscourseEvent.on(:site_setting_changed) do |name, old_value, new_value|
     if name === :global_filters
       old_values = old_value.split("|")

@@ -17,6 +17,11 @@ acceptance("Discourse Global Filter - Filter Container", function (needs) {
       })
     );
 
+    server.get(
+      "/global_filter/filter_tags/categories_for_current_filter.json",
+      () => helper.response({ categories: [], subcategories: [] })
+    );
+
     server.get("/tag/support/l/latest.json", () => {
       return helper.response({
         users: [],

@@ -1,7 +1,6 @@
 import { next, run } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import { withPluginApi } from "discourse/lib/plugin-api";
 
 const ROUTES_TO_REDIRECT_ON = [
   "discovery.latest",
@@ -35,20 +34,8 @@ export default {
       );
     });
 
-    // set expectation of us updating category chooser content
-    withPluginApi("1.3.0", (api) => setFilteredCategoriesForGlobalFilter(api));
-
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
-
-      // set the custom category options per global filter
-      if (routeName === "discovery.categories") {
-        ajax(
-          "/global_filter/filter_tags/categories_for_current_filter.json"
-        ).then((model) => {
-          categoryDropdown = model.categories;
-        });
-      }
 
       if (transition.queryParamsOnly) {
         return;
@@ -217,10 +204,3 @@ export default {
     return tags;
   },
 };
-
-let categoryDropdown = [];
-function setFilteredCategoriesForGlobalFilter(api) {
-  api.modifySelectKit("category-drop").appendContent(() => {
-    return categoryDropdown;
-  });
-}

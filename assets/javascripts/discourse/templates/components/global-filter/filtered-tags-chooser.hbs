@@ -1,9 +1,16 @@
 {{#each @categoryBreadcrumbs as |breadcrumb|}}
   {{#if breadcrumb.hasOptions}}
-    <li class="filtered-category-drop">
+    <li
+      class="filtered-category-drop
+        {{if
+          breadcrumb.isSubcategory
+          "gft-subcategories-drop"
+          "gft-parent-categories-drop"
+        }}"
+    >
       <CategoryDrop
         @category={{breadcrumb.category}}
-        @categories={{null}}
+        @categories={{breadcrumb.options}}
         @tagId={{@tagId}}
         @editingCategory={{@editingCategory}}
         @editingCategoryTab={{@editingCategoryTab}}
