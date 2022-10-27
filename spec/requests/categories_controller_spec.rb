@@ -56,7 +56,6 @@ RSpec.describe CategoriesController do
   end
 
   it_behaves_like "#categories_and_topics" do
-     #anon
+    #anon
   end
 end
-
