@@ -72,11 +72,11 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :filter_tag) do
-    scope.user&.custom_fields&.dig('global_filter_preference') || GlobalFilter::FilterTag.first.name
+    scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.env["action_dispatch.cookies"]["global_filter_pref"] || GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_list, :filter_tag) do
-    object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || GlobalFilter::FilterTag.first.name
+    object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.env["action_dispatch.cookies"]["global_filter_pref"] || GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_list, :subcategories) do

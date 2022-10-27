@@ -37,11 +37,11 @@ export default {
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
 
-      if (transition.queryParamsOnly) {
+      if (transition.queryParamsOnly || !transition.intent) {
         return;
       }
 
-      if (currentUser && transition.to?.queryParams?.tag) {
+      if (transition.to?.queryParams?.tag) {
         this._setClientAndServerFilterPref(
           transition.to.queryParams.tag,
           currentUser
@@ -148,9 +148,13 @@ export default {
   _setClientAndServerFilterPref(tag, user) {
     return ajax(`/global_filter/filter_tags/${tag}/assign.json`, {
       type: "PUT",
-      data: { user_id: user.id },
+      data: { user_id: user?.id },
     })
-      .then(() => this._setClientFilterPref(tag, user))
+      .then(() => {
+        if (user) {
+          this._setClientFilterPref(tag, user);
+        }
+      })
       .catch(popupAjaxError);
   },
 
