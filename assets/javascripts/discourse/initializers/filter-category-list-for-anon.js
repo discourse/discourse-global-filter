@@ -13,6 +13,9 @@ export default {
           const tagParam = new URLSearchParams(window.location.search).get(
             "tag"
           );
+          // Since core makes an additional ajax call to /categories
+          // we need to override the list function to pass a tag parameter
+          // so that we serve filtered (by GFT) categories
           const getCategories = () => ajax(`/categories.json?tag=${tagParam}`);
           return PreloadStore.getAndRemove(
             "categories_list",

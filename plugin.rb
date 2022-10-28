@@ -79,7 +79,7 @@ after_initialize do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
   end
 
-  add_to_serializer(:category_detailed, :subcategories) do
+  add_to_serializer(:category_list, :subcategories) do
     GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(&:parent_category_id)
   end
 
