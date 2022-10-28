@@ -193,11 +193,13 @@ export default {
 
     globalFilters.forEach((item) => {
       const filterBodyClass = `global-filter-tag-${item}`;
+      const site = container.lookup("service:site");
       if (item === tags) {
         document
           .querySelector(`#global-filter-${item} > a`)
           .classList.add("active");
         document.body.classList.add(filterBodyClass);
+        site.globalFilter = item;
         return;
       }
 
