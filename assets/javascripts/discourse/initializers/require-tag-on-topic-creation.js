@@ -12,6 +12,10 @@ export default {
           const composerModel = api.container.lookup(
             "controller:composer"
           ).model;
+
+          if (composerModel.action === "reply") {
+            return resolve();
+          }
           const globalFilters = api.container
             .lookup("site-settings:main")
             .global_filters.split("|");
@@ -20,13 +24,13 @@ export default {
             composerModel.tags.filter((tag) => globalFilters.includes(tag))
               .length > 0
           ) {
-            resolve();
+            return resolve();
           } else {
             const dialog = api.container.lookup("service:dialog");
             dialog.alert(
               I18n.t("global_filter.require_tag_on_topic_creation.error")
             );
-            reject();
+            return reject();
           }
         });
       });
