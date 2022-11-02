@@ -1,4 +1,4 @@
-<table>
+<table class="sticky-header">
   <thead>
     <tr>
       <th></th>
@@ -11,11 +11,9 @@
   </thead>
   <tbody>
     {{#each this.categoriesOrdered as |category|}}
-      <tr>
+      <tr class={{concat "global-filter--c-depth-" category.depth}}>
         <td>
-          <div class={{concat "reorder-categories-depth-" category.depth}}>
-            {{category-badge category}}
-          </div>
+          {{category-badge category}}
         </td>
 
         {{#each this.filterTags as |filterTag|}}

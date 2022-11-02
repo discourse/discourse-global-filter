@@ -42,15 +42,25 @@ ol.category-breadcrumb > li:not(.filtered-tags-chooser) {
 }
 
 .filter-tag-admin-pane {
-  .filter-tag-name {
-    float: left;
-    width: 200px;
-    margin-right: 12px;
+  .global-filter--c-depth-0 {
+    border-top: 2px solid var(--primary-low);
+    background-color: var(--primary-very-low);
   }
 
-  .filter-tag-category-chooser {
-    width: 75%;
-    padding-right: 20px;
-    margin-bottom: 15px;
+  .global-filter--c-depth-1 td:first-child {
+    padding-left: 20px;
+  }
+
+  .global-filter--c-depth-2 td:first-child {
+    padding-left: 40px;
+  }
+
+  table.sticky-header {
+    thead {
+      position: sticky;
+      top: var(--header-offset, 60px);
+      z-index: 2;
+      background-color: var(--secondary);
+    }
   }
 }
