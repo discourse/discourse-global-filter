@@ -1,14 +1,3 @@
 <div class="filter-tag-admin-pane">
-  {{#each model.filter_tags as |filter_tag|}}
-    <div class="filter-tag-block">
-      <h4 class="filter-tag-name">{{filter_tag.name}}</h4>
-      <div class="filter-tag-category-chooser">
-        <CategorySelector
-          @categories={{filter_tag.categories}}
-          @onChange={{(fn (action "setCategoryIdsForTag") filter_tag)}}
-          @options={{hash none="category.all"}}
-        />
-      </div>
-    </div>
-  {{/each}}
+  <CategoryMatrix @filterTags={{model.filter_tags}} @setCategoryIdsForTag={{(fn this.setCategoryIdsForTag)}} />
 </div>

@@ -1,0 +1,29 @@
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      {{#each this.filterTags as |filterTag|}}
+        <th>
+          {{filterTag.name}}
+        </th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this.categoriesOrdered as |category|}}
+      <tr>
+        <td>
+          <div class={{concat "reorder-categories-depth-" category.depth}}>
+            {{category-badge category}}
+          </div>
+        </td>
+
+        {{#each this.filterTags as |filterTag|}}
+          <td>
+            <CategoryMatrixCheckbox @filterTag={{filterTag}} @category={{category}} @setCategoryIdsForTag={{@setCategoryIdsForTag}} />
+          </td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
