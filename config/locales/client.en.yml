@@ -5,5 +5,6 @@ en:
     global_filter:
       admin:
         title: "Global Filters"
+        empty_note: "Note: When no categories are selected for a tag, all categories are displayed."
       require_tag_on_topic_creation:
         error: "An application must be selected to create a topic."
