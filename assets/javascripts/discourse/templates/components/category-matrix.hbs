@@ -1,0 +1,33 @@
+<h3>{{i18n "global_filter.admin.title"}}</h3>
+
+<table class="sticky-header">
+  <thead>
+    <tr>
+      <th></th>
+      {{#each this.filterTags as |filterTag|}}
+        <th>
+          {{filterTag.name}}
+        </th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each this.categoriesOrdered as |category|}}
+      <tr class={{concat "global-filter--c-depth-" category.depth}}>
+        <td>
+          {{category-badge category}}
+        </td>
+
+        {{#each this.filterTags as |filterTag|}}
+          <td>
+            <CategoryMatrixCheckbox @filterTag={{filterTag}} @category={{category}} @setCategoryIdsForTag={{@setCategoryIdsForTag}} />
+          </td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<div class="global-filter--empty-column-note">
+  <p>{{i18n "global_filter.admin.empty_note"}}</p>
+</div>
