@@ -1,7 +1,7 @@
 import Component from "@ember/component";
 import discourseComputed from "discourse-common/utils/decorators";
 import BufferedProxy from "ember-buffered-proxy/proxy";
-import { sort, gt } from "@ember/object/computed";
+import { gt, sort } from "@ember/object/computed";
 import { inject as service } from "@ember/service";
 
 export default Component.extend({
