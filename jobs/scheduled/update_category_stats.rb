@@ -54,7 +54,7 @@ module Jobs
         category_ids_with_sub_categories = []
         filter_category_ids.each do |fc|
           subcategory_ids = Category.find_by(id: fc)&.subcategories&.pluck(:id)
-          category_ids_with_sub_categories = category_ids_with_sub_categories.push(*subcategory_ids) if subcategory_ids.any?
+          category_ids_with_sub_categories = category_ids_with_sub_categories.push(*subcategory_ids) if subcategory_ids
           category_ids_with_sub_categories = category_ids_with_sub_categories << fc
         end
 
