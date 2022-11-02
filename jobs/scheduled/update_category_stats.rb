@@ -10,7 +10,7 @@ module Jobs
       # Calculate topic / post totals for each GFT for each category
       Category.find_each do |c|
         category_and_subcategory_ids = [c.id]
-        category_and_subcategory_ids << Category.find(c.id)&.subcategories&.pluck(:id)
+        category_and_subcategory_ids << c.subcategories&.pluck(:id)
         category_and_subcategory_ids = category_and_subcategory_ids.flatten
 
         per_filter_category_stats = {}
@@ -41,7 +41,7 @@ module Jobs
           per_filter_category_stats = per_filter_category_stats.deep_merge({ gft => category_stats_for_filter })
         end
 
-        Category.find(c.id)&.update!(global_filter_tags_category_stats: per_filter_category_stats)
+        c.update!(global_filter_tags_category_stats: per_filter_category_stats)
       end
 
       # Calculate topic totals per GFT
@@ -53,7 +53,8 @@ module Jobs
         filter_category_ids = filter_category_ids.map(&:to_i)
         category_ids_with_sub_categories = []
         filter_category_ids.each do |fc|
-          category_ids_with_sub_categories = category_ids_with_sub_categories.push(*Category.find(fc).subcategories.pluck(:id))
+          subcategory_ids = Category.find_by(id: fc)&.subcategories&.pluck(:id)
+          category_ids_with_sub_categories = category_ids_with_sub_categories.push(*subcategory_ids) if subcategory_ids.any?
           category_ids_with_sub_categories = category_ids_with_sub_categories << fc
         end
 
