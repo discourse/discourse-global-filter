@@ -16,11 +16,11 @@ export default {
     const globalFilters = siteSettings.global_filters.split("|");
     const currentUser = container.lookup("current-user:main");
     const router = container.lookup("router:main");
-    router.on("routeDidChange", () => {
+    router.one("didTransition", () =>
       next(() =>
         this._applyFilterStyles(router, globalFilters, currentUser, container)
-      );
-    });
+      )
+    );
   },
 
   _applyFilterStyles(router, globalFilters, currentUser, container) {
