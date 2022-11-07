@@ -43,25 +43,27 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
       };
 
       api.modifySelectKit("category-drop").replaceContent((categoryDrop) => {
-        const categoryDropParentClasslist = document.getElementById(
-          categoryDrop.elementId
-        ).parentElement.classList;
+        if (!categoryDrop.selectKit.filter) {
+          const categoryDropParentClasslist = document.getElementById(
+            categoryDrop.elementId
+          ).parentElement.classList;
 
-        if (
-          categoryDropParentClasslist.contains("gft-parent-categories-drop")
-        ) {
-          return categoriesAndSubcategories.categories;
-        }
+          if (
+            categoryDropParentClasslist.contains("gft-parent-categories-drop")
+          ) {
+            return categoriesAndSubcategories.categories;
+          }
 
-        if (categoryDropParentClasslist.contains("gft-subcategories-drop")) {
-          const filteredSubcategories = categoryDrop.content.filter((c) => {
-            const categoriesByName =
-              categoriesAndSubcategories.subcategories.map(
-                (item) => item["name"]
-              );
-            return categoriesByName.includes(c.name);
-          });
-          return filteredSubcategories;
+          if (categoryDropParentClasslist.contains("gft-subcategories-drop")) {
+            const filteredSubcategories = categoryDrop.content.filter((c) => {
+              const categoriesByName =
+                categoriesAndSubcategories.subcategories.map(
+                  (item) => item["name"]
+                );
+              return categoriesByName.includes(c.name);
+            });
+            return filteredSubcategories;
+          }
         }
       });
     }
