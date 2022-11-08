@@ -1,5 +1,9 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { ajax } from "discourse/lib/ajax";
+import {
+  ALL_CATEGORIES_ID,
+  NO_CATEGORIES_ID,
+} from "select-kit/components/category-drop";
 
 const PLUGIN_ID = "discourse-global-filter-category-drop-options";
 
@@ -43,6 +47,39 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
       };
 
       api.modifySelectKit("category-drop").replaceContent((categoryDrop) => {
+        if (
+          categoryDrop.selectKit.options.subCategory &&
+          (categoryDrop.value ||
+            !categoryDrop.selectKit.options.noSubcategories)
+        ) {
+          categoriesAndSubcategories.subcategories = [
+            {
+              id: NO_CATEGORIES_ID,
+              name: categoryDrop.noCategoriesLabel,
+            },
+            ...categoriesAndSubcategories.subcategories,
+          ];
+        }
+
+        if (
+          (categoryDrop.value && !categoryDrop.editingCategory) ||
+          (categoryDrop.selectKit.options.noSubcategories &&
+            categoryDrop.selectKit.options.subCategory)
+        ) {
+          const allCategoriesDefault = {
+            id: ALL_CATEGORIES_ID,
+            name: categoryDrop.allCategoriesLabel,
+          };
+          categoriesAndSubcategories.categories = [
+            allCategoriesDefault,
+            ...categoriesAndSubcategories.categories,
+          ];
+          categoriesAndSubcategories.subcategories = [
+            allCategoriesDefault,
+            ...categoriesAndSubcategories.subcategories,
+          ];
+        }
+
         if (!categoryDrop.selectKit.filter) {
           const categoryDropParentClasslist = document.getElementById(
             categoryDrop.elementId
@@ -60,7 +97,12 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
                 categoriesAndSubcategories.subcategories.map(
                   (item) => item["name"]
                 );
-              return categoriesByName.includes(c.name);
+
+              return categoriesByName.includes(
+                c.name ||
+                  categoryDrop.allCategoriesLabel ||
+                  categoryDrop.noCategoriesLabel
+              );
             });
             return filteredSubcategories;
           }
