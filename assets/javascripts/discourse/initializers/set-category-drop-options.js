@@ -42,8 +42,8 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
   ajax("/global_filter/filter_tags/categories_for_current_filter.json").then(
     (model) => {
       categoriesAndSubcategories = {
-        categories: model.categories,
-        subcategories: model.subcategories,
+        categories: model.categories || [],
+        subcategories: model.subcategories || [],
       };
 
       api.modifySelectKit("category-drop").replaceContent((categoryDrop) => {

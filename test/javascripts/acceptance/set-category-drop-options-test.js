@@ -52,26 +52,10 @@ acceptance(
     });
 
     needs.pretender((server, helper) => {
-      server.get("/c/amazeCat/100/l/latest.json", () => {
+      server.get("/tags/c/amazeCat/100/support/l/latest.json", () => {
         return helper.response({
           users: [],
           primary_groups: [],
-          subcategories: [
-            {
-              id: 102,
-              name: "happyCat",
-              slug: "happyCat",
-              permission: 1,
-              parentCategory: mazeCategory,
-            },
-            {
-              id: 103,
-              name: "grumpyCat",
-              slug: "grumpyCat",
-              permission: 1,
-              parentCategory: mazeCategory,
-            },
-          ],
           topic_list: {
             can_create_topic: true,
             draft: null,
@@ -107,8 +91,7 @@ acceptance(
     });
 
     test("only displays subcategories returned from `/categories_for_current_filter`", async function (assert) {
-      await visit("/categories");
-      await visit(`/c/amazeCat/100/all`);
+      await visit(`/tags/c/amazeCat/100/support`);
       const categories = selectKit(".gft-subcategories-drop .category-drop");
       await categories.expand();
 
@@ -124,10 +107,10 @@ acceptance(
         ".gft-parent-categories-drop .category-drop"
       );
       await categories.expand();
-      await categories.fillInFilter("grumpy");
+      await categories.fillInFilter("general");
 
       assert.ok(
-        categories.rowByName("grumpyCat").exists(),
+        categories.rowByName("generalCat").exists(),
         "include all categories when filtering"
       );
     });
