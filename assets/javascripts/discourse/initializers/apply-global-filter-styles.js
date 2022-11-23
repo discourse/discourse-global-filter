@@ -67,12 +67,13 @@ export default {
     // and docs query parameters
     let tags =
       router.currentRoute?.parent?.attributes?.tags ||
-      router.currentRoute?.queryParams?.tags.split("|") ||
+      router.currentRoute?.queryParams?.tags?.split("|") ||
       null;
     if (tags) {
       tags = tags.filter((tag) => globalFilters.includes(tag));
       tags = tags[0];
     }
+
     return tags;
   },
 };
