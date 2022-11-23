@@ -1,4 +1,4 @@
-import { click, settled, visit } from "@ember/test-helpers";
+import { click, visit } from "@ember/test-helpers";
 import {
   acceptance,
   query,
@@ -81,21 +81,16 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
 
   test("toggling filter items removes/adds correct tags", async function (assert) {
     await visit("/");
-    await settled();
     await click("#create-topic");
-    await settled();
 
     assert.strictEqual(
       query(".global-filter-composer-tag-support input").checked,
       true,
       "support filter is checked by default"
     );
-    // uncheck support filter
+    // switch filter
     await click(".global-filter-composer-tag-support input");
-    await settled();
-    // check feature filter
     await click(".global-filter-composer-tag-feature input");
-    await settled();
 
     let composer = this.owner.lookup("controller:composer");
     assert.ok(
@@ -103,5 +98,9 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
       ["feature"],
       "expected filter is present"
     );
+
+    // reset
+    await click(".global-filter-composer-tag-feature input");
+    await click(".global-filter-composer-tag-support input");
   });
 });
