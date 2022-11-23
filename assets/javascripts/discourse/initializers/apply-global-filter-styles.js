@@ -36,7 +36,7 @@ export default {
       tags =
         router.currentRoute?.params?.tag_id ||
         router.currentRoute?.queryParams?.tag ||
-        this._firstGlobalFilterFromParent(router, globalFilters);
+        this._findGlobalFilterMatch(router, globalFilters);
     }
 
     if (!tags) {
@@ -62,8 +62,13 @@ export default {
     });
   },
 
-  _firstGlobalFilterFromParent(router, globalFilters) {
-    let tags = router.currentRoute?.parent?.attributes?.tags || null;
+  _findGlobalFilterMatch(router, globalFilters) {
+    // handles parent route attributes
+    // and docs query parameters
+    let tags =
+      router.currentRoute?.parent?.attributes?.tags ||
+      router.currentRoute?.queryParams?.tags.split("|") ||
+      null;
     if (tags) {
       tags = tags.filter((tag) => globalFilters.includes(tag));
       tags = tags[0];
