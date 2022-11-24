@@ -13,7 +13,10 @@ export default {
             "controller:composer"
           ).model;
 
-          if (composerModel.action === "reply") {
+          if (
+            composerModel.action === "reply" ||
+            composerModel.archetypeId === "private_message"
+          ) {
             return resolve();
           }
           const globalFilters = api.container
