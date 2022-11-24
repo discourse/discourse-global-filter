@@ -6,6 +6,7 @@ import {
 } from "discourse/tests/helpers/qunit-helpers";
 
 import { test } from "qunit";
+import { cloneJSON } from "discourse-common/lib/object";
 import DiscoveryFixtures from "discourse/tests/fixtures/discovery-fixtures";
 
 acceptance(
@@ -28,7 +29,7 @@ acceptance(
       );
 
       server.get("/tag/support/l/latest.json", () => {
-        const latest = DiscoveryFixtures["/latest.json"];
+        const latest = cloneJSON(DiscoveryFixtures["/latest.json"]);
         latest.topic_list.can_create_topic = true;
         return helper.response(latest);
       });
@@ -63,9 +64,9 @@ acceptance(
 
       await click("#reply-control button.create");
 
-      assert.ok(
-        query(".dialog-body").innerText.trim() ===
-          "An application must be selected to create a topic.",
+      assert.strictEqual(
+        query(".dialog-body").innerText.trim(),
+        "An application must be selected to create a topic.",
         "dialog is shown with message"
       );
 
