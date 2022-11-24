@@ -12,7 +12,10 @@ import DiscoveryFixtures from "discourse/tests/fixtures/discovery-fixtures";
 acceptance(
   "Discourse Global Filter - Require Tag on Topic Creation",
   function (needs) {
-    needs.user({ custom_fields: { global_filter_preference: "support" } });
+    needs.user({
+      admin: true,
+      custom_fields: { global_filter_preference: "support" },
+    });
     needs.site({ filter_tags_total_topic_count: 0, can_tag_topics: true });
     needs.settings({
       discourse_global_filter_enabled: true,
@@ -99,6 +102,19 @@ acceptance(
       assert.ok(
         !visible("#reply-control .d-editor-input"),
         "reply is submitted"
+      );
+    });
+
+    test("editing work", async function (assert) {
+      await visit("/t/internationalization-localization/280");
+      await click(".btn-flat.show-more-actions");
+      await click(".btn-flat.edit");
+      await fillIn(".d-editor-input", "this post has now been edited");
+      await click("#reply-control button.create");
+
+      assert.ok(
+        !visible("#reply-control .d-editor-input"),
+        "edit has been submitted"
       );
     });
   }
