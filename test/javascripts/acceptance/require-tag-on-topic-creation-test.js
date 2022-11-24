@@ -4,7 +4,7 @@ import {
   query,
   visible,
 } from "discourse/tests/helpers/qunit-helpers";
-import selectKit from "discourse/tests/helpers/select-kit-helper";
+
 import { test } from "qunit";
 import DiscoveryFixtures from "discourse/tests/fixtures/discovery-fixtures";
 
@@ -17,6 +17,7 @@ acceptance(
       discourse_global_filter_enabled: true,
       global_filters: "support|feature",
       tagging_enabled: true,
+      default_composer_category: 1,
     });
 
     needs.pretender((server, helper) => {
@@ -52,10 +53,6 @@ acceptance(
       await click("#create-topic");
       await fillIn("#reply-title", "this is my new topic title");
       await fillIn(".d-editor-input", "this is the *content* of a post");
-
-      const categoryChooser = selectKit(".category-chooser");
-      await categoryChooser.expand();
-      await categoryChooser.selectRowByValue(2);
 
       assert.ok(
         query(".global-filter-composer-tag-support input:checked"),
