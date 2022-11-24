@@ -13,9 +13,11 @@ export default {
             "controller:composer"
           ).model;
 
+          // only require tags when creating a regular topic
+          // i.e. skip validation for PMs, replies, edits, etc.
           if (
-            composerModel.action === "reply" ||
-            composerModel.archetypeId === "private_message"
+            composerModel.action !== "createTopic" ||
+            composerModel.archetypeId !== "regular"
           ) {
             return resolve();
           }
