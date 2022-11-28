@@ -3,16 +3,17 @@ import PreloadStore from "discourse/lib/preload-store";
 import { ajax } from "discourse/lib/ajax";
 
 export default {
-  name: "filter-category-list-for-anon",
+  name: "filter-category-list-by-global-filter",
 
   initialize(container) {
     const siteSettings = container.lookup("service:site-settings");
+    const site = container.lookup("service:site");
     if (siteSettings.discourse_global_filter_enabled) {
       CategoryList.reopenClass({
         list(store) {
-          const tagParam = new URLSearchParams(window.location.search).get(
-            "tag"
-          );
+          const tagParam =
+            new URLSearchParams(window.location.search).get("tag") ||
+            site.globalFilter;
           // Since core makes an additional ajax call to /categories
           // we need to override the list function to pass a tag parameter
           // so that we serve filtered (by GFT) categories
