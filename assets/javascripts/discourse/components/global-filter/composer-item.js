@@ -30,11 +30,27 @@ export default class GlobalFilterComposerItem extends Component {
       ajax(`/global_filter/filter_tags/categories_for_filter_tags.json`, {
         data: { tags: this.args.composer.tags },
       }).then((model) => {
-        api.modifySelectKit("category-chooser").replaceContent((component) => {
-          if (!component.selectKit.filter) {
-            return model.categories;
-          }
-        });
+        api
+          .modifySelectKit("category-chooser")
+          .replaceContent((categoryDrop) => {
+            if (!categoryDrop.selectKit.filter) {
+              const categoriesAndSubcategories = model.categories.concat(
+                model.subcategories
+              );
+              const filteredSubcategories = categoryDrop.content.filter((c) => {
+                const categoriesByName = categoriesAndSubcategories.map(
+                  (item) => item["name"]
+                );
+
+                return categoriesByName.includes(
+                  c.name ||
+                    categoryDrop.allCategoriesLabel ||
+                    categoryDrop.noCategoriesLabel
+                );
+              });
+              return filteredSubcategories;
+            }
+          });
       });
     });
   }
