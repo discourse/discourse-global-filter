@@ -9,9 +9,7 @@ export default class GlobalFilterComposerItem extends Component {
   get checked() {
     return this.args.composer.tags?.includes(
       this.args.filter || this.args.tagParam
-    )
-      ? true
-      : false;
+    );
   }
 
   set checked(value) {
