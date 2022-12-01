@@ -5,16 +5,15 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default class GlobalFilterComposerItem extends Component {
   spacedTag = this.args.filter.replace(/-|_/g, " ");
-  checked;
 
-  constructor() {
-    super(...arguments);
-
-    this.checked = this.args.composer.tags?.includes(
+  get checked() {
+    return this.args.composer.tags?.includes(
       this.args.filter || this.args.tagParam
-    )
-      ? true
-      : false;
+    );
+  }
+
+  set checked(value) {
+    return value;
   }
 
   @action

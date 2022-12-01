@@ -12,14 +12,6 @@ export default class GlobalFilterComposerContainer extends Component {
     this.args.composer.creatingTopic === true &&
     !this.args.composer.creatingPrivateMessage;
 
-  get globalFilters() {
-    const filters = this.siteSettings.global_filters;
-    if (!filters) {
-      return false;
-    }
-    return filters.split("|");
-  }
-
   constructor() {
     super(...arguments);
 
@@ -50,5 +42,14 @@ export default class GlobalFilterComposerContainer extends Component {
           });
       });
     });
+  }
+
+  get globalFilters() {
+    const filters = this.siteSettings.global_filters;
+    if (!filters) {
+      return false;
+    }
+
+    return filters.split("|");
   }
 }
