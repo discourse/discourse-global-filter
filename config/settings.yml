@@ -6,7 +6,7 @@ plugins:
     type: tag_list
     client: true
     default: ""
-  skip_composer_spaced_tags:
+  camelized_composer_tags:
     type: tag_list
     client: true
     default: ""

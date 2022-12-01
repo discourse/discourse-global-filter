@@ -11,11 +11,13 @@ export default class GlobalFilterComposerItem extends Component {
     super(...arguments);
 
     if (
-      this.siteSettings.skip_composer_spaced_tags
+      this.siteSettings.camelized_composer_tags
         .split("|")
         .includes(this.args.filter)
     ) {
-      this.spacedTag = this.args.filter;
+      this.spacedTag = this.args.filter.replace(/-([a-z])/g, (g) => {
+        return g[1].toUpperCase();
+      });
     } else {
       this.spacedTag = this.args.filter.replace(/-|_/g, " ");
     }
