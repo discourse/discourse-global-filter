@@ -2,9 +2,24 @@ import Component from "@glimmer/component";
 import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import { inject as service } from "@ember/service";
 
 export default class GlobalFilterComposerItem extends Component {
-  spacedTag = this.args.filter.replace(/-|_/g, " ");
+  @service siteSettings;
+
+  constructor() {
+    super(...arguments);
+
+    if (
+      this.siteSettings.skip_composer_spaced_tags
+        .split("|")
+        .includes(this.args.filter)
+    ) {
+      this.spacedTag = this.args.filter;
+    } else {
+      this.spacedTag = this.args.filter.replace(/-|_/g, " ");
+    }
+  }
 
   get checked() {
     return this.args.composer.tags?.includes(
