@@ -14,6 +14,10 @@ export default class GlobalFilterComposerItem extends Component {
       : false;
   }
 
+  set checked(value) {
+    return value;
+  }
+
   @action
   toggleTag() {
     if (this.args.composer.tags.includes(this.args.filter)) {
