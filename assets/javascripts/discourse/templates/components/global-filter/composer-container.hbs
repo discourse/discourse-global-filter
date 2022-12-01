@@ -3,7 +3,7 @@
     {{#each this.globalFilters as |filter|}}
       <GlobalFilter::ComposerItem
         @filter={{filter}}
-        @composer={{@composer}}
+        @selectedTags={{@composer.tags}}
         @checked={{this.checked}}
         @tagParam={{this.tagParam}}
       />
