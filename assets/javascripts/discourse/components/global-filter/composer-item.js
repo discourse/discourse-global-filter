@@ -24,7 +24,7 @@ export default class GlobalFilterComposerItem extends Component {
   }
 
   get checked() {
-    return this.args.composer.tags?.includes(
+    return this.args.selectedTags?.includes(
       this.args.filter || this.args.tagParam
     );
   }
@@ -35,16 +35,16 @@ export default class GlobalFilterComposerItem extends Component {
 
   @action
   toggleTag() {
-    if (this.args.composer.tags.includes(this.args.filter)) {
-      const filterIndex = this.args.composer.tags.indexOf(this.args.filter);
-      this.args.composer.tags.splice(filterIndex, 1);
+    if (this.args.selectedTags.includes(this.args.filter)) {
+      const filterIndex = this.args.selectedTags.indexOf(this.args.filter);
+      this.args.selectedTags.splice(filterIndex, 1);
     } else {
-      this.args.composer.tags.push(this.args.filter);
+      this.args.selectedTags.push(this.args.filter);
     }
 
     withPluginApi("1.3.0", (api) => {
       ajax(`/global_filter/filter_tags/categories_for_filter_tags.json`, {
-        data: { tags: this.args.composer.tags },
+        data: { tags: this.args.selectedTags },
       }).then((model) => {
         api
           .modifySelectKit("category-chooser")
