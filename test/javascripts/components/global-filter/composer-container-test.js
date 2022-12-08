@@ -53,4 +53,36 @@ acceptance("Discourse Global Filter - Composer Container", function (needs) {
       "composer container is present"
     );
   });
+
+  test("is present when editing the first post of a topic", async function (assert) {
+    await visit("/t/internationalization-localization/280");
+    await click(".btn-flat.show-more-actions");
+    await click(".btn-flat.edit");
+
+    assert.ok(
+      exists(".global-filter-composer-container"),
+      "composer container is present"
+    );
+  });
+
+  test("is not present when creating a PM", async function (assert) {
+    await visit("/u/charlie");
+    await click(".compose-pm");
+
+    assert.notOk(
+      exists(".global-filter-composer-container"),
+      "composer container is not present"
+    );
+  });
+
+  test("is not present when editing a PM", async function (assert) {
+    await visit("/t/test-pm/34");
+    await click(".btn-flat.show-more-actions");
+    await click(".btn-flat.edit");
+
+    assert.notOk(
+      exists(".global-filter-composer-container"),
+      "composer container is not present"
+    );
+  });
 });

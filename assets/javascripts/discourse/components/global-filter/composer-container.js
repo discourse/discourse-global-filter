@@ -9,8 +9,10 @@ export default class GlobalFilterComposerContainer extends Component {
 
   tagParam = this.router.currentRoute?.queryParams?.tag;
   canDisplay =
-    this.args.composer.creatingTopic === true &&
-    !this.args.composer.creatingPrivateMessage;
+    (this.args.composer.creatingTopic === true &&
+      !this.args.composer.creatingPrivateMessage) ||
+    (this.args.composer.editingFirstPost === true &&
+      !this.args.composer.privateMessage);
 
   constructor() {
     super(...arguments);
