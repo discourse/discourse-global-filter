@@ -25,6 +25,10 @@ module GlobalFilter::CategoryDetailedSerializerExtension
     total_count_for_category_per('topics_year')
   end
 
+  def posts_week
+    total_count_for_category_per('posts_week')
+  end
+
   def total_count_for_category_per(time)
     object.global_filter_tags_category_stats[filter_tag]&.fetch(time, 0) || 0
   end
