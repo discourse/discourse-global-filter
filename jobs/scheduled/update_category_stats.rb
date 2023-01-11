@@ -26,8 +26,15 @@ module Jobs
             .where(tags: tag_id)
             .visible
 
+          posts = Post.joins(:topic)
+            .where(topics: category_and_subcategory_topics)
+            .where("topics.visible = true")
+            .where("posts.deleted_at IS NULL")
+            .where("posts.user_deleted = false")
+
           posts_count = category_and_subcategory_topics.pluck(:posts_count).sum
-          counts = { topic_count: category_and_subcategory_topics.count, posts_count: posts_count }
+          posts_week = posts.created_since(1.week.ago).count
+          counts = { topic_count: category_and_subcategory_topics.count, posts_count: posts_count, posts_week: posts_week }
           category_stats_for_filter = category_stats_for_filter.deep_merge(counts)
 
           category_topic_totals = {
