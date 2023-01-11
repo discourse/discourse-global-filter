@@ -35,7 +35,11 @@ export default {
         return;
       }
 
-      if (currentUser && transition.to?.queryParams?.tag) {
+      if (
+        currentUser &&
+        transition.to?.queryParams?.tag &&
+        globalFilters.includes(transition.to.queryParams.tag)
+      ) {
         this._setClientAndServerFilterPref(
           transition.to.queryParams.tag,
           currentUser
@@ -66,10 +70,13 @@ export default {
             );
           } else {
             filterPref = currentUser.custom_fields.global_filter_preference;
+            filterPref = globalFilters.includes(filterPref)
+              ? filterPref
+              : globalFilters[0];
             this._redirectToFilterPref(
               transition,
               router,
-              filterPref || globalFilters[0],
+              filterPref,
               false,
               tagCombination || additionalTags || tag || false
             );
