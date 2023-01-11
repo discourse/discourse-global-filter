@@ -3,11 +3,14 @@
 class GlobalFilter::FilterTagsController < ::ApplicationController
 
   def assign
-    params.require([:user_id, :tag])
-    user = User.find(params[:user_id])
+    params.require(:tag)
 
-    custom_field = UserCustomField.find_or_create_by(user_id: params[:user_id], name: "global_filter_preference")
-    custom_field.update!(value: params[:tag])
+    raise Discourse::InvalidParameters unless SiteSetting.global_filters.split('|').include?(params[:tag])
+    UserCustomField.upsert({
+        user_id: current_user.id,
+        name: "global_filter_preference",
+        value: params[:tag]
+      }, unique_by: :idx_user_custom_fields_global_filter_preference)
   end
 
   def categories_for_current_filter

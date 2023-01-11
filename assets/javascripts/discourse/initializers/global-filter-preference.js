@@ -143,7 +143,6 @@ export default {
   _setClientAndServerFilterPref(tag, user) {
     return ajax(`/global_filter/filter_tags/${tag}/assign.json`, {
       type: "PUT",
-      data: { user_id: user.id },
     })
       .then(() => this._setClientFilterPref(tag, user))
       .catch(popupAjaxError);
