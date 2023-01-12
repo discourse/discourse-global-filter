@@ -2,20 +2,19 @@ import Component from "@glimmer/component";
 import { inject as service } from "@ember/service";
 import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import { tracked } from "@glimmer/tracking";
+import EmberObject from "@ember/object";
 
 export default class GlobalFilterComposerContainer extends Component {
   @service siteSettings;
   @service router;
 
+  @tracked globalFilters;
   tagParam = this.router.currentRoute?.queryParams?.tag;
-  canDisplay =
-    (this.args.composer.creatingTopic === true &&
-      !this.args.composer.creatingPrivateMessage) ||
-    (this.args.composer.editingFirstPost === true &&
-      !this.args.composer.privateMessage);
 
   constructor() {
     super(...arguments);
+    this.loadGlobalFilters();
 
     withPluginApi("1.3.0", (api) => {
       ajax(
@@ -46,12 +45,27 @@ export default class GlobalFilterComposerContainer extends Component {
     });
   }
 
-  get globalFilters() {
-    const filters = this.siteSettings.global_filters;
-    if (!filters) {
+  get canDisplay() {
+    return (
+      (this.args.composer.creatingTopic === true &&
+        !this.args.composer.creatingPrivateMessage) ||
+      (this.args.composer.editingFirstPost === true &&
+        !this.args.composer.privateMessage)
+    );
+  }
+
+  async loadGlobalFilters() {
+    if (!this.siteSettings.global_filters) {
       return false;
     }
 
-    return filters.split("|");
+    this.globalFilters = await ajax("/global_filter/filter_tags.json").then(
+      (model) => {
+        model = model.filter_tags.map((filter_tag) =>
+          EmberObject.create(filter_tag)
+        );
+        return model;
+      }
+    );
   }
 }

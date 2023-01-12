@@ -45,6 +45,17 @@ acceptance("Discourse Global Filter - Composer Container", function (needs) {
     server.put("/global_filter/filter_tags/support/assign.json", () => {
       return helper.response({ success: true });
     });
+
+    server.get("/global_filter/filter_tags.json", () => {
+      return helper.response({
+        filter_tags: [
+          {
+            id: 1,
+            name: "support",
+          },
+        ],
+      });
+    });
   });
 
   test("is present when a tag is included in global_filters", async function (assert) {

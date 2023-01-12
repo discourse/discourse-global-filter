@@ -1,14 +1,14 @@
 <label
   class={{concat
     "global-filter-composer-item global-filter-composer-tag-"
-    @filter
+    @filter.name
   }}
 >
   <Input
     @type="checkbox"
     @checked={{this.checked}}
-    {{on "click" (action "toggleTag")}}
+    {{on "change" this.toggleTag}}
   />
   <span class="pre-label"></span>
-  <span class="tag-label">{{this.spacedTag}}</span>
+  <span class="tag-label">{{this.tagName}}</span>
 </label>

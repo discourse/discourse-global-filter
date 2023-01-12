@@ -30,7 +30,7 @@ after_initialize do
     '../app/controllers/admin/filter_tags_controller.rb',
     '../app/models/filter_tag.rb',
     '../app/serializers/filter_tag_serializer.rb',
-    '../app/serializers/admin_filter_tag_index_serializer.rb',
+    '../app/serializers/filter_tag_index_serializer.rb',
     '../jobs/scheduled/update_category_stats.rb',
     '../lib/category_list_serializer_extension.rb',
     '../lib/category_detailed_serializer_extension.rb',
@@ -39,17 +39,21 @@ after_initialize do
 
   GlobalFilter::Engine.routes.draw do
     put '/filter_tags/:tag/assign' => 'filter_tags#assign'
+    get '/filter_tags' => 'filter_tags#index'
     get '/filter_tags/categories_for_current_filter' => 'filter_tags#categories_for_current_filter'
     get '/filter_tags/categories_for_filter_tags' => 'filter_tags#categories_for_filter_tags'
   end
 
   Discourse::Application.routes.prepend do
     mount ::GlobalFilter::Engine, at: '/global_filter'
-    get "/admin/plugins/filter_tag" =>
-          "global_filter/admin_filter_tags#index",
-        :constraints => StaffConstraint.new
     post '/admin/plugins/filter_tags/:tag/set_category_ids_for_tag' =>
            'global_filter/admin_filter_tags#set_category_ids_for_tag',
+         :constraints => StaffConstraint.new
+    post '/admin/plugins/filter_tags/:tag/set_alternate_name_for_tag' =>
+           'global_filter/admin_filter_tags#set_alternate_name_for_tag',
+         :constraints => StaffConstraint.new
+    post '/admin/plugins/filter_tags/:tag/set_alternate_composer_only_for_tag' =>
+           'global_filter/admin_filter_tags#set_alternate_composer_only_for_tag',
          :constraints => StaffConstraint.new
   end
 

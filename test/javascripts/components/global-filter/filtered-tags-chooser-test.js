@@ -34,6 +34,21 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
       "/global_filter/filter_tags/categories_for_current_filter.json",
       () => helper.response({ categories: [], subcategories: [] })
     );
+
+    server.get("/global_filter/filter_tags.json", () => {
+      return helper.response({
+        filter_tags: [
+          {
+            id: 1,
+            name: "support",
+          },
+          {
+            id: 1,
+            name: "feature",
+          },
+        ],
+      });
+    });
   });
 
   test("hides the selected global filter tag from the tag-drop chooser", async function (assert) {

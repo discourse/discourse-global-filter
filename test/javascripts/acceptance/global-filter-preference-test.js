@@ -96,6 +96,21 @@ acceptance(
           return helper.response({ success: true });
         }
       );
+
+      server.get("/global_filter/filter_tags.json", () => {
+        return helper.response({
+          filter_tags: [
+            {
+              id: 1,
+              name: "support",
+            },
+            {
+              id: 2,
+              name: "feature",
+            },
+          ],
+        });
+      });
     });
 
     test("redirects to default homepage when selected", async function (assert) {

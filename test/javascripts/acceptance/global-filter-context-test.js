@@ -41,6 +41,21 @@ acceptance("Discourse Global Filter - Context", function (needs) {
         return helper.response({ success: true });
       }
     );
+
+    server.get("/global_filter/filter_tags.json", () => {
+      return helper.response({
+        filter_tags: [
+          {
+            id: 1,
+            name: "support",
+          },
+          {
+            id: 1,
+            name: "feature",
+          },
+        ],
+      });
+    });
   });
 
   test("sets global filter from a 'tags' query param", async function (assert) {

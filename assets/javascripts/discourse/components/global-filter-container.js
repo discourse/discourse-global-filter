@@ -1,16 +1,35 @@
-import Component from "@ember/component";
-import discourseComputed from "discourse-common/utils/decorators";
+import Component from "@glimmer/component";
 import { inject as service } from "@ember/service";
+import { ajax } from "discourse/lib/ajax";
+import EmberObject from "@ember/object";
+import { tracked } from "@glimmer/tracking";
 
-export default Component.extend({
-  tagName: "",
-  router: service(),
+export default class GlobalFilterContainer extends Component {
+  @service router;
+  @service siteSettings;
 
-  @discourseComputed("siteSettings.global_filters", "router.currentRouteName")
-  globalFilters(filters, routeName) {
-    if (!filters || routeName.startsWith("admin")) {
+  @tracked globalFilters;
+
+  constructor() {
+    super(...arguments);
+    this.loadGlobalFilters();
+  }
+
+  async loadGlobalFilters() {
+    if (
+      !this.siteSettings.global_filters ||
+      this.router.currentRouteName.startsWith("admin")
+    ) {
       return false;
     }
-    return filters.split("|");
-  },
-});
+
+    this.globalFilters = await ajax("/global_filter/filter_tags.json").then(
+      (model) => {
+        model = model.filter_tags.map((filter_tag) =>
+          EmberObject.create(filter_tag)
+        );
+        return model;
+      }
+    );
+  }
+}

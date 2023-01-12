@@ -59,6 +59,21 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
         return helper.response({ categories: [] });
       }
     );
+
+    server.get("/global_filter/filter_tags.json", () => {
+      return helper.response({
+        filter_tags: [
+          {
+            id: 1,
+            name: "support",
+          },
+          {
+            id: 1,
+            name: "feature",
+          },
+        ],
+      });
+    });
   });
 
   test("is present when included in global_filters", async function (assert) {
