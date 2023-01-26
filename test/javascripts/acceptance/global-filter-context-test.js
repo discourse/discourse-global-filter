@@ -6,6 +6,10 @@ acceptance("Discourse Global Filter - Context", function (needs) {
   needs.user({ custom_fields: { global_filter_preference: "support" } });
   needs.site({
     filter_tags_total_topic_count: { support: 1, feature: 1 },
+    global_filters: [
+      { id: 1, name: "support" },
+      { id: 2, name: "feature" },
+    ],
   });
   needs.settings({
     discourse_global_filter_enabled: true,
@@ -41,21 +45,6 @@ acceptance("Discourse Global Filter - Context", function (needs) {
         return helper.response({ success: true });
       }
     );
-
-    server.get("/global_filter/filter_tags.json", () => {
-      return helper.response({
-        filter_tags: [
-          {
-            id: 1,
-            name: "support",
-          },
-          {
-            id: 1,
-            name: "feature",
-          },
-        ],
-      });
-    });
   });
 
   test("sets global filter from a 'tags' query param", async function (assert) {

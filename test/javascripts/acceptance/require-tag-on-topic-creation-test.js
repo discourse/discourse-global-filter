@@ -19,7 +19,12 @@ acceptance(
     needs.site({
       filter_tags_total_topic_count: { support: 1, feature: 1 },
       can_tag_topics: true,
+      global_filters: [
+        { id: 1, name: "support" },
+        { id: 2, name: "feature" },
+      ],
     });
+
     needs.settings({
       discourse_global_filter_enabled: true,
       global_filters: "support|feature",
@@ -53,21 +58,6 @@ acceptance(
           return helper.response({ success: true });
         }
       );
-
-      server.get("/global_filter/filter_tags.json", () => {
-        return helper.response({
-          filter_tags: [
-            {
-              id: 1,
-              name: "support",
-            },
-            {
-              id: 2,
-              name: "feature",
-            },
-          ],
-        });
-      });
     });
 
     test("new topics require a global filter", async function (assert) {

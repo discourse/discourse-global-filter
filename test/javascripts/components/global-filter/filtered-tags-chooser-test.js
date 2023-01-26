@@ -11,6 +11,10 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
   });
   needs.site({
     filter_tags_total_topic_count: { support: 1, feature: 1 },
+    global_filters: [
+      { id: 1, name: "support" },
+      { id: 2, name: "feature" },
+    ],
   });
 
   needs.pretender((server, helper) => {
@@ -34,21 +38,6 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
       "/global_filter/filter_tags/categories_for_current_filter.json",
       () => helper.response({ categories: [], subcategories: [] })
     );
-
-    server.get("/global_filter/filter_tags.json", () => {
-      return helper.response({
-        filter_tags: [
-          {
-            id: 1,
-            name: "support",
-          },
-          {
-            id: 1,
-            name: "feature",
-          },
-        ],
-      });
-    });
   });
 
   test("hides the selected global filter tag from the tag-drop chooser", async function (assert) {

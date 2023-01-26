@@ -1,4 +1,4 @@
-import { click, visit } from "@ember/test-helpers";
+import { click, settled, visit } from "@ember/test-helpers";
 import { acceptance, exists } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
 
@@ -10,6 +10,7 @@ acceptance("Discourse Global Filter - Composer Container", function (needs) {
   needs.user({ custom_fields: { global_filter_preference: "support" } });
   needs.site({
     filter_tags_total_topic_count: { support: 1 },
+    global_filters: [{ id: 1, name: "support" }],
   });
 
   needs.pretender((server, helper) => {
@@ -44,17 +45,6 @@ acceptance("Discourse Global Filter - Composer Container", function (needs) {
 
     server.put("/global_filter/filter_tags/support/assign.json", () => {
       return helper.response({ success: true });
-    });
-
-    server.get("/global_filter/filter_tags.json", () => {
-      return helper.response({
-        filter_tags: [
-          {
-            id: 1,
-            name: "support",
-          },
-        ],
-      });
     });
   });
 

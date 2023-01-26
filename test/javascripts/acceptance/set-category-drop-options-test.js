@@ -21,6 +21,10 @@ acceptance(
 
     needs.site({
       filter_tags_total_topic_count: { support: 1, feature: 1 },
+      global_filters: [
+        { id: 1, name: "support" },
+        { id: 2, name: "feature" },
+      ],
       categories: [
         mazeCategory,
         {
@@ -77,21 +81,6 @@ acceptance(
             subcategories: [{ id: 102, name: "happyCat" }],
           })
       );
-
-      server.get("/global_filter/filter_tags.json", () => {
-        return helper.response({
-          filter_tags: [
-            {
-              id: 1,
-              name: "support",
-            },
-            {
-              id: 2,
-              name: "feature",
-            },
-          ],
-        });
-      });
     });
 
     test("only displays categories returned from `/categories_for_current_filter`", async function (assert) {

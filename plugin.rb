@@ -67,6 +67,10 @@ after_initialize do
     CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
   end
 
+  add_to_serializer(:site, :global_filters) do
+    GlobalFilter::FilterTag.all
+  end
+
   add_to_serializer(:site, :filter_tags_total_topic_count) do
     counts = {}
     GlobalFilter::FilterTag.find_each do |gft|

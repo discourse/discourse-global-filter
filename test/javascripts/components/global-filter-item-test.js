@@ -8,7 +8,13 @@ import { test } from "qunit";
 
 acceptance("Discourse Global Filter - Filter Item", function (needs) {
   needs.user();
-  needs.site({ filter_tags_total_topic_count: { support: 1, feature: 1 } });
+  needs.site({
+    filter_tags_total_topic_count: { support: 1, feature: 1 },
+    global_filters: [
+      { id: 1, name: "support" },
+      { id: 2, name: "feature" },
+    ],
+  });
   needs.settings({
     discourse_global_filter_enabled: true,
     global_filters: "support|feature",
@@ -195,21 +201,6 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
         bookmarks: [],
         suggested_topics: [],
         tags: ["support", "feature"],
-      });
-    });
-
-    server.get("/global_filter/filter_tags.json", () => {
-      return helper.response({
-        filter_tags: [
-          {
-            id: 1,
-            name: "support",
-          },
-          {
-            id: 1,
-            name: "feature",
-          },
-        ],
       });
     });
   });
