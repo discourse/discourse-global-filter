@@ -4,7 +4,9 @@ import { test } from "qunit";
 
 acceptance("Discourse Global Filter - Context", function (needs) {
   needs.user({ custom_fields: { global_filter_preference: "support" } });
-  needs.site({ filter_tags_total_topic_count: 0 });
+  needs.site({
+    filter_tags_total_topic_count: { support: 1, feature: 1 },
+  });
   needs.settings({
     discourse_global_filter_enabled: true,
     global_filters: "support|feature",

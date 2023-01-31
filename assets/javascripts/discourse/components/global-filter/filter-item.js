@@ -12,7 +12,7 @@ export default class GlobalFilterFilterItem extends Component {
   get totalFilterTagCount() {
     const count = this.site.filter_tags_total_topic_count[this.args.filter];
     const defaultLocale =
-      this.siteSettings.default_locale.replace(/_/g, "-") || "en-US";
+      this.siteSettings.default_locale?.replace(/_/g, "-") || "en-US";
 
     return count.toLocaleString(defaultLocale);
   }

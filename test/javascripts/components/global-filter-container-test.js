@@ -7,7 +7,9 @@ acceptance("Discourse Global Filter - Filter Container", function (needs) {
     discourse_global_filter_enabled: true,
     global_filters: "support",
   });
-  needs.site({ filter_tags_total_topic_count: 0 });
+  needs.site({
+    filter_tags_total_topic_count: { support: 1 },
+  });
   needs.user({ custom_fields: { global_filter_preference: "support" } });
 
   needs.pretender((server, helper) => {

@@ -16,7 +16,10 @@ acceptance(
       admin: true,
       custom_fields: { global_filter_preference: "support" },
     });
-    needs.site({ filter_tags_total_topic_count: 0, can_tag_topics: true });
+    needs.site({
+      filter_tags_total_topic_count: { support: 1, feature: 1 },
+      can_tag_topics: true,
+    });
     needs.settings({
       discourse_global_filter_enabled: true,
       global_filters: "support|feature",
