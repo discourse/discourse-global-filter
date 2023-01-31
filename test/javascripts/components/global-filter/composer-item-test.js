@@ -12,7 +12,10 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
     discourse_global_filter_enabled: true,
     global_filters: "support|feature",
   });
-  needs.site({ can_tag_topics: true, filter_tags_total_topic_count: 0 });
+  needs.site({
+    can_tag_topics: true,
+    filter_tags_total_topic_count: { support: 1, feature: 1 },
+  });
 
   needs.pretender((server, helper) => {
     ["support", "feature"].forEach((tag) => {

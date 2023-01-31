@@ -8,7 +8,7 @@ import { test } from "qunit";
 
 acceptance("Discourse Global Filter - Filter Item", function (needs) {
   needs.user();
-  needs.site({ filter_tags_total_topic_count: 0 });
+  needs.site({ filter_tags_total_topic_count: { support: 1, feature: 1 } });
   needs.settings({
     discourse_global_filter_enabled: true,
     global_filters: "support|feature",
@@ -202,10 +202,11 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
   test("is present when included in global_filters", async function (assert) {
     await visit("/");
     let tags = [];
-    queryAll(".global-filter-container .global-filter-item").each((_, el) =>
-      tags.push(el.innerText.trim())
-    );
-    assert.deepEqual(tags, this.siteSettings.global_filters.split("|"));
+    queryAll(".global-filter-container .global-filter-item").each((_, el) => {
+      // strip new lines to test values
+      tags.push(el.innerText.replace(/\n/g, " "));
+    });
+    assert.deepEqual(tags, ["support 1", "feature 1"]);
   });
 
   test("adds active class to filter", async function (assert) {

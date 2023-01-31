@@ -18,8 +18,9 @@ acceptance(
       slug: "amazeCat",
       permission: 1,
     };
+
     needs.site({
-      filter_tags_total_topic_count: 0,
+      filter_tags_total_topic_count: { support: 1, feature: 1 },
       categories: [
         mazeCategory,
         {
