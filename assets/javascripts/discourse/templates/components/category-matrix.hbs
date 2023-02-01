@@ -18,7 +18,11 @@
 
         {{#each this.filterTags as |filterTag|}}
           <td>
-            <CategoryMatrixCheckbox @filterTag={{filterTag}} @category={{category}} @setCategoryIdsForTag={{@setCategoryIdsForTag}} />
+            <CategoryMatrixCheckbox
+              @filterTag={{filterTag}}
+              @category={{category}}
+              @setCategoryIdsForTag={{@setCategoryIdsForTag}}
+            />
           </td>
         {{/each}}
       </tr>

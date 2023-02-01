@@ -2,14 +2,6 @@
 
 class GlobalFilter::FilterTagsController < ::ApplicationController
 
-  def index
-    render_serialized(
-    { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
-      GlobalFilter::FilterTagIndexSerializer,
-      root: false
-    )
-  end
-
   def assign
     params.require(:tag)
 

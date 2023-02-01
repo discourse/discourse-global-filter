@@ -23,7 +23,7 @@ after_initialize do
     end
   end
 
-  add_admin_route "global_filter.admin.title", "filter_tag"
+  add_admin_route "global_filter.admin.title", "filter_tags"
 
   [
     '../app/controllers/filter_tags_controller.rb',
@@ -39,13 +39,15 @@ after_initialize do
 
   GlobalFilter::Engine.routes.draw do
     put '/filter_tags/:tag/assign' => 'filter_tags#assign'
-    get '/filter_tags' => 'filter_tags#index'
     get '/filter_tags/categories_for_current_filter' => 'filter_tags#categories_for_current_filter'
     get '/filter_tags/categories_for_filter_tags' => 'filter_tags#categories_for_filter_tags'
   end
 
   Discourse::Application.routes.prepend do
     mount ::GlobalFilter::Engine, at: '/global_filter'
+    get "/admin/plugins/filter_tags" =>
+          "global_filter/admin_filter_tags#index",
+        :constraints => StaffConstraint.new
     post '/admin/plugins/filter_tags/:tag/set_category_ids_for_tag' =>
            'global_filter/admin_filter_tags#set_category_ids_for_tag',
          :constraints => StaffConstraint.new
@@ -68,7 +70,7 @@ after_initialize do
   end
 
   add_to_serializer(:site, :global_filters) do
-    GlobalFilter::FilterTag.all
+    GlobalFilter::FilterTag.all.order(:name)
   end
 
   add_to_serializer(:site, :filter_tags_total_topic_count) do

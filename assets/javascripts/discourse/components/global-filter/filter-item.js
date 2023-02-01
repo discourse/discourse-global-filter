@@ -6,10 +6,9 @@ export default class GlobalFilterFilterItem extends Component {
   @service site;
   @service siteSettings;
 
-  @tracked spacedTag = this.args.filter.replace(/-|_/g, " ");
-
   get totalFilterTagCount() {
-    const count = this.site.filter_tags_total_topic_count[this.args.filter.name];
+    const count =
+      this.site.filter_tags_total_topic_count[this.args.filter.name];
     const defaultLocale =
       this.siteSettings.default_locale?.replace(/_/g, "-") || "en-US";
 
