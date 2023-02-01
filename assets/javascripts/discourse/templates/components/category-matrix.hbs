@@ -1,5 +1,3 @@
-<h3>{{i18n "global_filter.admin.title"}}</h3>
-
 <table class="sticky-header">
   <thead>
     <tr>
@@ -20,7 +18,11 @@
 
         {{#each this.filterTags as |filterTag|}}
           <td>
-            <CategoryMatrixCheckbox @filterTag={{filterTag}} @category={{category}} @setCategoryIdsForTag={{@setCategoryIdsForTag}} />
+            <CategoryMatrixCheckbox
+              @filterTag={{filterTag}}
+              @category={{category}}
+              @setCategoryIdsForTag={{@setCategoryIdsForTag}}
+            />
           </td>
         {{/each}}
       </tr>
