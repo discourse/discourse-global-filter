@@ -23,14 +23,14 @@ after_initialize do
     end
   end
 
-  add_admin_route "global_filter.admin.title", "filter_tags"
+  add_admin_route "global_filter.admin.title", "filter_tag"
 
   [
     '../app/controllers/filter_tags_controller.rb',
     '../app/controllers/admin/filter_tags_controller.rb',
     '../app/models/filter_tag.rb',
     '../app/serializers/filter_tag_serializer.rb',
-    '../app/serializers/filter_tag_index_serializer.rb',
+    '../app/serializers/admin_filter_tag_index_serializer.rb',
     '../jobs/scheduled/update_category_stats.rb',
     '../lib/category_list_serializer_extension.rb',
     '../lib/category_detailed_serializer_extension.rb',
@@ -45,17 +45,11 @@ after_initialize do
 
   Discourse::Application.routes.prepend do
     mount ::GlobalFilter::Engine, at: '/global_filter'
-    get "/admin/plugins/filter_tags" =>
+    get "/admin/plugins/filter_tag" =>
           "global_filter/admin_filter_tags#index",
         :constraints => StaffConstraint.new
     post '/admin/plugins/filter_tags/:tag/set_category_ids_for_tag' =>
            'global_filter/admin_filter_tags#set_category_ids_for_tag',
-         :constraints => StaffConstraint.new
-    post '/admin/plugins/filter_tags/:tag/set_alternate_name_for_tag' =>
-           'global_filter/admin_filter_tags#set_alternate_name_for_tag',
-         :constraints => StaffConstraint.new
-    post '/admin/plugins/filter_tags/:tag/set_alternate_composer_only_for_tag' =>
-           'global_filter/admin_filter_tags#set_alternate_composer_only_for_tag',
          :constraints => StaffConstraint.new
   end
 
@@ -67,10 +61,6 @@ after_initialize do
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
     CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
     CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
-  end
-
-  add_to_serializer(:site, :global_filters) do
-    GlobalFilter::FilterTag.all.order(:name)
   end
 
   add_to_serializer(:site, :filter_tags_total_topic_count) do

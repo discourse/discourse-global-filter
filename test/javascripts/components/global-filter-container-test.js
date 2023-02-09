@@ -9,7 +9,6 @@ acceptance("Discourse Global Filter - Filter Container", function (needs) {
   });
   needs.site({
     filter_tags_total_topic_count: { support: 1 },
-    global_filters: [{ id: 1, name: "support" }],
   });
   needs.user({ custom_fields: { global_filter_preference: "support" } });
 
