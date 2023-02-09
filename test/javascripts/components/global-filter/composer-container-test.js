@@ -10,6 +10,7 @@ acceptance("Discourse Global Filter - Composer Container", function (needs) {
   needs.user({ custom_fields: { global_filter_preference: "support" } });
   needs.site({
     filter_tags_total_topic_count: { support: 1 },
+    global_filters: [{ id: 1, name: "support" }],
   });
 
   needs.pretender((server, helper) => {

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class GlobalFilter::AdminFilterTagIndexSerializer < ApplicationSerializer
+class GlobalFilter::FilterTagIndexSerializer < ApplicationSerializer
   has_many :filter_tags, serializer: ::FilterTagSerializer, embed: :objects
 
   def filter_tags

@@ -1,16 +1,10 @@
-import Component from "@ember/component";
-import discourseComputed from "discourse-common/utils/decorators";
+import Component from "@glimmer/component";
 import { inject as service } from "@ember/service";
 
-export default Component.extend({
-  tagName: "",
-  router: service(),
+export default class GlobalFilterContainer extends Component {
+  @service site;
 
-  @discourseComputed("siteSettings.global_filters", "router.currentRouteName")
-  globalFilters(filters, routeName) {
-    if (!filters || routeName.startsWith("admin")) {
-      return false;
-    }
-    return filters.split("|");
-  },
-});
+  get globalFilters() {
+    return this.site.global_filters;
+  }
+}

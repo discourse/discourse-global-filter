@@ -11,6 +11,10 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
   });
   needs.site({
     filter_tags_total_topic_count: { support: 1, feature: 1 },
+    global_filters: [
+      { id: 1, name: "support" },
+      { id: 2, name: "feature" },
+    ],
   });
 
   needs.pretender((server, helper) => {
