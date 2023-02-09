@@ -6,6 +6,10 @@ plugins:
     type: tag_list
     client: true
     default: ""
+  camelized_composer_tags:
+    type: tag_list
+    client: true
+    default: ""
   display_subcategories_for_tag_intersection:
     default: false
     client: true

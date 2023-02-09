@@ -3,9 +3,7 @@
 class FilterTagSerializer < ApplicationSerializer
   attributes :id,
              :name,
-             :category_ids,
-             :alternate_name,
-             :alternate_composer_only
+             :category_ids
 
   has_many :categories, serializer: BasicCategorySerializer, embed: :objects
 

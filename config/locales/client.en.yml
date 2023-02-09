@@ -6,10 +6,5 @@ en:
       admin:
         title: "Global Filters"
         empty_note: "Note: When no categories are selected for a tag, all categories are displayed."
-        category_matrix: "Global Filter Category Matrix"
-        alternate_name_picker_header: "Alternate Global Filter Name Picker"
-        alternate_name_picker_description: "Choose an alternate name for a Global Filter. Selecting 'composer' will apply the alternate name ONLY to the composer. Updating the Global Filter name and not selecting 'composer' will apply the alternate name to every place the Global Filter is used."
-        alternate_name_placeholder: "Using default tag name"
-        composer_only: "Composer Only"
       require_tag_on_topic_creation:
         error: "An application must be selected to create a topic."

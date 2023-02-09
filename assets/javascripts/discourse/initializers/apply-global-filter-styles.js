@@ -1,31 +1,28 @@
+import { next } from "@ember/runloop";
 import Site from "discourse/models/site";
-import { debounce } from "discourse-common/utils/decorators";
 
 export default {
   name: "apply-global-filter-styles",
 
   initialize(container) {
     const siteSettings = container.lookup("site-settings:main");
-    const router = container.lookup("router:main");
     if (
       !siteSettings.discourse_global_filter_enabled ||
-      !siteSettings.global_filters.length ||
-      router.currentRouteName?.startsWith("admin")
+      !siteSettings.global_filters.length
     ) {
       return;
     }
 
     const globalFilters = siteSettings.global_filters.split("|");
     const currentUser = container.lookup("current-user:main");
-    router.one("didTransition", () => {
-      this._applyFilterStyles(router, globalFilters, currentUser, container);
-    });
+    const router = container.lookup("router:main");
+    router.one("didTransition", () =>
+      next(() =>
+        this._applyFilterStyles(router, globalFilters, currentUser, container)
+      )
+    );
   },
 
-  // we need a slight delay to allow for IDs to be applied to each global filter item
-  // as we need to query against these ids and then apply styles. If we move too quickly
-  // the global-filter-item ID will not exist and the correct styles won't be applied.
-  @debounce(100)
   _applyFilterStyles(router, globalFilters, currentUser, container) {
     // if there is not a filter pref for the current user, tag_id or tag in the params
     // select the first tag from the parent that matches a global filter

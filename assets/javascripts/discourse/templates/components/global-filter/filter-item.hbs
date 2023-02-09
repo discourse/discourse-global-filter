@@ -1,4 +1,4 @@
-<div id={{(concat "global-filter-" @filter.name)}} class="global-filter-item">
+<div id={{(concat "global-filter-" @filter)}} class="global-filter-item">
   <a
     data-auto-route="true"
     href={{this.route}}
@@ -6,7 +6,7 @@
   >
     <span class="d-button-label">
       <span>
-        {{this.tagName}}
+        {{spacedTag}}
         <br>
         <span class="filter-item-total-topic-count">
           {{this.totalFilterTagCount}}
@@ -14,8 +14,5 @@
       </span>
     </span>
   </a>
-  {{plugin-outlet
-    name="below-global-filter-item"
-    args=(hash filter=@filter.name)
-  }}
+  {{plugin-outlet name="below-global-filter-item" args=(hash filter=@filter)}}
 </div>
