@@ -8,13 +8,7 @@ import { test } from "qunit";
 
 acceptance("Discourse Global Filter - Filter Item", function (needs) {
   needs.user();
-  needs.site({
-    filter_tags_total_topic_count: { support: 1, feature: 1 },
-    global_filters: [
-      { id: 1, name: "support" },
-      { id: 2, name: "feature" },
-    ],
-  });
+  needs.site({ filter_tags_total_topic_count: { support: 1, feature: 1 } });
   needs.settings({
     discourse_global_filter_enabled: true,
     global_filters: "support|feature",

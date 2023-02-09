@@ -4,10 +4,15 @@ import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 export default class GlobalFilterComposerContainer extends Component {
+  @service siteSettings;
   @service router;
-  @service site;
 
   tagParam = this.router.currentRoute?.queryParams?.tag;
+  canDisplay =
+    (this.args.composer.creatingTopic === true &&
+      !this.args.composer.creatingPrivateMessage) ||
+    (this.args.composer.editingFirstPost === true &&
+      !this.args.composer.privateMessage);
 
   constructor() {
     super(...arguments);
@@ -41,16 +46,12 @@ export default class GlobalFilterComposerContainer extends Component {
     });
   }
 
-  get canDisplay() {
-    return (
-      (this.args.composer.creatingTopic === true &&
-        !this.args.composer.creatingPrivateMessage) ||
-      (this.args.composer.editingFirstPost === true &&
-        !this.args.composer.privateMessage)
-    );
-  }
-
   get globalFilters() {
-    return this.site.global_filters;
+    const filters = this.siteSettings.global_filters;
+    if (!filters) {
+      return false;
+    }
+
+    return filters.split("|");
   }
 }

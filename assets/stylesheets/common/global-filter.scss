@@ -41,28 +41,6 @@ ol.category-breadcrumb > li:not(.filtered-tags-chooser) {
   display: none;
 }
 
-.alternate-filter-name-picker-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
-
-.alternate-name-picker-description {
-  margin-bottom: 2rem;
-  font-size: var(--font-down-2);
-}
-
-.alternate-name-picker-label {
-  font-size: var(--font-down-1);
-}
-
-.composer-only-wrapper {
-  display: flex;
-  .composer-only-input {
-    margin: 0 3px 5px 0;
-  }
-}
-
 .filter-tag-admin-pane {
   .global-filter--c-depth-0 {
     border-top: 2px solid var(--primary-low);
