@@ -4,7 +4,7 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
 
   def index
     render_serialized(
-    { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
+      { filter_tags: GlobalFilter::FilterTag.all },
       GlobalFilter::FilterTagIndexSerializer,
       root: false
     )

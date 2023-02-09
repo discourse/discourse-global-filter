@@ -70,7 +70,7 @@ after_initialize do
   end
 
   add_to_serializer(:site, :global_filters) do
-    GlobalFilter::FilterTag.all.order(:name)
+    GlobalFilter::FilterTag.all.order(:created_at)
   end
 
   add_to_serializer(:site, :filter_tags_total_topic_count) do

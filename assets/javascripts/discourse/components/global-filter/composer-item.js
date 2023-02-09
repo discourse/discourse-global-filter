@@ -7,7 +7,8 @@ export default class GlobalFilterComposerItem extends Component {
   get tagName() {
     return (
       this.args.filter.alternate_name ||
-      this.args.filter.name.replace(/-|_/g, " ")
+      this.args.filter.name?.replace(/-|_/g, " ") ||
+      ""
     );
   }
 
