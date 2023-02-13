@@ -2,30 +2,19 @@ import Component from "@glimmer/component";
 import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
-import { inject as service } from "@ember/service";
 
 export default class GlobalFilterComposerItem extends Component {
-  @service siteSettings;
-
-  constructor() {
-    super(...arguments);
-
-    if (
-      this.siteSettings.camelized_composer_tags
-        .split("|")
-        .includes(this.args.filter)
-    ) {
-      this.spacedTag = this.args.filter.replace(/-([a-z])/g, (g) => {
-        return g[1].toUpperCase();
-      });
-    } else {
-      this.spacedTag = this.args.filter.replace(/-|_/g, " ");
-    }
+  get tagName() {
+    return (
+      this.args.filter.alternate_name ||
+      this.args.filter.name?.replace(/-|_/g, " ") ||
+      ""
+    );
   }
 
   get checked() {
     return this.args.selectedTags?.includes(
-      this.args.filter || this.args.tagParam
+      this.args.filter.name || this.args.tagParam
     );
   }
 
@@ -35,11 +24,11 @@ export default class GlobalFilterComposerItem extends Component {
 
   @action
   toggleTag() {
-    if (this.args.selectedTags.includes(this.args.filter)) {
-      const filterIndex = this.args.selectedTags.indexOf(this.args.filter);
+    if (this.args.selectedTags.includes(this.args.filter.name)) {
+      const filterIndex = this.args.selectedTags.indexOf(this.args.filter.name);
       this.args.selectedTags.splice(filterIndex, 1);
     } else {
-      this.args.selectedTags.push(this.args.filter);
+      this.args.selectedTags.push(this.args.filter.name);
     }
 
     withPluginApi("1.3.0", (api) => {

@@ -9,9 +9,7 @@ export default class extends Controller {
     return ajax(
       `/admin/plugins/filter_tags/${filterTag.name}/set_category_ids_for_tag.json`,
       {
-        data: {
-          category_ids: cids,
-        },
+        data: { category_ids: cids },
         type: "POST",
       }
     )

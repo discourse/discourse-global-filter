@@ -9,6 +9,10 @@ acceptance(
     needs.user({ custom_fields: { global_filter_preference: "support" } });
     needs.site({
       filter_tags_total_topic_count: { support: 1, feature: 1 },
+      global_filters: [
+        { id: 1, name: "support" },
+        { id: 2, name: "feature" },
+      ],
     });
     needs.settings({
       discourse_global_filter_enabled: true,
