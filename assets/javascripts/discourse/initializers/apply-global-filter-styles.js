@@ -51,6 +51,7 @@ export default {
     globalFilters.forEach((item) => {
       if (item === tags) {
         this._setSiteGlobalFilter(item);
+        return;
       }
 
       this._removeSiteGlobalFilter(item);
@@ -78,7 +79,6 @@ export default {
       .classList.add("active");
     document.body.classList.add(`global-filter-tag-${filter}`);
     Site.current().set("globalFilter", filter);
-    return;
   },
 
   _removeSiteGlobalFilter(filter) {
