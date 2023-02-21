@@ -43,25 +43,18 @@ export default {
     }
 
     if (!tags) {
+      // Use first global filter as default
+      this._setSiteGlobalFilter(globalFilters[0]);
       return;
     }
 
     globalFilters.forEach((item) => {
-      const filterBodyClass = `global-filter-tag-${item}`;
-
       if (item === tags) {
-        document
-          .querySelector(`#global-filter-${item} > a`)
-          .classList.add("active");
-        document.body.classList.add(filterBodyClass);
-        Site.current().set("globalFilter", item);
+        this._setSiteGlobalFilter(item);
         return;
       }
 
-      document
-        .querySelector(`#global-filter-${item} > a`)
-        .classList.remove("active");
-      document.body.classList.remove(filterBodyClass);
+      this._removeSiteGlobalFilter(item);
     });
   },
 
@@ -78,5 +71,20 @@ export default {
     }
 
     return tags;
+  },
+
+  _setSiteGlobalFilter(filter) {
+    document
+      .querySelector(`#global-filter-${filter} > a`)
+      .classList.add("active");
+    document.body.classList.add(`global-filter-tag-${filter}`);
+    Site.current().set("globalFilter", filter);
+  },
+
+  _removeSiteGlobalFilter(filter) {
+    document
+      .querySelector(`#global-filter-${filter} > a`)
+      .classList.remove("active");
+    document.body.classList.remove(`global-filter-tag-${filter}`);
   },
 };
