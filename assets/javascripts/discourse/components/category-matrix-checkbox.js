@@ -16,9 +16,11 @@ export default Component.extend({
 
   @action
   onChange(e) {
-    let categoryIds = this.filterTag.category_ids
-      .split("|")
-      .map((str) => Number(str));
+    const splitFilterCategoryIds = this.filterTag.category_ids;
+    let categoryIds =
+      splitFilterCategoryIds === ""
+        ? []
+        : this.filterTag.category_ids.split("|").map((str) => Number(str));
 
     if (e.target.checked) {
       categoryIds.push(this.category.get("id"));
