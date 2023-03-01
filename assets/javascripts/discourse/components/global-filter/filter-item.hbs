@@ -14,8 +14,8 @@
       </span>
     </span>
   </a>
-  {{plugin-outlet
-    name="below-global-filter-item"
-    args=(hash filter=@filter.name)
-  }}
 </div>
+  <PluginOutlet
+    @name="below-global-filter-item"
+    @outletArgs={{hash filter=@filter.name}}
+  />
