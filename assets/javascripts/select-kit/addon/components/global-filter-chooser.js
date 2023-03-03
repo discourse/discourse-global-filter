@@ -1,6 +1,4 @@
 import MultiSelectComponent from "select-kit/components/multi-select";
-import FormTemplate from "admin/models/form-template";
-import { computed } from "@ember/object";
 
 export default MultiSelectComponent.extend({
   pluginApiIdentifiers: ["global-filter-chooser"],
