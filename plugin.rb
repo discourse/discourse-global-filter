@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # name: discourse-global-filter
-# about: TODO
+# about: Global Filters utilizes existing tags to provide top level routing and scoping to a site
 # version: 0.0.1
 # authors: Discourse
 # url: https://github.com/discourse/discourse-global-filter

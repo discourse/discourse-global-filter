@@ -13,3 +13,5 @@ en:
         composer_only: "Composer Only"
       require_tag_on_topic_creation:
         error: "An application must be selected to create a topic."
+      composer_dropdown:
+        none: "Select a filter..."
