@@ -22,16 +22,8 @@ export default SelectKitRowComponent.extend({
       return I18n.t("select_kit.create", { content: label });
     }
 
-    return this._tagName(label);
-  },
-
-  _tagName(filter) {
-    const currentFilter = this.site.global_filters.findBy("name", filter);
-
     return (
-      currentFilter.alternate_name ||
-      currentFilter.name?.replace(/-|_/g, " ") ||
-      ""
+      this.item.alternate_name || this.item.name?.replace(/-|_/g, " ") || ""
     );
   },
 });

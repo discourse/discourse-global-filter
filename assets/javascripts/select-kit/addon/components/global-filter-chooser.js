@@ -13,10 +13,6 @@ export default MultiSelectComponent.extend({
   },
 
   get content() {
-    return this.site.global_filters;
-  },
-
-  _tagName(filter) {
-    return filter.alternate_name || filter.name?.replace(/-|_/g, " ") || "";
+    return this.site?.global_filters;
   },
 });
