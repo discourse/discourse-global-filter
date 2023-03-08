@@ -26,12 +26,8 @@ export default SelectKitRowComponent.extend({
   },
 
   _tagName(filter) {
-    const currentFilter = this.site.global_filters.findBy("name", filter);
-
     return (
-      currentFilter.alternate_name ||
-      currentFilter.name?.replace(/-|_/g, " ") ||
-      ""
+      this.item.alternate_name || this.item.name?.replace(/-|_/g, " ") || ""
     );
   },
 });
