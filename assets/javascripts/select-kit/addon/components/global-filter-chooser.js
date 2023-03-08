@@ -1,5 +1,4 @@
 import MultiSelectComponent from "select-kit/components/multi-select";
-import { computed } from "@ember/object";
 
 export default MultiSelectComponent.extend({
   pluginApiIdentifiers: ["global-filter-chooser"],
@@ -15,9 +14,5 @@ export default MultiSelectComponent.extend({
 
   get content() {
     return this.site?.global_filters;
-  },
-
-  _tagName(filter) {
-    return filter.alternate_name || filter.name?.replace(/-|_/g, " ") || "";
   },
 });

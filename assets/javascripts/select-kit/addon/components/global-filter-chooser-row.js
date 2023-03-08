@@ -22,10 +22,6 @@ export default SelectKitRowComponent.extend({
       return I18n.t("select_kit.create", { content: label });
     }
 
-    return this._tagName(label);
-  },
-
-  _tagName(filter) {
     return (
       this.item.alternate_name || this.item.name?.replace(/-|_/g, " ") || ""
     );
