@@ -89,6 +89,11 @@ after_initialize do
     object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_week", 0) || 0
   end
 
+  add_to_serializer(:category_detailed, :recent_category_topics_for_filter_tag) do
+    tag = Tag.find_by(name: filter_tag)
+    Topic.joins(:tags).where(category_id: object.id).visible.where("tags.id IN (?)", tag).order("created_at DESC").limit(5)
+  end
+
   add_to_serializer(:category_list, :filter_tag) do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
   end
