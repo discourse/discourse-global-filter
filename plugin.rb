@@ -91,7 +91,7 @@ after_initialize do
 
   add_to_serializer(:category_detailed, :recent_category_topics_for_filter_tag) do
     tag = Tag.find_by(name: filter_tag)
-    Topic.joins(:tags).where(category_id: object.id).visible.where("tags.id IN (?)", tag).order("created_at DESC")
+    Topic.joins(:tags).where(category_id: object.id).visible.where("tags.id IN (?)", tag).order("created_at DESC").limit(5)
   end
 
   add_to_serializer(:category_list, :filter_tag) do
