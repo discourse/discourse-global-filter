@@ -101,6 +101,10 @@ after_initialize do
       .first
   end
 
+  add_to_serializer(:category_detailed, :last_poster) do
+    User.find(object.user_id) if object.user_id
+  end
+
   add_to_serializer(:category_list, :filter_tag) do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
   end
