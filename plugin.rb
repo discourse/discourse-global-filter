@@ -89,9 +89,16 @@ after_initialize do
     object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_week", 0) || 0
   end
 
-  add_to_serializer(:category_detailed, :recent_category_topics_for_filter_tag) do
+  add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
     tag = Tag.find_by(name: filter_tag)
-    Topic.joins(:tags).where(category_id: object.id).visible.where("tags.id IN (?)", tag).order("created_at DESC").limit(5)
+    Topic
+      .joins(:tags)
+      .where(category_id: object.id)
+      .where("pinned_until IS NULL OR pinned_until < ? ", Time.zone.now)
+      .visible
+      .where("tags.id IN (?)", tag)
+      .order("created_at DESC")
+      .first
   end
 
   add_to_serializer(:category_list, :filter_tag) do
