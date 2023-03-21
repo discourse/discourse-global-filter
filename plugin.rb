@@ -102,7 +102,7 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :last_poster) do
-    User.find(object.user_id) if object.user_id
+    User.find(most_recent_unpinned_category_topic_for_filter_tag.user_id) if most_recent_unpinned_category_topic_for_filter_tag
   end
 
   add_to_serializer(:category_list, :filter_tag) do
