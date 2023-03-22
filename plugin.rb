@@ -98,7 +98,7 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
-    object.global_filter_topics_by_category_tag&.topic_tag_mapping[filter_tag]
+    object.global_filter_topics_by_category_tag&.topic_tag_mapping&.dig(filter_tag)
   end
 
   add_to_serializer(:category_list, :filter_tag) do
