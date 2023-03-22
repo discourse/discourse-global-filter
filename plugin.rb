@@ -90,7 +90,7 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
-    @most_recent_unpinned_category_topic_for_filter_tag = begin
+    @most_recent_unpinned_category_topic_for_filter_tag ||= begin
       tag = Tag.find_by(name: filter_tag)
       Topic
         .joins(:tags)
