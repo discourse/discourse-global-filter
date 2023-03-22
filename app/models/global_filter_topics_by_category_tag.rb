@@ -7,7 +7,7 @@ class GlobalFilter::GlobalFilterTopicsByCategoryTag < ::ActiveRecord::Base
 
   def self.most_recent_unpinned_topic_for(category_id:, tag_id:)
     Topic
-      .includes(:user)
+      .includes(user: :primary_group)
       .joins(:tags)
       .where(category_id: category_id)
       .where("pinned_until IS NULL OR pinned_until < ? ", Time.zone.now)

@@ -10,7 +10,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
     fab!(:tag_0) { Fabricate(:tag) }
     fab!(:tag_1) { Fabricate(:tag) }
 
-    fab!(:user) { Fabricate(:user) }
+    fab!(:group) { Fabricate(:group) }
+    fab!(:user) { Fabricate(:user, primary_group: group) }
 
     # Category 0 topics
     fab!(:category_0_topic_0) { Fabricate(:topic, category: category_0, tags: [tag_0], user: user) }
@@ -30,19 +31,23 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
       expect(category_0_mapping.keys).to match_array([tag_0.name, tag_1.name])
       expect(category_0_mapping[tag_0.name]).to include(
         "title" => category_0_topic_0.title,
-        "url" => category_0_topic_0.url,
+        "id" => category_0_topic_0.id,
+        "slug" => category_0_topic_0.slug,
         "user" => {
           "username" => user.username,
-          "avatar_template" => user.small_avatar_url
+          "avatar_template" => user.avatar_template,
+          "primary_group_name" => group.name
         }
       )
 
       expect(category_0_mapping[tag_1.name]).to include(
         "title" => category_0_topic_1.title,
-        "url" => category_0_topic_1.url,
+        "id" => category_0_topic_1.id,
+        "slug" => category_0_topic_1.slug,
         "user" => {
           "username" => user.username,
-          "avatar_template" => user.small_avatar_url
+          "avatar_template" => user.avatar_template,
+          "primary_group_name" => group.name
         }
       )
 
@@ -50,19 +55,23 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
       expect(category_1_mapping.keys).to match_array([tag_0.name, tag_1.name])
       expect(category_1_mapping[tag_0.name]).to include(
         "title" => category_1_topic_0.title,
-        "url" => category_1_topic_0.url,
+        "id" => category_1_topic_0.id,
+        "slug" => category_1_topic_0.slug,
         "user" => {
           "username" => user.username,
-          "avatar_template" => user.small_avatar_url
+          "avatar_template" => user.avatar_template,
+          "primary_group_name" => group.name
         }
       )
 
       expect(category_1_mapping[tag_1.name]).to include(
         "title" => category_1_topic_1.title,
-        "url" => category_1_topic_1.url,
+        "id" => category_1_topic_1.id,
+        "slug" => category_1_topic_1.slug,
         "user" => {
           "username" => user.username,
-          "avatar_template" => user.small_avatar_url
+          "avatar_template" => user.avatar_template,
+          "primary_group_name" => group.name
         }
       )
 
