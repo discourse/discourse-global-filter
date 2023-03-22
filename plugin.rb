@@ -90,15 +90,17 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
-    tag = Tag.find_by(name: filter_tag)
-    Topic
-      .joins(:tags)
-      .where(category_id: object.id)
-      .where("pinned_until IS NULL OR pinned_until < ? ", Time.zone.now)
-      .visible
-      .where("tags.id IN (?)", tag)
-      .order("created_at DESC")
-      .first
+    @most_recent_unpinned_category_topic_for_filter_tag ||= begin
+      tag = Tag.find_by(name: filter_tag)
+      Topic
+        .joins(:tags)
+        .where(category_id: object.id)
+        .where("pinned_until IS NULL OR pinned_until < ? ", Time.zone.now)
+        .visible
+        .where("tags.id IN (?)", tag)
+        .order("created_at DESC")
+        .first
+    end
   end
 
   add_to_serializer(:category_detailed, :last_poster) do
