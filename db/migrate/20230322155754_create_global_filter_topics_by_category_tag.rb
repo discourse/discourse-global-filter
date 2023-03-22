@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGlobalFilterTopicsByCategoryTag < ActiveRecord::Migration[7.0]
   def change
     create_table :global_filter_topics_by_category_tags do |t|
