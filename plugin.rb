@@ -89,25 +89,6 @@ after_initialize do
     object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_week", 0) || 0
   end
 
-  add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
-    @most_recent_unpinned_category_topic_for_filter_tag ||= begin
-      tag = Tag.find_by(name: filter_tag)
-      Topic
-        .joins(:tags)
-        .where(category_id: object.id)
-        .where("pinned_until IS NULL OR pinned_until < ? ", Time.zone.now)
-        .visible
-        .where("tags.id IN (?)", tag)
-        .order("created_at DESC")
-        .first
-    end
-  end
-
-  add_to_serializer(:category_detailed, :last_poster) do
-    user = User.find(most_recent_unpinned_category_topic_for_filter_tag.user_id) if most_recent_unpinned_category_topic_for_filter_tag
-    BasicUserSerializer.new(user, root: false)
-  end
-
   add_to_serializer(:category_list, :filter_tag) do
     object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
   end
