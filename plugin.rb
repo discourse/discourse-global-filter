@@ -29,9 +29,12 @@ after_initialize do
     '../app/controllers/filter_tags_controller.rb',
     '../app/controllers/admin/filter_tags_controller.rb',
     '../app/models/filter_tag.rb',
+    '../app/models/global_filter_topics_by_category_tag.rb',
     '../app/serializers/filter_tag_serializer.rb',
     '../app/serializers/filter_tag_index_serializer.rb',
     '../jobs/scheduled/update_category_stats.rb',
+    '../jobs/scheduled/update_global_filter_topics_by_category_tags.rb',
+    '../lib/category_extension.rb',
     '../lib/category_list_serializer_extension.rb',
     '../lib/category_detailed_serializer_extension.rb',
     '../lib/category_list_extension.rb',
@@ -64,6 +67,7 @@ after_initialize do
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
 
   reloadable_patch do
+    Category.class_eval { prepend GlobalFilter::CategoryExtension }
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
     CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
     CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
@@ -90,22 +94,7 @@ after_initialize do
   end
 
   add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
-    @most_recent_unpinned_category_topic_for_filter_tag ||= begin
-      tag = Tag.find_by(name: filter_tag)
-      Topic
-        .joins(:tags)
-        .where(category_id: object.id)
-        .where("pinned_until IS NULL OR pinned_until < ? ", Time.zone.now)
-        .visible
-        .where("tags.id IN (?)", tag)
-        .order("created_at DESC")
-        .first
-    end
-  end
-
-  add_to_serializer(:category_detailed, :last_poster) do
-    user = User.find(most_recent_unpinned_category_topic_for_filter_tag.user_id) if most_recent_unpinned_category_topic_for_filter_tag
-    BasicUserSerializer.new(user, root: false)
+    object.global_filter_topics_by_category_tag&.dig(filter_tag)
   end
 
   add_to_serializer(:category_list, :filter_tag) do
