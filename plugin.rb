@@ -93,9 +93,7 @@ after_initialize do
     object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_week", 0) || 0
   end
 
-  CategoryList.on_preload do |category_list|
-    category_list.instance_variable_set(:@categories, category_list.categories.includes(:global_filter_topics_by_category_tag))
-  end
+  CategoryList.register_included_association(:global_filter_topics_by_category_tag)
 
   add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
     object.global_filter_topics_by_category_tag&.topic_tag_mapping&.dig(filter_tag)
