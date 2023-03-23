@@ -29,9 +29,12 @@ after_initialize do
     '../app/controllers/filter_tags_controller.rb',
     '../app/controllers/admin/filter_tags_controller.rb',
     '../app/models/filter_tag.rb',
+    '../app/models/global_filter_topics_by_category_tag.rb',
     '../app/serializers/filter_tag_serializer.rb',
     '../app/serializers/filter_tag_index_serializer.rb',
     '../jobs/scheduled/update_category_stats.rb',
+    '../jobs/scheduled/update_global_filter_topics_by_category_tags.rb',
+    '../lib/category_extension.rb',
     '../lib/category_list_serializer_extension.rb',
     '../lib/category_detailed_serializer_extension.rb',
     '../lib/category_list_extension.rb',
@@ -64,6 +67,7 @@ after_initialize do
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
 
   reloadable_patch do
+    Category.class_eval { prepend GlobalFilter::CategoryExtension }
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
     CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
     CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
@@ -87,6 +91,12 @@ after_initialize do
 
   add_to_serializer(:category_detailed, :posts_week) do
     object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_week", 0) || 0
+  end
+
+  CategoryList.register_included_association(:global_filter_topics_by_category_tag)
+
+  add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
+    object.global_filter_topics_by_category_tag&.topic_tag_mapping&.dig(filter_tag)
   end
 
   add_to_serializer(:category_list, :filter_tag) do
