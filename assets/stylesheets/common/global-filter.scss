@@ -31,7 +31,7 @@
   }
 }
 
-ol.category-breadcrumb > li:not(.filtered-tags-chooser) {
+ol.category-breadcrumb > li:nth-child(-n + 2) {
   // hide default category and tag-drop chooser
   display: none;
 }

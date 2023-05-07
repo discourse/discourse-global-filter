@@ -1,56 +1,8 @@
 <PluginOutlet @name="before-filtered-tags-chooser" />
-{{#each @categoryBreadcrumbs as |breadcrumb|}}
-  {{#if breadcrumb.hasOptions}}
-    <li
-      class="filtered-category-drop
-        {{if
-          breadcrumb.isSubcategory
-          "gft-subcategories-drop"
-          "gft-parent-categories-drop"
-        }}"
-    >
-      <PluginOutlet
-        @name="before-filtered-category-drop"
-        @outletArgs={{hash category=breadcrumb.category}}
-      />
-      <CategoryDrop
-        @category={{breadcrumb.category}}
-        @categories={{breadcrumb.options}}
-        @tagId={{@tagId}}
-        @editingCategory={{@editingCategory}}
-        @editingCategoryTab={{@editingCategoryTab}}
-        @options={{hash
-          parentCategory=breadcrumb.parentCategory
-          subCategory=breadcrumb.isSubcategory
-          noSubcategories=breadcrumb.noSubcategories
-          autoFilterable=true
-        }}
-      />
-    </li>
-  {{/if}}
-{{/each}}
-
-{{#if @showTagsSection}}
-  {{#if @additionalTags}}
-    <li class="filtered-tags-intersection-drop">
-      <TagsIntersectionChooser
-        @currentCategory={{@currentCategory}}
-        @mainTag={{null}}
-        @additionalTags={{@additionalTags}}
-        @options={{@options}}
-      />
-    </li>
-  {{else}}
-    <li class="filtered-tag-drop">
-      <PluginOutlet
-        @name="before-filtered-tag-drop"
-        @outletArgs={{hash tags=@tagId additionalTags=@additionalTags}}
-      />
-      <TagDrop
-        @currentCategory={{@category}}
-        @noSubcategories={{@noSubcategories}}
-        @tagId={{null}}
-      />
-    </li>
-  {{/if}}
-{{/if}}
+<li class="filtered-tag-drop">
+  <TagDrop
+    @currentCategory={{@category}}
+    @noSubcategories={{@currentCategory.subcategory_ids}}
+    @tagId={{null}}
+  />
+</li>
