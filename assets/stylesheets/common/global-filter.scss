@@ -50,6 +50,19 @@ ol.category-breadcrumb > li:nth-child(-n + 2) {
   display: none;
 }
 
+.mobile-view {
+  .nav.nav-pills {
+    .inline-extra-nav-item-outlet.filtered-tags-chooser {
+      margin-left: 0.5rem;
+      border: none;
+
+      .filtered-tag-drop .tag-drop {
+        height: 100%;
+      }
+    }
+  }
+}
+
 .alternate-filter-name-picker-wrapper {
   display: flex;
   flex-wrap: wrap;
