@@ -1,0 +1,17 @@
+<GlobalFilter::FilteredCategoriesChooser
+  @tagId={{this.tagId}}
+  @editingCategory={{this.editingCategory}}
+  @editingCategoryTab={{this.editingCategoryTab}}
+  @categoryBreadcrumbs={{this.categoryBreadcrumbs}}
+/>
+
+{{#if this.additionalTags}}
+  <li class="filtered-tags-intersection-drop">
+    <TagsIntersectionChooser
+      @currentCategory={{this.currentCategory}}
+      @mainTag={{null}}
+      @additionalTags={{this.additionalTags}}
+      @options={{this.options}}
+    />
+  </li>
+{{/if}}
