@@ -4,7 +4,7 @@ import {
   query,
   visible,
 } from "discourse/tests/helpers/qunit-helpers";
-
+import selectKit from "discourse/tests/helpers/select-kit-helper";
 import { test } from "qunit";
 import { cloneJSON } from "discourse-common/lib/object";
 import DiscoveryFixtures from "discourse/tests/fixtures/discovery-fixtures";
@@ -65,16 +65,19 @@ acceptance(
       await click("#create-topic");
       await fillIn("#reply-title", "this is my new topic title");
       await fillIn(".d-editor-input", "this is the *content* of a post");
-
-      assert.ok(
-        query(".global-filter-composer-tag-support input:checked"),
+      assert.strictEqual(
+        selectKit(".global-filter-chooser").header().value(),
+        "support",
         "global filter is selected by default"
       );
 
-      await click(".global-filter-composer-tag-support input");
+      await selectKit(".global-filter-chooser").expand();
+      // click to remove current selection
+      await click(
+        ".global-filter-chooser .selected-content button.selected-choice"
+      );
 
       await click("#reply-control button.create");
-
       assert.strictEqual(
         query(".dialog-body").innerText.trim(),
         "An application must be selected to create a topic.",
@@ -82,9 +85,10 @@ acceptance(
       );
 
       await click(".dialog-footer .btn-primary");
-      await click(".global-filter-composer-tag-support input");
+      // add back global filter
+      await selectKit(".global-filter-chooser").expand();
+      await selectKit(".global-filter-chooser").selectRowByValue("support");
       await click("#reply-control button.create");
-
       assert.ok(
         !visible("#reply-control .d-editor-input"),
         "topic is submitted"
