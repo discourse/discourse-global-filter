@@ -5,6 +5,7 @@ import {
   queryAll,
 } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
+import selectKit from "discourse/tests/helpers/select-kit-helper";
 
 acceptance("Discourse Global Filter - Composer Item", function (needs) {
   needs.user();
@@ -65,39 +66,28 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
     );
   });
 
-  test("is present when included in global_filters", async function (assert) {
-    await visit("/");
-    await click("#create-topic");
-    let tags = [];
-    queryAll(
-      ".global-filter-composer-container .global-filter-composer-item"
-    ).each((_, el) => tags.push(el.innerText.trim()));
-    assert.deepEqual(tags, this.siteSettings.global_filters.split("|"));
-  });
-
-  test("item is checked by default when creating topic in global-filter tag route", async function (assert) {
+  test("global filter is present when creating a topic on a global-filter tag route", async function (assert) {
     await visit("/tag/support");
     await click("#create-topic");
 
     assert.strictEqual(
-      query(".global-filter-composer-tag-support input").checked,
-      true,
-      "item is checked"
+      selectKit(".global-filter-chooser").header().value(),
+      "support",
+      "global filter is selected"
     );
   });
 
-  test("toggling filter items removes/adds correct tags", async function (assert) {
+  test("adding/removing global-filter removes/adds correct tags", async function (assert) {
     await visit("/");
     await click("#create-topic");
+    await selectKit(".global-filter-chooser").expand();
 
-    assert.strictEqual(
-      query(".global-filter-composer-tag-support input").checked,
-      true,
-      "support filter is checked by default"
+    // remove support global filter
+    await click(
+      ".global-filter-chooser .selected-content button.selected-choice"
     );
-    // switch filter
-    await click(".global-filter-composer-tag-support input");
-    await click(".global-filter-composer-tag-feature input");
+    // add feature global filter
+    await selectKit(".global-filter-chooser").selectRowByValue("feature");
 
     let composer = this.owner.lookup("controller:composer");
     assert.ok(
@@ -105,9 +95,5 @@ acceptance("Discourse Global Filter - Composer Item", function (needs) {
       ["feature"],
       "expected filter is present"
     );
-
-    // reset
-    await click(".global-filter-composer-tag-feature input");
-    await click(".global-filter-composer-tag-support input");
   });
 });
