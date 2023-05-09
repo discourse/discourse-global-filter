@@ -1,19 +1,8 @@
 {{#if this.canDisplay}}
   <div class="global-filter-composer-container">
-    {{#if this.siteSettings.display_global_filters_as_dropdown_in_composer}}
-      <GlobalFilterChooser
-        @value={{@composer.tags}}
-        @onChange={{action (mut @composer.tags)}}
-      />
-    {{else}}
-      {{#each this.globalFilters as |filter|}}
-        <GlobalFilter::ComposerItem
-          @filter={{filter}}
-          @selectedTags={{@composer.tags}}
-          @checked={{this.checked}}
-          @tagParam={{this.tagParam}}
-        />
-      {{/each}}
-    {{/if}}
+    <GlobalFilterChooser
+      @value={{@composer.tags}}
+      @onChange={{action (mut @composer.tags)}}
+    />
   </div>
 {{/if}}
