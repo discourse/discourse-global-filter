@@ -63,6 +63,15 @@ ol.category-breadcrumb > li:nth-child(-n + 2) {
   }
 }
 
+.admin-plugins .global-filter-wrapper {
+  margin-bottom: 1rem;
+
+  .child-picker-spacer {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
 .alternate-filter-name-picker-wrapper {
   display: flex;
   flex-wrap: wrap;

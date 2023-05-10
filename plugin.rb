@@ -60,6 +60,9 @@ after_initialize do
     post '/admin/plugins/filter_tags/:tag/set_alternate_composer_only_for_tag' =>
            'global_filter/admin_filter_tags#set_alternate_composer_only_for_tag',
          :constraints => StaffConstraint.new
+    post '/admin/plugins/filter_tags/:tag/set_filter_children_for_tag' =>
+           'global_filter/admin_filter_tags#set_filter_children_for_tag',
+         :constraints => StaffConstraint.new
   end
 
   register_editable_user_custom_field(GlobalFilter::GLOBAL_FILTER_PREFERENCE)

@@ -4,7 +4,7 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
 
   def index
     render_serialized(
-      { filter_tags: GlobalFilter::FilterTag.all },
+      { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
       GlobalFilter::FilterTagIndexSerializer,
       root: false
     )
@@ -29,17 +29,18 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
   end
 
   def set_filter_children_for_tag
-    params.require([:parent_tag, :child_tag])
+    params.require([:tag, :child_tag])
     params.permit([:alternate_child_tag_name, :icon_class])
 
-    filter_tag = GlobalFilter::FilterTag.find_by(name: params[:parent_tag])
-    filter_children = filter_tag.filter_children[params[:child_tag]]
-    updated_json = filter_children[params[:child_tag]] = {
-      name: params[:child_tag],
-      parent: params[:parent_tag],
-      icon: params[:icon_class] || nil,
-      alternate_name: params[:alternate_child_tag_name] || nil,
+    filter_tag = GlobalFilter::FilterTag.find_by(name: params[:tag])
+    updated_children = {
+      params[:child_tag] => {
+        name: params[:child_tag],
+        parent: params[:tag],
+        icon: params[:icon_class] || nil,
+        alternate_name: params[:alternate_child_tag_name] || nil,
+      }
     }
-    filter_tag.update!(filter_children: updated_json)
+    filter_tag.update!(filter_children: filter_tag.filter_children.merge(updated_children))
   end
 end

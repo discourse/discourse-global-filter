@@ -11,6 +11,18 @@ en:
         alternate_name_picker_description: "Choose an alternate name for a Global Filter. Selecting 'composer' will apply the alternate name ONLY to the composer. Updating the Global Filter name and not selecting 'composer' will apply the alternate name to every place the Global Filter is used."
         alternate_name_placeholder: "Using default tag name"
         composer_only: "Composer Only"
+        filter_children: "Filter Children"
+        filter_child_name: "Filter Child Name"
+        filter_child_name_placeholder: "Select a tag to be a filter child..."
+        alternate_child_tag_name: "Alternate Name"
+        alternate_child_tag_name_description: "The alternate name for a filter child that will be used within the composer selector"
+        alternate_child_tag_name_placeholder: "Using the default filter child name..."
+        icon_class: "Icon Class"
+        icon_class_description: "The icon class to be applied to filter child within the composer selector"
+        icon_class_placeholder: "Add icon class name..."
+        create_filter_child: "Create filter child"
+        cancel_create_filter_child: "Cancel creating filter child"
+        new_filter_child: "New Filter Child"
       require_tag_on_topic_creation:
         error: "An application must be selected to create a topic."
       composer_dropdown:
