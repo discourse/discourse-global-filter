@@ -28,9 +28,18 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
     filter_tag.update!(alternate_composer_only: params[:alternate_composer_only] || nil)
   end
 
-  def set_filter_child_for_tag
-    params.require([:parent_tag, :child_tag, :alternate_child_tag_name, :icon])
+  def set_filter_children_for_tag
+    params.require([:parent_tag, :child_tag])
+    params.permit([:alternate_child_tag_name, :icon_class])
+
     filter_tag = GlobalFilter::FilterTag.find_by(name: params[:parent_tag])
-    filter_tag.update!(child_tag: params[:alternate_composer_only] || nil)
+    filter_children = filter_tag.filter_children[params[:child_tag]]
+    updated_json = filter_children[params[:child_tag]] = {
+      name: params[:child_tag],
+      parent: params[:parent_tag],
+      icon: params[:icon_class] || nil,
+      alternate_name: params[:alternate_child_tag_name] || nil,
+    }
+    filter_tag.update!(filter_children: updated_json)
   end
 end
