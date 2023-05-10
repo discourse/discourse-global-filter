@@ -27,4 +27,10 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
     filter_tag = GlobalFilter::FilterTag.find_by(name: params[:tag])
     filter_tag.update!(alternate_composer_only: params[:alternate_composer_only] || nil)
   end
+
+  def set_filter_child_for_tag
+    params.require([:parent_tag, :child_tag, :alternate_child_tag_name, :icon])
+    filter_tag = GlobalFilter::FilterTag.find_by(name: params[:parent_tag])
+    filter_tag.update!(child_tag: params[:alternate_composer_only] || nil)
+  end
 end
