@@ -42,6 +42,17 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
       }
     }
     filter_tag.update!(filter_children: filter_tag.filter_children.merge(updated_children))
+
+    respond_to do |format|
+      format.html { render body: nil }
+      format.json {
+        render_serialized(
+      { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
+      GlobalFilter::FilterTagIndexSerializer,
+      root: false
+    )
+      }
+    end
   end
 
   def delete_filter_child_for_tag
@@ -50,5 +61,15 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
     filter_tag = GlobalFilter::FilterTag.find_by(name: params[:tag])
     filter_tag.filter_children.delete(params[:child_tag])
     filter_tag.update!(filter_children: filter_tag.filter_children)
+
+    respond_to do |format|
+      format.html { render body: nil }
+      format.json { render_serialized(
+      { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
+      GlobalFilter::FilterTagIndexSerializer,
+      root: false
+    )
+      }
+    end
   end
 end

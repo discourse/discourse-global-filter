@@ -11,6 +11,7 @@ export default class FilterTagsEditor extends Component {
   @tracked filterChildName;
   @tracked alternateChildTagName;
   @tracked iconClass;
+  @tracked filterTags = this.args.filterTags;
 
   @action
   setCreateChild(filterTag) {
@@ -81,7 +82,8 @@ export default class FilterTagsEditor extends Component {
       }
     )
       .catch(popupAjaxError)
-      .then(() => {
+      .then((model) => {
+        this.filterTags = model.filter_tags;
         this.toggleChildMenuFor = null;
         this.filterChildName = null;
         this.alternateChildTagName = null;
@@ -99,7 +101,9 @@ export default class FilterTagsEditor extends Component {
       }
     )
       .catch(popupAjaxError)
-      .then(() => {
+      .then((model) => {
+        console.log(model);
+        this.filterTags = model.filter_tags;
         this.toggleChildMenuFor = null;
         this.filterChildName = null;
         this.alternateChildTagName = null;

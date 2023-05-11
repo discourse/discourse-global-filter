@@ -4,7 +4,8 @@
 </p>
 
 <div>
-  {{#each @filterTags as |filterTag|}}
+  {{#each this.filterTags as |filterTag|}}
+    {{log filterTag}}
     <div class="global-filter-wrapper">
       <h2>{{filterTag.name}}</h2>
       <div class="alternate-filter-name-picker-wrapper">

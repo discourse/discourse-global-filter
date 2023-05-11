@@ -65,7 +65,7 @@ after_initialize do
          :constraints => StaffConstraint.new
     delete '/admin/plugins/filter_tags/:tag/delete_filter_child_for_tag' =>
            'global_filter/admin_filter_tags#delete_filter_child_for_tag',
-         :constraints => StaffConstraint.new
+           :constraints => StaffConstraint.new
   end
 
   register_editable_user_custom_field(GlobalFilter::GLOBAL_FILTER_PREFERENCE)
