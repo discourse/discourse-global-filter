@@ -1,8 +1,3 @@
-<h3>{{i18n "global_filter.admin.alternate_name_picker_header"}}</h3>
-<p class="alternate-name-picker-description">
-  {{i18n "global_filter.admin.alternate_name_picker_description"}}
-</p>
-
 <div>
   {{#each this.filterTags as |filterTag|}}
     <div class="global-filter-wrapper">
@@ -14,11 +9,6 @@
           @setAlternateComposerOnlyForFilter={{this.setAlternateComposerOnlyForFilter}}
         />
         <div>
-          <div class="alternate-filter-name-picker-wrapper">
-            <h3 class="no-header-margin">
-              {{i18n "global_filter.admin.filter_children"}}
-            </h3>
-          </div>
           <Admin::FilterChildrenTable
             @filterTag={{filterTag}}
             @editFilterChildForFilter={{this.editFilterChildForFilter}}

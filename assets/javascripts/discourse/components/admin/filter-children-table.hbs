@@ -1,4 +1,9 @@
-<table class="global-filter-wrapper">
+<div class="alternate-filter-name-picker-wrapper">
+  <h4 class="no-header-margin">
+    {{i18n "global_filter.admin.filter_children"}}
+  </h4>
+</div>
+<table class="global-filter-table-wrapper">
   <thead>
     <tr>
       <th>{{i18n "global_filter.admin.filter_child_name"}}</th>
@@ -9,22 +14,22 @@
     </tr>
   </thead>
   <tbody>
-    {{#each-in @filterTag.filterChildren as |name values|}}
+    {{#each-in @filterTag.filter_children as |name values|}}
       <tr>
         <td>{{name}}</td>
         <td>
-          {{if
-            values.alternate_name
-            values.alternate_name
-            (i18n "global_filter.admin.filter_child_no_alternate_name")
-          }}
+          {{#if values.alternate_name}}
+            {{values.alternate_name}}
+          {{else}}
+            <i>{{i18n "global_filter.admin.filter_child_no_alternate_name"}}</i>
+          {{/if}}
         </td>
         <td>
-          {{if
-            values.icon
-            values.icon
-            (i18n "global_filter.admin.filter_child_no_icon")
-          }}
+          {{#if values.icon}}
+            {{values.icon}}
+          {{else}}
+            <i>{{i18n "global_filter.admin.filter_child_no_icon"}}</i>
+          {{/if}}
         </td>
         <td>
           <DButton
@@ -42,7 +47,7 @@
         </td>
       </tr>
     {{else}}
-      {{i18n "global_filter.admin.no_filter_children"}}
+      <td><i>{{i18n "global_filter.admin.no_filter_children"}}</i></td>
     {{/each-in}}
   </tbody>
 </table>
