@@ -102,7 +102,6 @@ export default class FilterTagsEditor extends Component {
     )
       .catch(popupAjaxError)
       .then((model) => {
-        console.log(model);
         this.filterTags = model.filter_tags;
         this.toggleChildMenuFor = null;
         this.filterChildName = null;
