@@ -25,6 +25,10 @@ export default MultiSelectComponent.extend({
   },
 
   get content() {
+    if (!this.value) {
+      return [];
+    }
+
     // set header selected values
     this.set(
       "selectedContent",
@@ -52,6 +56,10 @@ export default MultiSelectComponent.extend({
   },
 
   setSelectedContentToFilter() {
+    if (!this.value) {
+      return [];
+    }
+
     this.set(
       "selectedContent",
       this.filtersWithChildren.filter((filterTag) =>
