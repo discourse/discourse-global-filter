@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FilterTagSerializer < ApplicationSerializer
+class FilterTagDetailedSerializer < ApplicationSerializer
   attributes :id,
              :name,
              :category_ids,
@@ -13,8 +13,4 @@ class FilterTagSerializer < ApplicationSerializer
   def categories
     Category.secured(scope).where(id: object[:category_ids].split("|"))
   end
-
-  #def filter_children
-    #::JSON.parse(object.filter_children)
-  #end
 end

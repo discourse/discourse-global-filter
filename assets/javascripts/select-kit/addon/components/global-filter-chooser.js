@@ -20,18 +20,23 @@ export default MultiSelectComponent.extend({
     return "global-filter-chooser-row";
   },
 
-  get content() {
-    const allFilters = this.site.global_filters;
-    const filters = this.loadAdditionalFilters(allFilters);
+  get filtersWithChildren() {
+    return this.loadAdditionalFilters(this.site.global_filters);
+  },
 
+  get content() {
     // set header selected values
     this.set(
       "selectedContent",
-      filters.filter((filterTag) => this.value.includes(filterTag.name))
+      this.filtersWithChildren.filter((filterTag) =>
+        this.value.includes(filterTag.name)
+      )
     );
 
     // set remaining dropdown content values
-    return filters.filter((filterTag) => !this.value.includes(filterTag.name));
+    return this.filtersWithChildren.filter(
+      (filterTag) => !this.value.includes(filterTag.name)
+    );
   },
 
   select(value) {
@@ -47,11 +52,11 @@ export default MultiSelectComponent.extend({
   },
 
   setSelectedContentToFilter() {
-    const allFilters = this.site.global_filters;
-    const filters = this.loadAdditionalFilters(allFilters);
     this.set(
       "selectedContent",
-      filters.filter((filterTag) => this.value.includes(filterTag.name))
+      this.filtersWithChildren.filter((filterTag) =>
+        this.value.includes(filterTag.name)
+      )
     );
   },
 
@@ -117,41 +122,16 @@ export default MultiSelectComponent.extend({
   },
 
   loadAdditionalFilters(globalFilters) {
-    let filters = [
+    let children = [];
+    globalFilters.forEach((gf) => {
+      children.push(...Object.values(gf.filter_children));
+    });
+    const filters = [
       ...globalFilters.filter(
-        (f) => !["capturing-reality", "fortnite"].includes(f.name)
+        (f) => Object.keys(f.filter_children).length === 0
       ),
-      {
-        name: "reality-capture",
-        icon: "gf-reality-capture",
-        alternate_name: null,
-        parent: "capturing-reality", // parent property used in unreal-global-filter-chooser-collection.js
-      },
-      {
-        name: "reality-scan",
-        icon: "gf-reality-capture",
-        alternate_name: null,
-        parent: "capturing-reality", // parent property used in unreal-global-filter-chooser-collection.js
-      },
+      ...children,
     ];
-
-    if (globalFilters.mapBy("name").includes("fortnite")) {
-      filters.push(
-        {
-          name: "fortnite-creative",
-          icon: "gf-fortnite-creative",
-          alternate_name: null,
-          parent: "fortnite", // parent property used in unreal-global-filter-chooser-collection.js
-        },
-        {
-          name: "unreal-editor-for-fortnite",
-          icon: "gf-unreal-editor-for-fortnite",
-          alternate_name: null,
-          parent: "fortnite", // parent property used in unreal-global-filter-chooser-collection.js
-        }
-      );
-    }
-
     return filters;
   },
 });

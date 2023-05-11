@@ -30,7 +30,7 @@ after_initialize do
     '../app/controllers/admin/filter_tags_controller.rb',
     '../app/models/filter_tag.rb',
     '../app/models/global_filter_topics_by_category_tag.rb',
-    '../app/serializers/filter_tag_serializer.rb',
+    '../app/serializers/filter_tag_detailed_serializer.rb',
     '../app/serializers/filter_tag_index_serializer.rb',
     '../jobs/scheduled/update_category_stats.rb',
     '../jobs/scheduled/update_global_filter_topics_by_category_tags.rb',
@@ -62,6 +62,9 @@ after_initialize do
          :constraints => StaffConstraint.new
     post '/admin/plugins/filter_tags/:tag/set_filter_children_for_tag' =>
            'global_filter/admin_filter_tags#set_filter_children_for_tag',
+         :constraints => StaffConstraint.new
+    delete '/admin/plugins/filter_tags/:tag/delete_filter_child_for_tag' =>
+           'global_filter/admin_filter_tags#delete_filter_child_for_tag',
          :constraints => StaffConstraint.new
   end
 

@@ -43,4 +43,12 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
     }
     filter_tag.update!(filter_children: filter_tag.filter_children.merge(updated_children))
   end
+
+  def delete_filter_child_for_tag
+    params.require([:tag, :child_tag])
+
+    filter_tag = GlobalFilter::FilterTag.find_by(name: params[:tag])
+    filter_tag.filter_children.delete(params[:child_tag])
+    filter_tag.update!(filter_children: filter_tag.filter_children)
+  end
 end

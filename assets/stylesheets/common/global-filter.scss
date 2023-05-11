@@ -68,8 +68,18 @@ ol.category-breadcrumb > li:nth-child(-n + 2) {
 
   .child-picker-spacer {
     width: 100%;
-    margin-bottom: 1rem;
+
+    summary,
+    input,
+    details {
+      width: 100%;
+      margin-bottom: 0.4rem;
+    }
   }
+}
+
+.no-header-margin {
+  margin: 0;
 }
 
 .alternate-filter-name-picker-wrapper {

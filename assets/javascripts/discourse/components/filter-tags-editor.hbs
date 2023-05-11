@@ -1,0 +1,44 @@
+<h3>{{i18n "global_filter.admin.alternate_name_picker_header"}}</h3>
+<p class="alternate-name-picker-description">
+  {{i18n "global_filter.admin.alternate_name_picker_description"}}
+</p>
+
+<div>
+  {{#each @filterTags as |filterTag|}}
+    <div class="global-filter-wrapper">
+      <h2>{{filterTag.name}}</h2>
+      <div class="alternate-filter-name-picker-wrapper">
+        <Admin::FilterAlternateName
+          @filterTag={{filterTag}}
+          @setAlternateNameForFilter={{this.setAlternateNameForFilter}}
+          @setAlternateComposerOnlyForFilter={{this.setAlternateComposerOnlyForFilter}}
+        />
+        <div>
+          <div class="alternate-filter-name-picker-wrapper">
+            <h3 class="no-header-margin">
+              {{i18n "global_filter.admin.filter_children"}}
+            </h3>
+          </div>
+          <Admin::FilterChildrenTable
+            @filterTag={{filterTag}}
+            @editFilterChildForFilter={{this.editFilterChildForFilter}}
+            @deleteFilterChildForFilter={{this.deleteFilterChildForFilter}}
+          />
+          <Admin::FilterChildrenForm
+            @filterTag={{filterTag}}
+            @filterChildName={{this.filterChildName}}
+            @setFilterChildName={{this.setFilterChildName}}
+            @toggleChildMenuFor={{this.toggleChildMenuFor}}
+            @editingChildFor={{this.editingChildFor}}
+            @alternateChildTagName={{this.alternateChildTagName}}
+            @iconClass={{this.iconClass}}
+            @setFilterChildrenForFilter={{this.setFilterChildrenForFilter}}
+            @cancelSetFilterChildrenForFilter={{this.cancelSetFilterChildrenForFilter}}
+            @setCreateChild={{this.setCreateChild}}
+          />
+        </div>
+      </div>
+    </div>
+    <br />
+  {{/each}}
+</div>

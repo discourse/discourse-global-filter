@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class GlobalFilter::FilterTagsController < ::ApplicationController
-
   def assign
     params.require(:tag)
 

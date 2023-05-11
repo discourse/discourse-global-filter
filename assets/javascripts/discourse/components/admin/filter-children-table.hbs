@@ -1,0 +1,48 @@
+<table class="global-filter-wrapper">
+  <thead>
+    <tr>
+      <th>{{i18n "global_filter.admin.filter_child_name"}}</th>
+      <th>
+        {{i18n "global_filter.admin.alternate_child_tag_name"}}
+      </th>
+      <th>{{i18n "global_filter.admin.icon_class"}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each-in @filterTag.filter_children as |name values|}}
+      <tr>
+        <td>{{name}}</td>
+        <td>
+          {{if
+            values.alternate_name
+            values.alternate_name
+            (i18n "global_filter.admin.filter_child_no_alternate_name")
+          }}
+        </td>
+        <td>
+          {{if
+            values.icon
+            values.icon
+            (i18n "global_filter.admin.filter_child_no_icon")
+          }}
+        </td>
+        <td>
+          <DButton
+            @ariaLabel="global_filter.admin.edit_filter_child"
+            @action={{(fn @editFilterChildForFilter @filterTag.name values)}}
+            @icon="pencil-alt"
+          />
+          <DButton
+            @ariaLabel="global_filter.admin.delete_filter_child"
+            @action={{(fn
+              @deleteFilterChildForFilter @filterTag.name values.name
+            )}}
+            @icon="far-trash-alt"
+          />
+        </td>
+      </tr>
+    {{else}}
+      {{i18n "global_filter.admin.no_filter_children"}}
+    {{/each-in}}
+  </tbody>
+</table>

@@ -1,8 +1,5 @@
 <h2>{{i18n "global_filter.admin.title"}}</h2>
-
-<AlternateFilterNamePicker @filterTags={{model.filter_tags}} />
-
-<br />
+<FilterTagsEditor @filterTags={{model.filter_tags}} />
 <h3>{{i18n "global_filter.admin.category_matrix"}}</h3>
 <div class="filter-tag-admin-pane">
   <CategoryMatrix
