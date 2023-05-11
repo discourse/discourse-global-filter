@@ -22,6 +22,7 @@ en:
         icon_class: "Icon class"
         icon_class_description: "The icon class to be applied to filter child within the composer selector"
         icon_class_placeholder: "Add icon class name..."
+        filter_child_no_icon: "No icon class"
         create_filter_child: "Create filter child"
         delete_filter_child: "Delete filter child"
         edit_filter_child: "Edit filter child"
