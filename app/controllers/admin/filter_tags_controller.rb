@@ -47,10 +47,10 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
       format.html { render body: nil }
       format.json {
         render_serialized(
-      { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
-      GlobalFilter::FilterTagIndexSerializer,
-      root: false
-    )
+          { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
+          GlobalFilter::FilterTagIndexSerializer,
+          root: false
+        )
       }
     end
   end
@@ -64,11 +64,12 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
 
     respond_to do |format|
       format.html { render body: nil }
-      format.json { render_serialized(
-      { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
-      GlobalFilter::FilterTagIndexSerializer,
-      root: false
-    )
+      format.json {
+        render_serialized(
+          { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
+          GlobalFilter::FilterTagIndexSerializer,
+          root: false
+        )
       }
     end
   end
