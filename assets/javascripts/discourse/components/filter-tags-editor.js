@@ -76,7 +76,7 @@ export default class FilterTagsEditor extends Component {
             ? this.filterChildName
             : this.filterChildName?.[0],
           alternate_child_tag_name: this.alternateChildTagName,
-          icon_class: this.iconClass,
+          icon: this.icon,
         },
         type: "POST",
       }

@@ -13,4 +13,8 @@ class FilterTagDetailedSerializer < ApplicationSerializer
   def categories
     Category.secured(scope).where(id: object[:category_ids].split("|"))
   end
+
+  def include_filter_children?
+    object.filter_children.present?
+  end
 end

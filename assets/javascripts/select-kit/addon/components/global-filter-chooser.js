@@ -129,10 +129,10 @@ export default MultiSelectComponent.extend({
   loadAdditionalFilters(globalFilters) {
     let children = [];
     globalFilters.forEach((gf) => {
-      children.push(...Object.values(gf.filter_children));
+      gf.filter_children && children.push(...Object.values(gf.filter_children));
     });
     const filters = this.siteSettings.replace_global_filter_with_children
-      ? globalFilters.filter((f) => Object.keys(f.filter_children).length === 0)
+      ? globalFilters.filter((f) => !f.filter_children)
       : globalFilters;
     return [...filters, ...children];
   },
