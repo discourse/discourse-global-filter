@@ -20,8 +20,8 @@ acceptance(
       filter_tags_total_topic_count: { support: 1, feature: 1 },
       can_tag_topics: true,
       global_filters: [
-        { id: 1, name: "support", filter_children: {} },
-        { id: 2, name: "feature", filter_children: {} },
+        { id: 1, name: "support" },
+        { id: 2, name: "feature" },
       ],
     });
 

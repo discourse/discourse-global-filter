@@ -25,7 +25,6 @@ module(
           total_topic_count: 1,
           alternate_name: "support-alt-name",
           alternate_composer_only: false,
-          filter_children: {},
         },
         {
           id: 6,
@@ -34,7 +33,6 @@ module(
           total_topic_count: 6,
           alternate_name: "feature-alt-name",
           alternate_composer_only: false,
-          filter_children: {},
         },
         {
           id: 7,
