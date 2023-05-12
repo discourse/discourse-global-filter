@@ -9,3 +9,6 @@ plugins:
   display_subcategories_for_tag_intersection:
     default: false
     client: true
+  replace_global_filter_with_children:
+    default: false
+    client: true

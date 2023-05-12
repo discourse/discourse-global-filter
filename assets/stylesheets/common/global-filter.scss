@@ -63,48 +63,70 @@ ol.category-breadcrumb > li:nth-child(-n + 2) {
   }
 }
 
-.alternate-filter-name-picker-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-}
+.admin-plugins {
+  .global-filter-wrapper {
+    border-left: 2px solid var(--primary);
+    padding-left: 1rem;
+    margin-left: 0.1rem;
 
-.alternate-name-picker-description {
-  margin-bottom: 2rem;
-  font-size: var(--font-down-2);
-}
+    .child-picker-spacer {
+      width: 100%;
 
-.alternate-name-picker-label {
-  font-size: var(--font-down-1);
-}
-
-.composer-only-wrapper {
-  display: flex;
-  .composer-only-input {
-    margin: 0 3px 5px 0;
-  }
-}
-
-.filter-tag-admin-pane {
-  .global-filter--c-depth-0 {
-    border-top: 2px solid var(--primary-low);
-    background-color: var(--primary-very-low);
+      summary,
+      input,
+      details {
+        width: 100%;
+        margin-bottom: 0.4rem;
+      }
+    }
   }
 
-  .global-filter--c-depth-1 td:first-child {
-    padding-left: 20px;
+  .global-filter-table-wrapper {
+    margin-bottom: 1rem;
   }
 
-  .global-filter--c-depth-2 td:first-child {
-    padding-left: 40px;
+  .no-header-margin {
+    margin: 0;
   }
 
-  table.sticky-header {
-    thead {
-      position: sticky;
-      top: var(--header-offset, 60px);
-      z-index: 2;
-      background-color: var(--secondary);
+  .alternate-filter-name-picker-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .global-filter-label {
+    font-size: var(--font-down-1);
+  }
+
+  .composer-only-wrapper {
+    display: flex;
+    .composer-only-input {
+      margin: 0 3px 5px 0;
+    }
+  }
+
+  .filter-tag-admin-pane {
+    .global-filter--c-depth-0 {
+      border-top: 2px solid var(--primary-low);
+      background-color: var(--primary-very-low);
+    }
+
+    .global-filter--c-depth-1 td:first-child {
+      padding-left: 20px;
+    }
+
+    .global-filter--c-depth-2 td:first-child {
+      padding-left: 40px;
+    }
+
+    table.sticky-header {
+      thead {
+        position: sticky;
+        top: var(--header-offset, 60px);
+        z-index: 2;
+        background-color: var(--secondary);
+      }
     }
   }
 }

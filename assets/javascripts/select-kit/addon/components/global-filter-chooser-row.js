@@ -1,9 +1,14 @@
 import SelectKitRowComponent from "select-kit/components/select-kit/select-kit-row";
 import { computed } from "@ember/object";
 import I18n from "I18n";
+import { escapeExpression } from "discourse/lib/utilities";
 
 export default SelectKitRowComponent.extend({
   classNames: ["global-filter-chooser-row"],
+
+  get icons() {
+    return [escapeExpression(this.item.icon) || `gf-${this.rowName}`];
+  },
 
   @computed("rowLabel", "item.label", "title", "rowName")
   get label() {

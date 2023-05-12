@@ -117,7 +117,7 @@ acceptance(
       );
     });
 
-    test("editing work", async function (assert) {
+    test("editing works", async function (assert) {
       await visit("/t/internationalization-localization/280");
       await click(".btn-flat.show-more-actions");
       await click(".btn-flat.edit");

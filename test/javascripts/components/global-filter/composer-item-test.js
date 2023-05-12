@@ -1,5 +1,5 @@
 import { click, visit } from "@ember/test-helpers";
-import { acceptance } from "discourse/tests/helpers/qunit-helpers";
+import { acceptance, query } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
 
@@ -9,14 +9,26 @@ acceptance(
     needs.user();
     needs.settings({
       discourse_global_filter_enabled: true,
-      global_filters: "support|feature",
+      global_filters: "support|feature|foo",
     });
     needs.site({
       can_tag_topics: true,
-      filter_tags_total_topic_count: { support: 1, feature: 1 },
+      filter_tags_total_topic_count: { support: 1, feature: 1, foo: 1 },
       global_filters: [
         { id: 1, name: "support" },
         { id: 2, name: "feature" },
+        {
+          id: 3,
+          name: "foo",
+          filter_children: {
+            "foo-child": {
+              name: "foo-child",
+              icon: "foo-custom-icon",
+              parent: "foo",
+              alternate_name: null,
+            },
+          },
+        },
       ],
     });
 
@@ -92,6 +104,19 @@ acceptance(
         composer.get("model").tags,
         ["feature"],
         "expected filter is present"
+      );
+    });
+
+    test("custom icon is used when present for a filter child", async function (assert) {
+      await visit("/");
+      await click("#create-topic");
+      await selectKit(".global-filter-chooser").expand();
+      assert.strictEqual(
+        query(
+          ".global-filter-chooser .select-kit-collection li[data-name=foo-child] use"
+        ).getAttribute("href"),
+        "#foo-custom-icon",
+        "select kit item has the correct custom icon"
       );
     });
   }
