@@ -43,19 +43,16 @@ module(
           total_topic_count: 6,
           alternate_name: null,
           alternate_composer_only: false,
-          filter_children: {},
+          filter_children: {
+            "foo-child": {
+              name: "foo-child",
+              icon: null,
+              alternate_name: "foo-child-alt-name",
+              parent: "foo",
+            },
+          },
         },
       ]);
-    });
-
-    test("displays global filters", async function (assert) {
-      this.set("value", ["support"]);
-      await render(hbs`<GlobalFilterChooser @value={{this.value}} />`);
-
-      await this.subject.expand();
-
-      assert.strictEqual(this.subject.rowByIndex(0).value(), "feature");
-      assert.strictEqual(this.subject.rowByIndex(1).value(), "foo");
     });
 
     test("displays selected value", async function (assert) {
@@ -65,7 +62,23 @@ module(
       assert.strictEqual(this.subject.header().name(), "support");
     });
 
-    test("displays alternate name (when present) in the dropdown", async function (assert) {
+    test("displays alternate global-filter name (when present) in the dropdown", async function (assert) {
+      this.set("value", ["random"]);
+      await render(hbs`<GlobalFilterChooser @value={{this.value}} />`);
+
+      await this.subject.expand();
+
+      assert.strictEqual(
+        this.subject.rowByIndex(0).label(),
+        "support-alt-name"
+      );
+      assert.strictEqual(
+        this.subject.rowByIndex(1).label(),
+        "feature-alt-name"
+      );
+    });
+
+    test("displays filter children", async function (assert) {
       this.set("value", ["support"]);
       await render(hbs`<GlobalFilterChooser @value={{this.value}} />`);
 
@@ -76,6 +89,27 @@ module(
         "feature-alt-name"
       );
       assert.strictEqual(this.subject.rowByIndex(1).label(), "foo");
+      assert.strictEqual(
+        this.subject.rowByIndex(2).label(),
+        "foo-child-alt-name"
+      );
+    });
+
+    test("replaces parent with children when replace_global_filter_with_children is true", async function (assert) {
+      this.set("value", ["support"]);
+      this.siteSettings.replace_global_filter_with_children = true;
+      await render(hbs`<GlobalFilterChooser @value={{this.value}} />`);
+
+      await this.subject.expand();
+
+      assert.strictEqual(
+        this.subject.rowByIndex(0).label(),
+        "feature-alt-name"
+      );
+      assert.strictEqual(
+        this.subject.rowByIndex(1).label(),
+        "foo-child-alt-name"
+      );
     });
   }
 );

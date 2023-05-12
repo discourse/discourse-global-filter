@@ -7,17 +7,14 @@ export default MultiSelectComponent.extend({
   classNames: ["global-filter-chooser"],
   valueProperty: "name",
   selectKitOptions: {
-    none: "global_filter.composer_dropdown.none",
+    selectedChoiceComponent: "global-filter/selected-choice",
+    headerComponent: "global-filter/header",
   },
 
   didInsertElement() {
     this._super(...arguments);
     this.setCategoriesForFilter();
     this.setSelectedContentToFilter();
-  },
-
-  modifyComponentForRow() {
-    return "global-filter-chooser-row";
   },
 
   get filtersWithChildren() {
@@ -134,12 +131,13 @@ export default MultiSelectComponent.extend({
     globalFilters.forEach((gf) => {
       children.push(...Object.values(gf.filter_children));
     });
-    const filters = [
-      ...globalFilters.filter(
-        (f) => Object.keys(f.filter_children).length === 0
-      ),
-      ...children,
-    ];
-    return filters;
+    const filters = this.siteSettings.replace_global_filter_with_children
+      ? globalFilters.filter((f) => Object.keys(f.filter_children).length === 0)
+      : globalFilters;
+    return [...filters, ...children];
+  },
+
+  modifyComponentForRow() {
+    return "global-filter-chooser-row";
   },
 });

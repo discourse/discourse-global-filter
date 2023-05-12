@@ -1,0 +1,12 @@
+<div class="select-kit-header-wrapper">
+  {{#if this.selectedContent}}
+    {{#each this.selectedContent as |item|}}
+      <GlobalFilter::SelectedChoiceName @item={{item}} />
+    {{/each}}
+  {{else}}
+    <span class="no-selection">
+      {{i18n "global_filter.composer_dropdown.none"}}
+    </span>
+  {{/if}}
+  {{d-icon this.caretIcon class="caret-icon"}}
+</div>
