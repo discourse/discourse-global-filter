@@ -9,11 +9,11 @@ acceptance(
     needs.user();
     needs.settings({
       discourse_global_filter_enabled: true,
-      global_filters: "support|feature|foo|bar",
+      global_filters: "support|feature|foo",
     });
     needs.site({
       can_tag_topics: true,
-      filter_tags_total_topic_count: { support: 1, feature: 1, foo: 1, bar: 1 },
+      filter_tags_total_topic_count: { support: 1, feature: 1, foo: 1 },
       global_filters: [
         { id: 1, name: "support", filter_children: {} },
         { id: 2, name: "feature", filter_children: {} },
@@ -29,7 +29,6 @@ acceptance(
             },
           },
         },
-        { id: 4, name: "bar", filter_children: {} },
       ],
     });
 
