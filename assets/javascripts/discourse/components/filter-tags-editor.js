@@ -10,7 +10,7 @@ export default class FilterTagsEditor extends Component {
   @tracked editingChildFor;
   @tracked filterChildName;
   @tracked alternateChildTagName;
-  @tracked iconClass;
+  @tracked icon;
   @tracked filterTags = this.args.filterTags;
 
   @action
@@ -29,7 +29,7 @@ export default class FilterTagsEditor extends Component {
     this.editingChildFor = filter;
     this.filterChildName = childValues.name;
     this.alternateChildTagName = childValues.alternate_name;
-    this.iconClass = childValues.icon;
+    this.icon = childValues.icon;
   }
 
   @action
@@ -38,7 +38,7 @@ export default class FilterTagsEditor extends Component {
     this.editingChildFor = null;
     this.filterChildName = null;
     this.alternateChildTagName = null;
-    this.iconClass = null;
+    this.icon = null;
   }
 
   @debounce(500)
@@ -87,7 +87,7 @@ export default class FilterTagsEditor extends Component {
         this.toggleChildMenuFor = null;
         this.filterChildName = null;
         this.alternateChildTagName = null;
-        this.iconClass = null;
+        this.icon = null;
       });
   }
 
@@ -106,7 +106,7 @@ export default class FilterTagsEditor extends Component {
         this.toggleChildMenuFor = null;
         this.filterChildName = null;
         this.alternateChildTagName = null;
-        this.iconClass = null;
+        this.icon = null;
       });
   }
 }
