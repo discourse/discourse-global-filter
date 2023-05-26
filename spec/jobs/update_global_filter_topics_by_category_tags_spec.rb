@@ -35,6 +35,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
         "slug" => category_0_topic_0.slug,
         "user" => {
           "username" => user.username,
+          "name" => user.name,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name
         }
@@ -46,6 +47,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
         "slug" => category_0_topic_1.slug,
         "user" => {
           "username" => user.username,
+          "name" => user.name,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name
         }
@@ -59,6 +61,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
         "slug" => category_1_topic_0.slug,
         "user" => {
           "username" => user.username,
+          "name" => user.name,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name
         }
@@ -70,6 +73,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
         "slug" => category_1_topic_1.slug,
         "user" => {
           "username" => user.username,
+          "name" => user.name,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name
         }

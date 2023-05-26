@@ -21,6 +21,7 @@ module Jobs
             created_at: topic.created_at,
             user: {
               username: topic.user.username,
+              name: topic.user.name,
               avatar_template: topic.user.avatar_template,
               primary_group_name: topic.user.primary_group&.name
             }
