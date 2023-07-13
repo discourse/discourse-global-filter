@@ -3,7 +3,6 @@
 require "rails_helper"
 
 RSpec.describe GlobalFilter::FilterTagIndexSerializer do
-
   let(:filter_tag) { Fabricate(:filter_tag) }
 
   before do
@@ -13,7 +12,8 @@ RSpec.describe GlobalFilter::FilterTagIndexSerializer do
   end
 
   it "includes filter_tags" do
-    json = GlobalFilter::FilterTagIndexSerializer.new(filter_tags: [filter_tag], root: false).as_json
+    json =
+      GlobalFilter::FilterTagIndexSerializer.new(filter_tags: [filter_tag], root: false).as_json
     filter_tag_response = json[:filter_tag_index][:filter_tags]
     expect(filter_tag_response.pluck(:id)).to eq([filter_tag.id])
     expect(filter_tag_response.pluck(:name)).to eq([filter_tag.name])
@@ -21,8 +21,11 @@ RSpec.describe GlobalFilter::FilterTagIndexSerializer do
   end
 
   it "includes categories for filter_tags" do
-    json = GlobalFilter::FilterTagIndexSerializer.new(filter_tags: [filter_tag], root: false).as_json
+    json =
+      GlobalFilter::FilterTagIndexSerializer.new(filter_tags: [filter_tag], root: false).as_json
     filter_tag_response = json[:filter_tag_index][:filter_tags][0]
-    expect(filter_tag_response[:categories].pluck(:id)).to eq(filter_tag[:category_ids].split("|").map(&:to_i))
+    expect(filter_tag_response[:categories].pluck(:id)).to eq(
+      filter_tag[:category_ids].split("|").map(&:to_i),
+    )
   end
 end

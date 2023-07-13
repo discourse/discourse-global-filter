@@ -38,8 +38,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "name" => user.name,
           "id" => user.id,
           "avatar_template" => user.avatar_template,
-          "primary_group_name" => group.name
-        }
+          "primary_group_name" => group.name,
+        },
       )
 
       expect(category_0_mapping[tag_1.name]).to include(
@@ -51,8 +51,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "name" => user.name,
           "id" => user.id,
           "avatar_template" => user.avatar_template,
-          "primary_group_name" => group.name
-        }
+          "primary_group_name" => group.name,
+        },
       )
 
       category_1_mapping = category_1.global_filter_topics_by_category_tag.topic_tag_mapping
@@ -66,8 +66,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "name" => user.name,
           "id" => user.id,
           "avatar_template" => user.avatar_template,
-          "primary_group_name" => group.name
-        }
+          "primary_group_name" => group.name,
+        },
       )
 
       expect(category_1_mapping[tag_1.name]).to include(
@@ -79,10 +79,9 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "name" => user.name,
           "id" => user.id,
           "avatar_template" => user.avatar_template,
-          "primary_group_name" => group.name
-        }
+          "primary_group_name" => group.name,
+        },
       )
-
     end
   end
 end

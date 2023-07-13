@@ -6,16 +6,15 @@
 # authors: Discourse
 # url: https://github.com/discourse/discourse-global-filter
 # required_version: 2.7.0
-# transpile_js: true
 
 enabled_site_setting :discourse_global_filter_enabled
 
-register_asset 'stylesheets/common/global-filter.scss'
+register_asset "stylesheets/common/global-filter.scss"
 
 after_initialize do
   module ::GlobalFilter
     PLUGIN_NAME ||= "discourse-global-filter"
-    GLOBAL_FILTER_PREFERENCE ||= 'global_filter_preference'
+    GLOBAL_FILTER_PREFERENCE ||= "global_filter_preference"
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
@@ -25,47 +24,48 @@ after_initialize do
 
   add_admin_route "global_filter.admin.title", "filter_tags"
 
-  [
-    '../app/controllers/filter_tags_controller.rb',
-    '../app/controllers/admin/filter_tags_controller.rb',
-    '../app/models/filter_tag.rb',
-    '../app/models/global_filter_topics_by_category_tag.rb',
-    '../app/serializers/filter_tag_detailed_serializer.rb',
-    '../app/serializers/filter_tag_index_serializer.rb',
-    '../jobs/scheduled/update_category_stats.rb',
-    '../jobs/scheduled/update_global_filter_topics_by_category_tags.rb',
-    '../lib/category_extension.rb',
-    '../lib/category_list_serializer_extension.rb',
-    '../lib/category_detailed_serializer_extension.rb',
-    '../lib/category_list_extension.rb',
+  %w[
+    ../app/controllers/filter_tags_controller.rb
+    ../app/controllers/admin/filter_tags_controller.rb
+    ../app/models/filter_tag.rb
+    ../app/models/global_filter_topics_by_category_tag.rb
+    ../app/serializers/filter_tag_detailed_serializer.rb
+    ../app/serializers/filter_tag_index_serializer.rb
+    ../jobs/scheduled/update_category_stats.rb
+    ../jobs/scheduled/update_global_filter_topics_by_category_tags.rb
+    ../lib/category_extension.rb
+    ../lib/category_list_serializer_extension.rb
+    ../lib/category_detailed_serializer_extension.rb
+    ../lib/category_list_extension.rb
   ].each { |path| load File.expand_path(path, __FILE__) }
 
   GlobalFilter::Engine.routes.draw do
-    put '/filter_tags/:tag/assign' => 'filter_tags#assign'
-    get '/filter_tags/categories_for_current_filter' => 'filter_tags#categories_for_current_filter'
-    get '/filter_tags/categories_for_filter_tags' => 'filter_tags#categories_for_filter_tags'
+    put "/filter_tags/:tag/assign" => "filter_tags#assign"
+    get "/filter_tags/categories_for_current_filter" => "filter_tags#categories_for_current_filter"
+    get "/filter_tags/categories_for_filter_tags" => "filter_tags#categories_for_filter_tags"
   end
 
   Discourse::Application.routes.prepend do
-    mount ::GlobalFilter::Engine, at: '/global_filter'
-    get "/admin/plugins/filter_tags" =>
-          "global_filter/admin_filter_tags#index",
+    mount ::GlobalFilter::Engine, at: "/global_filter"
+    get "/admin/plugins/filter_tags" => "global_filter/admin_filter_tags#index",
         :constraints => StaffConstraint.new
-    post '/admin/plugins/filter_tags/:tag/set_category_ids_for_tag' =>
-           'global_filter/admin_filter_tags#set_category_ids_for_tag',
+    post "/admin/plugins/filter_tags/:tag/set_category_ids_for_tag" =>
+           "global_filter/admin_filter_tags#set_category_ids_for_tag",
          :constraints => StaffConstraint.new
-    post '/admin/plugins/filter_tags/:tag/set_alternate_name_for_tag' =>
-           'global_filter/admin_filter_tags#set_alternate_name_for_tag',
+    post "/admin/plugins/filter_tags/:tag/set_alternate_name_for_tag" =>
+           "global_filter/admin_filter_tags#set_alternate_name_for_tag",
          :constraints => StaffConstraint.new
-    post '/admin/plugins/filter_tags/:tag/set_alternate_composer_only_for_tag' =>
-           'global_filter/admin_filter_tags#set_alternate_composer_only_for_tag',
+    post "/admin/plugins/filter_tags/:tag/set_alternate_composer_only_for_tag" =>
+           "global_filter/admin_filter_tags#set_alternate_composer_only_for_tag",
          :constraints => StaffConstraint.new
-    post '/admin/plugins/filter_tags/:tag/set_filter_children_for_tag' =>
-           'global_filter/admin_filter_tags#set_filter_children_for_tag',
-         :constraints => StaffConstraint.new, :format => :json
-    delete '/admin/plugins/filter_tags/:tag/delete_filter_child_for_tag' =>
-           'global_filter/admin_filter_tags#delete_filter_child_for_tag',
-           :constraints => StaffConstraint.new, :format => :json
+    post "/admin/plugins/filter_tags/:tag/set_filter_children_for_tag" =>
+           "global_filter/admin_filter_tags#set_filter_children_for_tag",
+         :constraints => StaffConstraint.new,
+         :format => :json
+    delete "/admin/plugins/filter_tags/:tag/delete_filter_child_for_tag" =>
+             "global_filter/admin_filter_tags#delete_filter_child_for_tag",
+           :constraints => StaffConstraint.new,
+           :format => :json
   end
 
   register_editable_user_custom_field(GlobalFilter::GLOBAL_FILTER_PREFERENCE)
@@ -76,7 +76,9 @@ after_initialize do
     Category.class_eval { prepend GlobalFilter::CategoryExtension }
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
     CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
-    CategoryDetailedSerializer.class_eval { prepend GlobalFilter::CategoryDetailedSerializerExtension }
+    CategoryDetailedSerializer.class_eval do
+      prepend GlobalFilter::CategoryDetailedSerializerExtension
+    end
   end
 
   add_to_serializer(:site, :global_filters) do
@@ -88,14 +90,13 @@ after_initialize do
 
   add_to_serializer(:site, :filter_tags_total_topic_count) do
     counts = {}
-    GlobalFilter::FilterTag.find_each do |gft|
-      counts[gft.name] = gft.total_topic_count
-    end
+    GlobalFilter::FilterTag.find_each { |gft| counts[gft.name] = gft.total_topic_count }
     counts
   end
 
   add_to_serializer(:category_detailed, :filter_tag) do
-    scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
+    scope.user&.custom_fields&.dig("global_filter_preference") || scope.request.params[:tag] ||
+      GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_detailed, :posts_week) do
@@ -109,7 +110,9 @@ after_initialize do
   end
 
   add_to_serializer(:category_list, :filter_tag) do
-    object.instance_variable_get("@options")&.dig(:tag) || scope.user&.custom_fields&.dig('global_filter_preference') || scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
+    object.instance_variable_get("@options")&.dig(:tag) ||
+      scope.user&.custom_fields&.dig("global_filter_preference") || scope.request.params[:tag] ||
+      GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_list, :subcategories) do
@@ -124,7 +127,9 @@ after_initialize do
       tags_to_destroy = old_values.select { |tag| !new_values.include?(tag) }
       tags_to_create = new_values.select { |tag| !old_values.include?(tag) }
 
-      tags_to_create.each { |tag| GlobalFilter::FilterTag.create!(name: tag) } if tags_to_create.any?
+      if tags_to_create.any?
+        tags_to_create.each { |tag| GlobalFilter::FilterTag.create!(name: tag) }
+      end
       GlobalFilter::FilterTag.where(name: tags_to_destroy).destroy_all if tags_to_destroy.any?
     end
   end

@@ -10,19 +10,19 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   end
 
   def topics_day
-    total_count_for_category_per('topics_day')
+    total_count_for_category_per("topics_day")
   end
 
   def topics_week
-    total_count_for_category_per('topics_week')
+    total_count_for_category_per("topics_week")
   end
 
   def topics_month
-    total_count_for_category_per('topics_month')
+    total_count_for_category_per("topics_month")
   end
 
   def topics_year
-    total_count_for_category_per('topics_year')
+    total_count_for_category_per("topics_year")
   end
 
   def total_count_for_category_per(time)
@@ -31,7 +31,14 @@ module GlobalFilter::CategoryDetailedSerializerExtension
 
   def subcategory_list
     filter_tag_ids = GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
-    filtered_categories = object.subcategory_list.present? ? object.subcategory_list.filter { |c| filter_tag_ids.include?(c.id) } : []
+    filtered_categories =
+      (
+        if object.subcategory_list.present?
+          object.subcategory_list.filter { |c| filter_tag_ids.include?(c.id) }
+        else
+          []
+        end
+      )
     filtered_categories
   end
 end

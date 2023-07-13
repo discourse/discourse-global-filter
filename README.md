@@ -1,4 +1,4 @@
-# **Plugin Name** Plugin
+# discourse-global-filter
 
 **Plugin Summary**
 
