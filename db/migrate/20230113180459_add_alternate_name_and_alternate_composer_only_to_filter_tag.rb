@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddAternateNameAndAlternateComposerOnlyToFilterTag < ActiveRecord::Migration[
+class AddAlternateNameAndAlternateComposerOnlyToFilterTag < ActiveRecord::Migration[
   6.1
 ]
   def change

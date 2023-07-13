@@ -13,7 +13,7 @@ describe GlobalFilter::FilterTagsController do
   before { SiteSetting.discourse_global_filter_enabled = true }
 
   describe "#set_filter_children_for_tag" do
-    it "is not accessbile to non-staff users" do
+    it "is not accessible to non-staff users" do
       sign_in(user)
       post "/admin/plugins/filter_tags/#{tag.name}/set_filter_children_for_tag.json"
       expect(response.status).to eq(404)
