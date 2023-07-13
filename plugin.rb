@@ -41,10 +41,8 @@ after_initialize do
 
   GlobalFilter::Engine.routes.draw do
     put "/filter_tags/:tag/assign" => "filter_tags#assign"
-    get "/filter_tags/categories_for_current_filter" =>
-          "filter_tags#categories_for_current_filter"
-    get "/filter_tags/categories_for_filter_tags" =>
-          "filter_tags#categories_for_filter_tags"
+    get "/filter_tags/categories_for_current_filter" => "filter_tags#categories_for_current_filter"
+    get "/filter_tags/categories_for_filter_tags" => "filter_tags#categories_for_filter_tags"
   end
 
   Discourse::Application.routes.prepend do
@@ -71,17 +69,12 @@ after_initialize do
   end
 
   register_editable_user_custom_field(GlobalFilter::GLOBAL_FILTER_PREFERENCE)
-  register_user_custom_field_type(
-    GlobalFilter::GLOBAL_FILTER_PREFERENCE,
-    :string
-  )
+  register_user_custom_field_type(GlobalFilter::GLOBAL_FILTER_PREFERENCE, :string)
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
 
   reloadable_patch do
     Category.class_eval { prepend GlobalFilter::CategoryExtension }
-    CategoryListSerializer.class_eval do
-      prepend GlobalFilter::CategoryListSerializerExtension
-    end
+    CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
     CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
     CategoryDetailedSerializer.class_eval do
       prepend GlobalFilter::CategoryDetailedSerializerExtension
@@ -91,53 +84,39 @@ after_initialize do
   add_to_serializer(:site, :global_filters) do
     ActiveModel::ArraySerializer.new(
       GlobalFilter::FilterTag.all.order(:created_at),
-      each_serializer: FilterTagDetailedSerializer
+      each_serializer: FilterTagDetailedSerializer,
     ).as_json
   end
 
   add_to_serializer(:site, :filter_tags_total_topic_count) do
     counts = {}
-    GlobalFilter::FilterTag.find_each do |gft|
-      counts[gft.name] = gft.total_topic_count
-    end
+    GlobalFilter::FilterTag.find_each { |gft| counts[gft.name] = gft.total_topic_count }
     counts
   end
 
   add_to_serializer(:category_detailed, :filter_tag) do
-    scope.user&.custom_fields&.dig("global_filter_preference") ||
-      scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
+    scope.user&.custom_fields&.dig("global_filter_preference") || scope.request.params[:tag] ||
+      GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_detailed, :posts_week) do
-    object.global_filter_tags_category_stats[filter_tag]&.fetch(
-      "posts_week",
-      0
-    ) || 0
+    object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_week", 0) || 0
   end
 
-  CategoryList.register_included_association(
-    :global_filter_topics_by_category_tag
-  )
+  CategoryList.register_included_association(:global_filter_topics_by_category_tag)
 
-  add_to_serializer(
-    :category_detailed,
-    :most_recent_unpinned_category_topic_for_filter_tag
-  ) do
-    object.global_filter_topics_by_category_tag&.topic_tag_mapping&.dig(
-      filter_tag
-    )
+  add_to_serializer(:category_detailed, :most_recent_unpinned_category_topic_for_filter_tag) do
+    object.global_filter_topics_by_category_tag&.topic_tag_mapping&.dig(filter_tag)
   end
 
   add_to_serializer(:category_list, :filter_tag) do
     object.instance_variable_get("@options")&.dig(:tag) ||
-      scope.user&.custom_fields&.dig("global_filter_preference") ||
-      scope.request.params[:tag] || GlobalFilter::FilterTag.first.name
+      scope.user&.custom_fields&.dig("global_filter_preference") || scope.request.params[:tag] ||
+      GlobalFilter::FilterTag.first.name
   end
 
   add_to_serializer(:category_list, :subcategories) do
-    GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(
-      &:parent_category_id
-    )
+    GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(&:parent_category_id)
   end
 
   DiscourseEvent.on(:site_setting_changed) do |name, old_value, new_value|
@@ -151,9 +130,7 @@ after_initialize do
       if tags_to_create.any?
         tags_to_create.each { |tag| GlobalFilter::FilterTag.create!(name: tag) }
       end
-      if tags_to_destroy.any?
-        GlobalFilter::FilterTag.where(name: tags_to_destroy).destroy_all
-      end
+      GlobalFilter::FilterTag.where(name: tags_to_destroy).destroy_all if tags_to_destroy.any?
     end
   end
 end

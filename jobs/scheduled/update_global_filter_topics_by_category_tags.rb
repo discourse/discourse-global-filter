@@ -16,7 +16,7 @@ module Jobs
               topic =
                 ::GlobalFilter::GlobalFilterTopicsByCategoryTag.most_recent_unpinned_topic_for(
                   category_id: category.id,
-                  tag_id: tag.id
+                  tag_id: tag.id,
                 )
 
               next if topic.nil?
@@ -31,17 +31,15 @@ module Jobs
                   name: topic.user.name,
                   id: topic.user.id,
                   avatar_template: topic.user.avatar_template,
-                  primary_group_name: topic.user.primary_group&.name
-                }
+                  primary_group_name: topic.user.primary_group&.name,
+                },
               }
             end
 
           if category.global_filter_topics_by_category_tag.nil?
             category.build_global_filter_topics_by_category_tag
           end
-          category.global_filter_topics_by_category_tag.update(
-            topic_tag_mapping: topic_tag_mapping
-          )
+          category.global_filter_topics_by_category_tag.update(topic_tag_mapping: topic_tag_mapping)
         end
     end
   end

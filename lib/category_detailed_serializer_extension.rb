@@ -2,17 +2,11 @@
 
 module GlobalFilter::CategoryDetailedSerializerExtension
   def topic_count
-    object.global_filter_tags_category_stats[filter_tag]&.fetch(
-      "topic_count",
-      0
-    ) || 0
+    object.global_filter_tags_category_stats[filter_tag]&.fetch("topic_count", 0) || 0
   end
 
   def post_count
-    object.global_filter_tags_category_stats[filter_tag]&.fetch(
-      "posts_count",
-      0
-    ) || 0
+    object.global_filter_tags_category_stats[filter_tag]&.fetch("posts_count", 0) || 0
   end
 
   def topics_day
@@ -36,8 +30,7 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   end
 
   def subcategory_list
-    filter_tag_ids =
-      GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
+    filter_tag_ids = GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
     filtered_categories =
       (
         if object.subcategory_list.present?

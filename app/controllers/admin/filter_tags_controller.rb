@@ -5,7 +5,7 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
     render_serialized(
       { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
       GlobalFilter::FilterTagIndexSerializer,
-      root: false
+      root: false,
     )
   end
 
@@ -24,9 +24,7 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
   def set_alternate_composer_only_for_tag
     params.require(%i[tag alternate_composer_only])
     filter_tag = GlobalFilter::FilterTag.find_by(name: params[:tag])
-    filter_tag.update!(
-      alternate_composer_only: params[:alternate_composer_only] || nil
-    )
+    filter_tag.update!(alternate_composer_only: params[:alternate_composer_only] || nil)
   end
 
   def set_filter_children_for_tag
@@ -39,17 +37,15 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
         name: params[:child_tag],
         parent: params[:tag],
         icon: params[:icon] || nil,
-        alternate_name: params[:alternate_child_tag_name] || nil
-      }
+        alternate_name: params[:alternate_child_tag_name] || nil,
+      },
     }
-    filter_tag.update!(
-      filter_children: filter_tag.filter_children.merge(updated_children)
-    )
+    filter_tag.update!(filter_children: filter_tag.filter_children.merge(updated_children))
 
     render_serialized(
       { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
       GlobalFilter::FilterTagIndexSerializer,
-      root: false
+      root: false,
     )
   end
 
@@ -63,7 +59,7 @@ class GlobalFilter::AdminFilterTagsController < Admin::AdminController
     render_serialized(
       { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
       GlobalFilter::FilterTagIndexSerializer,
-      root: false
+      root: false,
     )
   end
 end

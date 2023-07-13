@@ -24,7 +24,7 @@ module Jobs
               .joins(:tags)
               .where(category_id: category_and_subcategory_ids)
               .where(
-                "topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)"
+                "topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)",
               )
               .where(tags: tag_id)
               .visible
@@ -42,28 +42,20 @@ module Jobs
           counts = {
             topic_count: category_and_subcategory_topics.count,
             posts_count: posts_count,
-            posts_week: posts_week
+            posts_week: posts_week,
           }
-          category_stats_for_filter =
-            category_stats_for_filter.deep_merge(counts)
+          category_stats_for_filter = category_stats_for_filter.deep_merge(counts)
 
           category_topic_totals = {
-            topics_year:
-              category_and_subcategory_topics.created_since(1.year.ago).count,
-            topics_month:
-              category_and_subcategory_topics.created_since(1.month.ago).count,
-            topics_week:
-              category_and_subcategory_topics.created_since(1.week.ago).count,
-            topics_day:
-              category_and_subcategory_topics.created_since(1.day.ago).count
+            topics_year: category_and_subcategory_topics.created_since(1.year.ago).count,
+            topics_month: category_and_subcategory_topics.created_since(1.month.ago).count,
+            topics_week: category_and_subcategory_topics.created_since(1.week.ago).count,
+            topics_day: category_and_subcategory_topics.created_since(1.day.ago).count,
           }
-          category_stats_for_filter =
-            category_stats_for_filter.deep_merge(category_topic_totals)
+          category_stats_for_filter = category_stats_for_filter.deep_merge(category_topic_totals)
 
           per_filter_category_stats =
-            per_filter_category_stats.deep_merge(
-              { gft => category_stats_for_filter }
-            )
+            per_filter_category_stats.deep_merge({ gft => category_stats_for_filter })
         end
 
         c.update!(global_filter_tags_category_stats: per_filter_category_stats)
@@ -80,11 +72,8 @@ module Jobs
         filter_category_ids.each do |fc|
           subcategory_ids = Category.find_by(id: fc)&.subcategories&.pluck(:id)
           category_ids_with_sub_categories =
-            category_ids_with_sub_categories.push(
-              *subcategory_ids
-            ) if subcategory_ids
-          category_ids_with_sub_categories =
-            category_ids_with_sub_categories << fc
+            category_ids_with_sub_categories.push(*subcategory_ids) if subcategory_ids
+          category_ids_with_sub_categories = category_ids_with_sub_categories << fc
         end
 
         category_and_subcategory_topics =
@@ -92,14 +81,12 @@ module Jobs
             .joins(:tags)
             .where(category_id: category_ids_with_sub_categories)
             .where(
-              "topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)"
+              "topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)",
             )
             .where(tags: tag_id)
             .visible
 
-        filter_tag.update!(
-          total_topic_count: category_and_subcategory_topics.count
-        )
+        filter_tag.update!(total_topic_count: category_and_subcategory_topics.count)
       end
     end
   end

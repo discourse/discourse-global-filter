@@ -3,20 +3,14 @@
 RSpec.shared_examples "#categories_and_topics" do
   fab!(:category) { Fabricate(:category) }
   fab!(:category_2) { Fabricate(:category) }
-  fab!(:category_2_subcategory) do
-    Fabricate(:category, parent_category_id: category_2.id)
-  end
+  fab!(:category_2_subcategory) { Fabricate(:category, parent_category_id: category_2.id) }
   fab!(:filter_tag) { Fabricate(:filter_tag) }
   fab!(:filter_tag_2) { Fabricate(:filter_tag) }
   let(:user) { nil }
 
   before do
     filter_tag.update(
-      category_ids: [
-        category.id,
-        category_2.id,
-        category_2_subcategory.id
-      ].join("|")
+      category_ids: [category.id, category_2.id, category_2_subcategory.id].join("|"),
     )
     filter_tag_2.update(category_ids: [category_2.id].join("|"))
     sign_in(user) if user

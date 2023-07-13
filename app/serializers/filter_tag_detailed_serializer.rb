@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
 class FilterTagDetailedSerializer < ApplicationSerializer
-  attributes :id,
-             :name,
-             :category_ids,
-             :alternate_name,
-             :alternate_composer_only,
-             :filter_children
+  attributes :id, :name, :category_ids, :alternate_name, :alternate_composer_only, :filter_children
 
   has_many :categories, serializer: BasicCategorySerializer, embed: :objects
 

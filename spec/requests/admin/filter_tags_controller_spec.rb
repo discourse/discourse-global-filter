@@ -23,39 +23,33 @@ describe GlobalFilter::FilterTagsController do
       sign_in(admin)
       post "/admin/plugins/filter_tags/#{tag.name}/set_filter_children_for_tag.json",
            params: {
-             child_tag: nil
+             child_tag: nil,
            }
 
       expect(response.status).to eq(400)
-      expect(response.body).to include(
-        "param is missing or the value is empty: child_tag"
-      )
+      expect(response.body).to include("param is missing or the value is empty: child_tag")
     end
 
     it "requires a filter child to be passed" do
       sign_in(admin)
       post "/admin/plugins/filter_tags/#{tag.name}/set_filter_children_for_tag.json",
            params: {
-             child_tag: nil
+             child_tag: nil,
            }
 
       expect(response.status).to eq(400)
-      expect(response.body).to include(
-        "param is missing or the value is empty: child_tag"
-      )
+      expect(response.body).to include("param is missing or the value is empty: child_tag")
     end
 
     it "requires a filter child to be passed" do
       sign_in(admin)
       post "/admin/plugins/filter_tags/#{tag.name}/set_filter_children_for_tag.json",
            params: {
-             child_tag: nil
+             child_tag: nil,
            }
 
       expect(response.status).to eq(400)
-      expect(response.body).to include(
-        "param is missing or the value is empty: child_tag"
-      )
+      expect(response.body).to include("param is missing or the value is empty: child_tag")
     end
 
     it "adds the filter child to filter_children" do
@@ -65,7 +59,7 @@ describe GlobalFilter::FilterTagsController do
            params: {
              child_tag: second_tag.name,
              icon: "foo",
-             alternate_child_tag_name: "foo"
+             alternate_child_tag_name: "foo",
            }
 
       expect(response.status).to eq(200)
@@ -77,16 +71,16 @@ describe GlobalFilter::FilterTagsController do
             "alternate_name" => "foo",
             "icon" => "foo",
             "name" => second_tag.name,
-            "parent" => filter_tag.name
-          }
-        }
+            "parent" => filter_tag.name,
+          },
+        },
       )
 
       post "/admin/plugins/filter_tags/#{filter_tag.name}/set_filter_children_for_tag.json",
            params: {
              child_tag: third_tag.name,
              icon: "foo",
-             alternate_child_tag_name: "foo"
+             alternate_child_tag_name: "foo",
            }
 
       filter_tag.reload
@@ -96,15 +90,15 @@ describe GlobalFilter::FilterTagsController do
             "alternate_name" => "foo",
             "icon" => "foo",
             "name" => second_tag.name,
-            "parent" => filter_tag.name
+            "parent" => filter_tag.name,
           },
           third_tag.name => {
             "alternate_name" => "foo",
             "icon" => "foo",
             "name" => third_tag.name,
-            "parent" => filter_tag.name
-          }
-        }
+            "parent" => filter_tag.name,
+          },
+        },
       )
     end
 
@@ -115,7 +109,7 @@ describe GlobalFilter::FilterTagsController do
            params: {
              child_tag: second_tag.name,
              icon: nil,
-             alternate_child_tag_name: nil
+             alternate_child_tag_name: nil,
            }
 
       expect(response.status).to eq(200)
@@ -126,16 +120,16 @@ describe GlobalFilter::FilterTagsController do
             "alternate_name" => nil,
             "icon" => nil,
             "name" => second_tag.name,
-            "parent" => filter_tag.name
-          }
-        }
+            "parent" => filter_tag.name,
+          },
+        },
       )
 
       post "/admin/plugins/filter_tags/#{filter_tag.name}/set_filter_children_for_tag.json",
            params: {
              child_tag: second_tag.name,
              icon: "foo",
-             alternate_child_tag_name: "foo"
+             alternate_child_tag_name: "foo",
            }
 
       filter_tag.reload
@@ -145,9 +139,9 @@ describe GlobalFilter::FilterTagsController do
             "alternate_name" => "foo",
             "icon" => "foo",
             "name" => second_tag.name,
-            "parent" => filter_tag.name
-          }
-        }
+            "parent" => filter_tag.name,
+          },
+        },
       )
     end
   end
