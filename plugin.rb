@@ -6,7 +6,6 @@
 # authors: Discourse
 # url: https://github.com/discourse/discourse-global-filter
 # required_version: 2.7.0
-# transpile_js: true
 
 enabled_site_setting :discourse_global_filter_enabled
 
