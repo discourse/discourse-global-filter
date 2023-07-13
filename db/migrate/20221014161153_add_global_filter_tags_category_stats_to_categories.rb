@@ -8,7 +8,6 @@ class AddGlobalFilterTagsCategoryStatsToCategories < ActiveRecord::Migration[
                :global_filter_tags_category_stats,
                :jsonb,
                null: false,
-               default: {
-               }
+               default: {}
   end
 end

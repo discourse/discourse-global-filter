@@ -6,7 +6,6 @@ class AddFilterChildrenToFilterTag < ActiveRecord::Migration[7.0]
                :filter_children,
                :jsonb,
                null: false,
-               default: {
-               }
+               default: {}
   end
 end

@@ -6,7 +6,6 @@ class AddCategoryStatsToFilterTagCategoryMappings < ActiveRecord::Migration[6.1]
                :category_stats,
                :jsonb,
                null: false,
-               default: {
-               }
+               default: {}
   end
 end
