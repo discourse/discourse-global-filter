@@ -14,12 +14,20 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
     fab!(:user) { Fabricate(:user, primary_group: group) }
 
     # Category 0 topics
-    fab!(:category_0_topic_0) { Fabricate(:topic, category: category_0, tags: [tag_0], user: user) }
-    fab!(:category_0_topic_1) { Fabricate(:topic, category: category_0, tags: [tag_1], user: user) }
+    fab!(:category_0_topic_0) do
+      Fabricate(:topic, category: category_0, tags: [tag_0], user: user)
+    end
+    fab!(:category_0_topic_1) do
+      Fabricate(:topic, category: category_0, tags: [tag_1], user: user)
+    end
 
     # Category 1 topics
-    fab!(:category_1_topic_0) { Fabricate(:topic, category: category_1, tags: [tag_0], user: user) }
-    fab!(:category_1_topic_1) { Fabricate(:topic, category: category_1, tags: [tag_1], user: user) }
+    fab!(:category_1_topic_0) do
+      Fabricate(:topic, category: category_1, tags: [tag_0], user: user)
+    end
+    fab!(:category_1_topic_1) do
+      Fabricate(:topic, category: category_1, tags: [tag_1], user: user)
+    end
 
     it "inserts the correct topic_tag_mappings for each category" do
       SiteSetting.global_filters = "#{tag_0.name}|#{tag_1.name}"
@@ -27,7 +35,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
 
       # For category one, make sure there are the proper 2 tag keys, and then check each to make sure the topic/user
       # attributes are correct
-      category_0_mapping = category_0.global_filter_topics_by_category_tag.topic_tag_mapping
+      category_0_mapping =
+        category_0.global_filter_topics_by_category_tag.topic_tag_mapping
       expect(category_0_mapping.keys).to match_array([tag_0.name, tag_1.name])
       expect(category_0_mapping[tag_0.name]).to include(
         "title" => category_0_topic_0.title,
@@ -55,7 +64,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
         }
       )
 
-      category_1_mapping = category_1.global_filter_topics_by_category_tag.topic_tag_mapping
+      category_1_mapping =
+        category_1.global_filter_topics_by_category_tag.topic_tag_mapping
       expect(category_1_mapping.keys).to match_array([tag_0.name, tag_1.name])
       expect(category_1_mapping[tag_0.name]).to include(
         "title" => category_1_topic_0.title,
@@ -82,7 +92,6 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "primary_group_name" => group.name
         }
       )
-
     end
   end
 end

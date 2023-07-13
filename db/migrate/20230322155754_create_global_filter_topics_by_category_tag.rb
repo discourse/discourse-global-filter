@@ -8,6 +8,8 @@ class CreateGlobalFilterTopicsByCategoryTag < ActiveRecord::Migration[7.0]
       t.timestamps
     end
 
-    add_index :global_filter_topics_by_category_tags, [:category_id], unique: true
+    add_index :global_filter_topics_by_category_tags,
+              [:category_id],
+              unique: true
   end
 end

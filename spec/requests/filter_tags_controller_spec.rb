@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe GlobalFilter::FilterTagsController do
   describe "#assign" do
@@ -14,16 +14,24 @@ describe GlobalFilter::FilterTagsController do
       expect(user.custom_fields).to be_empty
       put "/global_filter/filter_tags/#{tag.name}/assign.json"
       expect(response).to be_successful
-      expect(user.reload.custom_fields[:global_filter_preference]).to eq(tag.name)
+      expect(user.reload.custom_fields[:global_filter_preference]).to eq(
+        tag.name
+      )
     end
 
     it "updates global_filter_preference if preference exists" do
       SiteSetting.global_filters = tag_2.name
       sign_in(user)
-      UserCustomField.create(user: user, name: "global_filter_preference", value: tag.name)
+      UserCustomField.create(
+        user: user,
+        name: "global_filter_preference",
+        value: tag.name
+      )
       put "/global_filter/filter_tags/#{tag_2.name}/assign.json"
       expect(response).to be_successful
-      expect(user.reload.custom_fields[:global_filter_preference]).to eq(tag_2.name)
+      expect(user.reload.custom_fields[:global_filter_preference]).to eq(
+        tag_2.name
+      )
     end
 
     it "raises error if tag is not a valid global-filter" do
