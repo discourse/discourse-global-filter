@@ -102,7 +102,7 @@ acceptance(
 
       // includes default values
       assert.strictEqual(categories.rowByIndex(0).value(), "102");
-      assert.strictEqual(categories.rows().length, 2);
+      assert.strictEqual(categories.rows().length, 1);
     });
 
     test("does not limit options to GFT categories when filtering", async function (assert) {
