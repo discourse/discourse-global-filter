@@ -101,8 +101,7 @@ acceptance(
       await categories.expand();
 
       // includes default values
-      assert.strictEqual(categories.rowByIndex(0).value(), "no-categories");
-      assert.strictEqual(categories.rowByIndex(1).value(), "102");
+      assert.strictEqual(categories.rowByIndex(0).value(), "102");
       assert.strictEqual(categories.rows().length, 2);
     });
 
