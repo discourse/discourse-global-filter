@@ -48,20 +48,6 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
 
       api.modifySelectKit("category-drop").replaceContent((categoryDrop) => {
         if (
-          categoryDrop.selectKit.options.subCategory &&
-          (categoryDrop.value ||
-            !categoryDrop.selectKit.options.noSubcategories)
-        ) {
-          categoriesAndSubcategories.subcategories = [
-            {
-              id: NO_CATEGORIES_ID,
-              name: categoryDrop.noCategoriesLabel,
-            },
-            ...categoriesAndSubcategories.subcategories,
-          ];
-        }
-
-        if (
           (categoryDrop.value && !categoryDrop.editingCategory) ||
           (categoryDrop.selectKit.options.noSubcategories &&
             categoryDrop.selectKit.options.subCategory)
