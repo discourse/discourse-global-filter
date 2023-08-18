@@ -1,9 +1,6 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { ajax } from "discourse/lib/ajax";
-import {
-  ALL_CATEGORIES_ID,
-  NO_CATEGORIES_ID,
-} from "select-kit/components/category-drop";
+import { ALL_CATEGORIES_ID } from "select-kit/components/category-drop";
 
 const PLUGIN_ID = "discourse-global-filter-category-drop-options";
 
@@ -47,20 +44,6 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
       };
 
       api.modifySelectKit("category-drop").replaceContent((categoryDrop) => {
-        if (
-          categoryDrop.selectKit.options.subCategory &&
-          (categoryDrop.value ||
-            !categoryDrop.selectKit.options.noSubcategories)
-        ) {
-          categoriesAndSubcategories.subcategories = [
-            {
-              id: NO_CATEGORIES_ID,
-              name: categoryDrop.noCategoriesLabel,
-            },
-            ...categoriesAndSubcategories.subcategories,
-          ];
-        }
-
         if (
           (categoryDrop.value && !categoryDrop.editingCategory) ||
           (categoryDrop.selectKit.options.noSubcategories &&
