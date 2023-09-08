@@ -1,4 +1,4 @@
-import { run } from "@ember/runloop";
+import { next, run } from "@ember/runloop";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 
@@ -134,10 +134,9 @@ export default {
           url = `/tags/intersection/${filterPref}/${additionalTags}`;
           router.transitionTo(url, null, { queryParams });
         } else if (transition.to?.localName === "categories") {
-          transition.abort();
-          router.transitionTo(`/categories?tag=${filterPref}`);
+          next(() => router.transitionTo(`/categories?tag=${filterPref}`));
         } else if (transition.to?.name === "discovery.latest") {
-          router.transitionTo(`/tag/${filterPref}`, null, { queryParams });
+          router.transitionTo("tag.show", filterPref, { queryParams });
         } else {
           const categoryURL = categorySlug ? `s/c/${categorySlug}` : "";
           url = `/tag${categoryURL}/${filterPref}`;

@@ -196,5 +196,16 @@ acceptance(
         "it redirects to the user's global_filter_preference"
       );
     });
+
+    test("/login works with categories as default homepage", async function (assert) {
+      setDefaultHomepage("categories");
+      await visit("/login");
+
+      assert.equal(
+        currentURL(),
+        "/categories?tag=support",
+        "it redirects to the user's global_filter_preference"
+      );
+    });
   }
 );
