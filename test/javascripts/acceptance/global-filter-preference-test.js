@@ -1,5 +1,9 @@
 import { click, currentURL, visit } from "@ember/test-helpers";
-import { acceptance, query, updateCurrentUser } from "discourse/tests/helpers/qunit-helpers";
+import {
+  acceptance,
+  query,
+  updateCurrentUser,
+} from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 
@@ -9,14 +13,16 @@ acceptance(
     needs.user();
 
     needs.hooks.beforeEach(() => {
-      updateCurrentUser({ custom_fields: { global_filter_preference: "support" } });
+      updateCurrentUser({
+        custom_fields: { global_filter_preference: "support" },
+      });
     });
 
     needs.site({
       filter_tags_total_topic_count: { support: 1, feature: 1 },
       global_filters: [
         { id: 1, name: "support" },
-        { id: 2, name: "feature", filter_children: { "bug-report": { } } },
+        { id: 2, name: "feature", filter_children: { "bug-report": {} } },
       ],
     });
     needs.settings({
@@ -51,7 +57,7 @@ acceptance(
             topics: [],
           },
         });
-      }
+      };
 
       server.get("/tags/intersection/support/blog.json", emptyResponseHandler);
 
@@ -183,19 +189,17 @@ acceptance(
     test("global filter tags used on /new-topic", async function (assert) {
       await visit("/new-topic?tags=feature");
 
-      assert.equal(
-        currentURL(),
-        "/tag/feature",
-        "it redirects to the global filter used in the new-topic tags query param"
+      assert.ok(
+        document.body.classList.contains("global-filter-tag-feature"),
+        "it navigates to the global filter used in the new-topic tags query param"
       );
     });
 
     test("child tag of global filter used on /new-topic", async function (assert) {
       await visit("/new-topic?tags=bug-report");
 
-      assert.equal(
-        currentURL(),
-        "/tag/feature",
+      assert.ok(
+        document.body.classList.contains("global-filter-tag-feature"),
         "it redirects to the global filter if the new-topic tags query param is a child of one"
       );
     });
