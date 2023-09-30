@@ -31,14 +31,12 @@ export default {
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
 
-      let tagFromNewTopic;
-
       // on a /new-topic?tags=x route, determine if x is a globalFilter or a child of one
       if (routeName === "new-topic" && currentUser) {
         const tags = transition.to?.queryParams?.tags?.split(",");
 
         if (tags) {
-          tagFromNewTopic = tags.find((tag) => globalFilters.includes(tag));
+          let tagFromNewTopic = tags.find((tag) => globalFilters.includes(tag));
 
           if (!tagFromNewTopic) {
             const site = container.lookup("site:main");
