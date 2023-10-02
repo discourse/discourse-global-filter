@@ -150,7 +150,6 @@ export default {
   ) {
     let url;
     run(router, function () {
-      // omit `tags` from redirects if passed from /new-topic, we're already enforcing a tag
       const queryParams = transition?.to?.queryParams;
       const categorySlug = transition.to?.params?.category_slug_path_with_id;
 
