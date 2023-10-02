@@ -31,6 +31,37 @@ export default {
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
 
+      // on a /new-topic?tags=x route, determine if x is a globalFilter or a child of one
+      if (routeName === "new-topic" && currentUser) {
+        const tags = transition.to?.queryParams?.tags?.split(",");
+
+        if (tags) {
+          let tagFromNewTopic = tags.find((tag) => globalFilters.includes(tag));
+
+          if (!tagFromNewTopic) {
+            const site = container.lookup("site:main");
+
+            const globalFilterFromChildren = site.global_filters.find(
+              (globalFilter) => {
+                return (
+                  globalFilter.filter_children &&
+                  Object.keys(globalFilter.filter_children).some((childTag) =>
+                    tags.includes(childTag)
+                  )
+                );
+              }
+            );
+
+            tagFromNewTopic = globalFilterFromChildren?.name;
+          }
+
+          if (tagFromNewTopic) {
+            this._setClientFilterPref(tagFromNewTopic, currentUser);
+            return;
+          }
+        }
+      }
+
       if (transition.queryParamsOnly) {
         return;
       }

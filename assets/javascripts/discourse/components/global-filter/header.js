@@ -1,3 +1,3 @@
-import ComboBoxSelectBoxHeaderComponent from "select-kit/components/combo-box/combo-box-header";
+import MultiSelectHeaderComponent from "select-kit/components/multi-select/multi-select-header";
 
-export default ComboBoxSelectBoxHeaderComponent.extend({});
+export default MultiSelectHeaderComponent.extend({});

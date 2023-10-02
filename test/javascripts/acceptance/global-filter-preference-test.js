@@ -1,17 +1,28 @@
 import { click, currentURL, visit } from "@ember/test-helpers";
-import { acceptance, query } from "discourse/tests/helpers/qunit-helpers";
+import {
+  acceptance,
+  query,
+  updateCurrentUser,
+} from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 
 acceptance(
   "Discourse Global Filter - Filter Preference Initializer",
   function (needs) {
-    needs.user({ custom_fields: { global_filter_preference: "support" } });
+    needs.user();
+
+    needs.hooks.beforeEach(() => {
+      updateCurrentUser({
+        custom_fields: { global_filter_preference: "support" },
+      });
+    });
+
     needs.site({
       filter_tags_total_topic_count: { support: 1, feature: 1 },
       global_filters: [
         { id: 1, name: "support" },
-        { id: 2, name: "feature" },
+        { id: 2, name: "feature", filter_children: { "bug-report": {} } },
       ],
     });
     needs.settings({
@@ -26,23 +37,13 @@ acceptance(
         })
       );
 
-      server.get("/tags/intersection/support/blog.json", () => {
-        return helper.response({
-          users: [],
-          primary_groups: [],
-          topic_list: {
-            can_create_topic: true,
-            draft: null,
-            draft_key: "new_topic",
-            draft_sequence: 1,
-            per_page: 30,
-            tags: [],
-            topics: [],
-          },
-        });
-      });
+      server.get("/tag/feature/notifications", () =>
+        helper.response({
+          tag_notification: { id: "feature", notification_level: 2 },
+        })
+      );
 
-      server.get("/tag/support/l/top.json", () => {
+      const emptyResponseHandler = () => {
         return helper.response({
           users: [],
           primary_groups: [],
@@ -56,39 +57,16 @@ acceptance(
             topics: [],
           },
         });
-      });
+      };
 
-      server.get("/tag/support/l/latest.json", () => {
-        return helper.response({
-          users: [],
-          primary_groups: [],
-          topic_list: {
-            can_create_topic: true,
-            draft: null,
-            draft_key: "new_topic",
-            draft_sequence: 1,
-            per_page: 30,
-            tags: [],
-            topics: [],
-          },
-        });
-      });
+      server.get("/tags/intersection/support/blog.json", emptyResponseHandler);
 
-      server.get("/tag/blog/l/latest.json", () => {
-        return helper.response({
-          users: [],
-          primary_groups: [],
-          topic_list: {
-            can_create_topic: true,
-            draft: null,
-            draft_key: "new_topic",
-            draft_sequence: 1,
-            per_page: 30,
-            tags: [],
-            topics: [],
-          },
-        });
-      });
+      server.get("/tag/support/l/top.json", emptyResponseHandler);
+      server.get("/tag/support/l/latest.json", emptyResponseHandler);
+
+      server.get("/tag/blog/l/latest.json", emptyResponseHandler);
+
+      server.get("/tag/feature/l/latest.json", emptyResponseHandler);
 
       server.put("/global_filter/filter_tags/support/assign.json", () => {
         return helper.response({ success: true });
@@ -205,6 +183,24 @@ acceptance(
         currentURL(),
         "/categories?tag=support",
         "it redirects to the user's global_filter_preference"
+      );
+    });
+
+    test("global filter tags used on /new-topic", async function (assert) {
+      await visit("/new-topic?tags=feature");
+
+      assert.ok(
+        document.body.classList.contains("global-filter-tag-feature"),
+        "it navigates to the global filter used in the new-topic tags query param"
+      );
+    });
+
+    test("child tag of global filter used on /new-topic", async function (assert) {
+      await visit("/new-topic?tags=bug-report");
+
+      assert.ok(
+        document.body.classList.contains("global-filter-tag-feature"),
+        "it redirects to the global filter if the new-topic tags query param is a child of one"
       );
     });
   }
