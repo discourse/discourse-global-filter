@@ -25,11 +25,10 @@ export default {
         // TODO: Remove once https://github.com/discourse/discourse/pull/22622 is merged
         api.modifyClass("controller:tag-show", modification);
 
-        const owner = api.container.owner;
-        if (owner.resolveRegistration("controller:discovery/list")) {
-          // TODO: remove conditional once https://github.com/discourse/discourse/pull/22622 is merged
-          api.modifyClass("controller:discovery/list", modification);
-        }
+        // TODO: remove ignoreMissing once https://github.com/discourse/discourse/pull/22622 is merged
+        api.modifyClass("controller:discovery/list", modification, {
+          ignoreMissing: true,
+        });
       });
     }
   },
