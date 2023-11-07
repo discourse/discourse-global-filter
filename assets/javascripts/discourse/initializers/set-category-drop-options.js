@@ -20,15 +20,9 @@ export default {
           },
         };
 
-        api.modifyClass("controller:discovery/categories", modification);
+        api.modifyClass("controller:discovery/categories", { ...modification });
 
-        // TODO: Remove once https://github.com/discourse/discourse/pull/22622 is merged
-        api.modifyClass("controller:tag-show", modification);
-
-        // TODO: remove ignoreMissing once https://github.com/discourse/discourse/pull/22622 is merged
-        api.modifyClass("controller:discovery/list", modification, {
-          ignoreMissing: true,
-        });
+        api.modifyClass("controller:discovery/list", { ...modification });
       });
     }
   },
