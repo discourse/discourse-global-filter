@@ -5,8 +5,8 @@ export default {
   name: "apply-global-filter-styles",
 
   initialize(container) {
-    const siteSettings = container.lookup("site-settings:main");
-    const router = container.lookup("router:main");
+    const siteSettings = container.lookup("service:site-settings");
+    const router = container.lookup("service:router");
     if (
       !siteSettings.discourse_global_filter_enabled ||
       !siteSettings.global_filters.length ||
@@ -16,8 +16,8 @@ export default {
     }
 
     const globalFilters = siteSettings.global_filters.split("|");
-    const currentUser = container.lookup("current-user:main");
-    router.one("didTransition", () => {
+    const currentUser = container.lookup("service:current-user");
+    router.one("routeDidChange", () => {
       this._applyFilterStyles(router, globalFilters, currentUser, container);
     });
   },
