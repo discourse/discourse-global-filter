@@ -100,7 +100,7 @@ acceptance(
       await selectKit(".global-filter-chooser").selectRowByValue("feature");
 
       let composer = this.owner.lookup("controller:composer");
-      assert.ok(
+      assert.deepEqual(
         composer.get("model").tags,
         ["feature"],
         "expected filter is present"
