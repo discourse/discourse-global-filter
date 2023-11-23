@@ -52,7 +52,11 @@ export default {
               }
             );
 
-            tagFromNewTopic = globalFilterFromChildren?.name;
+            if (globalFilterFromChildren) {
+              tagFromNewTopic = globalFilterFromChildren.name;
+
+              transition.to.queryParams.tags += `,${tagFromNewTopic}`;
+            }
           }
 
           if (tagFromNewTopic) {
