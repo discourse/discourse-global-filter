@@ -17,6 +17,14 @@ acceptance(
       name: "amazeCat",
       slug: "amazeCat",
       permission: 1,
+      has_children: true,
+    };
+
+    const sadCat = {
+      id: 101,
+      name: "sadCat",
+      slug: "sadCat",
+      permission: 1,
     };
 
     needs.site({
@@ -27,12 +35,7 @@ acceptance(
       ],
       categories: [
         mazeCategory,
-        {
-          id: 101,
-          name: "sadCat",
-          slug: "sadCat",
-          permission: 1,
-        },
+        sadCat,
         {
           id: 102,
           name: "happyCat",
@@ -77,7 +80,7 @@ acceptance(
         "/global_filter/filter_tags/categories_for_current_filter.json",
         () =>
           helper.response({
-            categories: [{ id: 100 }, { id: 101 }],
+            categories: [mazeCategory, sadCat],
             subcategories: [{ id: 102, name: "happyCat" }],
           })
       );
@@ -105,17 +108,22 @@ acceptance(
       assert.strictEqual(categories.rows().length, 1);
     });
 
-    test("does not limit options to GFT categories when filtering", async function (assert) {
+    test("limits options to GFT categories when filtering", async function (assert) {
       await visit("/categories");
       const categories = selectKit(
         ".gft-parent-categories-drop .category-drop"
       );
       await categories.expand();
-      await categories.fillInFilter("general");
+      await categories.fillInFilter("amaze");
 
       assert.ok(
-        categories.rowByName("generalCat").exists(),
-        "include all categories when filtering"
+        categories.rowByName("amazeCat").exists(),
+        "include category with term when filtering"
+      );
+
+      assert.ok(
+        !categories.rowByName("grumpyCat").exists(),
+        "does not include all categories when filtering"
       );
     });
   }
