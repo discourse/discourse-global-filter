@@ -58,32 +58,54 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
           ];
         }
 
-        if (!categoryDrop.selectKit.filter) {
-          const categoryDropParentClasslist = document.getElementById(
-            categoryDrop.elementId
-          ).parentElement.classList;
+        let content = categoryDrop.content || [];
+        if (categoryDrop.selectKit.filter) {
+          const filter = categoryDrop.selectKit.filter.toLowerCase();
 
-          if (
-            categoryDropParentClasslist.contains("gft-parent-categories-drop")
-          ) {
-            return categoriesAndSubcategories.categories;
-          }
+          content = content.filter((c) => {
+            const name = categoryDrop.getName(c)?.toLowerCase();
+            return name?.includes(filter);
+          });
+        }
 
-          if (categoryDropParentClasslist.contains("gft-subcategories-drop")) {
-            const filteredSubcategories = categoryDrop.content.filter((c) => {
-              const categoriesByName =
-                categoriesAndSubcategories.subcategories.map(
-                  (item) => item["name"]
-                );
+        const categoryDropParentClasslist = document.getElementById(
+          categoryDrop.elementId
+        ).parentElement.classList;
 
-              return categoriesByName.includes(
-                c.name ||
-                  categoryDrop.allCategoriesLabel ||
-                  categoryDrop.noCategoriesLabel
-              );
-            });
-            return filteredSubcategories;
-          }
+        const isParentCategoryDrop = categoryDropParentClasslist.contains(
+          "gft-parent-categories-drop"
+        );
+        if (isParentCategoryDrop) {
+          const filteredCategories = content.filter((c) => {
+            const categoriesByName = categoriesAndSubcategories.categories.map(
+              (item) => item.name
+            );
+
+            return categoriesByName.includes(
+              c.name ||
+              categoryDrop.allCategoriesLabel ||
+              categoryDrop.noCategoriesLabel
+            );
+          });
+          return filteredCategories;
+        }
+
+        const isSubcategoriesDrop = categoryDropParentClasslist.contains(
+          "gft-subcategories-drop"
+        );
+        if (isSubcategoriesDrop) {
+          const filteredSubcategories = content.filter((c) => {
+            const categoryNames = categoriesAndSubcategories.subcategories.map(
+              (item) => item.name
+            );
+
+            return categoryNames.includes(
+              c.name ||
+              categoryDrop.allCategoriesLabel ||
+              categoryDrop.noCategoriesLabel
+            );
+          });
+          return filteredSubcategories;
         }
       });
     }
