@@ -83,8 +83,8 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
 
             return categoriesByName.includes(
               c.name ||
-              categoryDrop.allCategoriesLabel ||
-              categoryDrop.noCategoriesLabel
+                categoryDrop.allCategoriesLabel ||
+                categoryDrop.noCategoriesLabel
             );
           });
           return filteredCategories;
@@ -101,8 +101,8 @@ function setCategoryDropOptionsPerGlobalFilter(api) {
 
             return categoryNames.includes(
               c.name ||
-              categoryDrop.allCategoriesLabel ||
-              categoryDrop.noCategoriesLabel
+                categoryDrop.allCategoriesLabel ||
+                categoryDrop.noCategoriesLabel
             );
           });
           return filteredSubcategories;
