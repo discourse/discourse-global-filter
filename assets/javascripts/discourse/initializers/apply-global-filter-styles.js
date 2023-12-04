@@ -44,7 +44,7 @@ export default {
 
     if (!tags) {
       // Use first global filter as default
-      this._setSiteGlobalFilter(globalFilters[0]);
+      this._setSiteGlobalFilter(filterPref ?? globalFilters[0]);
       return;
     }
 

@@ -57,7 +57,6 @@ export default {
 
           if (tagFromNewTopic) {
             this._setClientFilterPref(tagFromNewTopic, currentUser);
-            return;
           }
         }
       }

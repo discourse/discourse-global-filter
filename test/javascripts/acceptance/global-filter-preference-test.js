@@ -59,6 +59,8 @@ acceptance(
         });
       };
 
+      const successResponseHandler = () => helper.response({ success: true });
+
       server.get("/tags/intersection/support/blog.json", emptyResponseHandler);
 
       server.get("/tag/support/l/top.json", emptyResponseHandler);
@@ -68,15 +70,18 @@ acceptance(
 
       server.get("/tag/feature/l/latest.json", emptyResponseHandler);
 
-      server.put("/global_filter/filter_tags/support/assign.json", () => {
-        return helper.response({ success: true });
-      });
+      server.put(
+        "/global_filter/filter_tags/support/assign.json",
+        successResponseHandler
+      );
+      server.put(
+        "/global_filter/filter_tags/feature/assign.json",
+        successResponseHandler
+      );
 
       server.get(
         "/global_filter/filter_tags/categories_for_current_filter.json",
-        () => {
-          return helper.response({ success: true });
-        }
+        successResponseHandler
       );
     });
 
@@ -201,6 +206,30 @@ acceptance(
       assert.ok(
         document.body.classList.contains("global-filter-tag-feature"),
         "it redirects to the global filter if the new-topic tags query param is a child of one"
+      );
+    });
+
+    test("uses stored global filter preference at /", async function (assert) {
+      setDefaultHomepage("categories");
+      await visit("/categories?tag=feature");
+
+      assert.equal(
+        currentURL(),
+        "/categories?tag=feature",
+        "it navigates to the global filter"
+      );
+
+      await visit("/");
+
+      assert.equal(
+        currentURL(),
+        "/categories?tag=feature",
+        "it navigates to the stored global filter preference"
+      );
+
+      assert.ok(
+        document.body.classList.contains("global-filter-tag-feature"),
+        "it shows the global filter preference app"
       );
     });
   }
