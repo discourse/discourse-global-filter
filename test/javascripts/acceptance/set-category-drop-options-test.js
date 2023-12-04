@@ -17,6 +17,7 @@ acceptance(
       name: "amazeCat",
       slug: "amazeCat",
       permission: 1,
+      has_children: true,
     };
 
     needs.site({
