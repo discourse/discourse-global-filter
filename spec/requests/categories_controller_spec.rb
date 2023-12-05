@@ -17,7 +17,6 @@ RSpec.shared_examples "#categories_and_topics" do
   end
 
   it "assigns the correct preload_key" do
-    guardian = user ? Guardian.new(user) : Guardian.new()
     list = CategoryList.new(guardian, { tag: filter_tag_2.name })
     expect(list.preload_key).to eq("categories_list_#{filter_tag_2.name}")
   end
@@ -51,13 +50,15 @@ end
 RSpec.describe CategoriesController do
   it_behaves_like "#categories_and_topics" do
     let(:user) { Fabricate(:admin) }
+    let(:guardian) { user.guardian }
   end
 
   it_behaves_like "#categories_and_topics" do
     let(:user) { Fabricate(:user) }
+    let(:guardian) { user.guardian }
   end
 
   it_behaves_like "#categories_and_topics" do
-    #anon
+    let(:guardian) { Guardian.anon_user }
   end
 end
