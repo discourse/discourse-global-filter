@@ -59,6 +59,6 @@ RSpec.describe CategoriesController do
   end
 
   it_behaves_like "#categories_and_topics" do
-    let(:guardian) { Guardian.anon_user }
+    let(:guardian) { Guardian.new(nil) }
   end
 end
