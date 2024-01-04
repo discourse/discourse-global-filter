@@ -5,7 +5,11 @@ module Jobs
     every 1.hour
 
     def execute(args = nil)
-      filter_tags = SiteSetting.find_by(name: "global_filters").value.split("|")
+      filter_tags_from_settings = SiteSetting.global_filters.split("|")
+      return if filter_tags_from_settings.empty?
+
+      filter_tags = Tag.where(name: filter_tags_from_settings)
+      return if filter_tags.empty?
 
       # Calculate topic / post totals for each GFT for each category
       Category.find_each do |c|
@@ -14,11 +18,8 @@ module Jobs
         category_and_subcategory_ids = category_and_subcategory_ids.flatten
 
         per_filter_category_stats = {}
-        filter_tags.each do |gft|
+        filter_tags.each do |tag|
           category_stats_for_filter = {}
-          filter_tag = GlobalFilter::FilterTag.find_by(name: gft)
-          tag_id = Tag.find_by(name: gft).id
-
           category_and_subcategory_topics =
             Topic
               .joins(:tags)
@@ -26,7 +27,7 @@ module Jobs
               .where(
                 "topics.id NOT IN (SELECT cc.topic_id FROM categories cc WHERE topic_id IS NOT NULL)",
               )
-              .where(tags: tag_id)
+              .where(tags: tag.id)
               .visible
 
           posts =
@@ -55,16 +56,16 @@ module Jobs
           category_stats_for_filter = category_stats_for_filter.deep_merge(category_topic_totals)
 
           per_filter_category_stats =
-            per_filter_category_stats.deep_merge({ gft => category_stats_for_filter })
+            per_filter_category_stats.deep_merge({ tag.name => category_stats_for_filter })
         end
 
         c.update!(global_filter_tags_category_stats: per_filter_category_stats)
       end
 
       # Calculate topic totals per GFT
-      filter_tags.each do |gft|
-        filter_tag = GlobalFilter::FilterTag.find_by(name: gft)
-        tag_id = Tag.find_by(name: gft).id
+      filter_tags.each do |tag|
+        filter_tag = GlobalFilter::FilterTag.find_by(name: tag.name)
+        tag_id = tag.id
         filter_category_ids = filter_tag.category_ids.split("|")
         filter_category_ids = Category.pluck(:id) if filter_category_ids.empty?
         filter_category_ids = filter_category_ids.map(&:to_i)
