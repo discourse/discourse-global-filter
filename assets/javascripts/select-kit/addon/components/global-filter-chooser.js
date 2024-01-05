@@ -1,3 +1,4 @@
+import { computed } from "@ember/object";
 import MultiSelectComponent from "select-kit/components/multi-select";
 import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
@@ -14,25 +15,31 @@ export default MultiSelectComponent.extend({
   didInsertElement() {
     this._super(...arguments);
     this.setCategoriesForFilter();
-    this.setSelectedContentToFilter();
   },
 
   get filtersWithChildren() {
     return this.loadAdditionalFilters(this.site.global_filters);
   },
 
+  selectedContent: computed(
+    "value.[]",
+    "content.[]",
+    "filtersWithChildren.[]",
+    function () {
+      if (!this.value) {
+        return [];
+      }
+
+      return this.filtersWithChildren.filter((filterTag) =>
+        this.value.includes(filterTag.name)
+      );
+    }
+  ),
+
   get content() {
     if (!this.value) {
       return [];
     }
-
-    // set header selected values
-    this.set(
-      "selectedContent",
-      this.filtersWithChildren.filter((filterTag) =>
-        this.value.includes(filterTag.name)
-      )
-    );
 
     // set remaining dropdown content values
     return this.filtersWithChildren.filter(
@@ -50,19 +57,6 @@ export default MultiSelectComponent.extend({
     const updatedValues = this.value.filter((tag) => tag !== value.name);
     this.updateCategoryDropdown(updatedValues);
     this._super(...arguments);
-  },
-
-  setSelectedContentToFilter() {
-    if (!this.value) {
-      return [];
-    }
-
-    this.set(
-      "selectedContent",
-      this.filtersWithChildren.filter((filterTag) =>
-        this.value.includes(filterTag.name)
-      )
-    );
   },
 
   updateCategoryDropdown(tags) {
