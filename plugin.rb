@@ -69,7 +69,7 @@ after_initialize do
   end
 
   register_editable_user_custom_field(GlobalFilter::GLOBAL_FILTER_PREFERENCE)
-  register_user_custom_field_type(GlobalFilter::GLOBAL_FILTER_PREFERENCE, :string)
+  register_user_custom_field_type(GlobalFilter::GLOBAL_FILTER_PREFERENCE, :string, max_length: 40)
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
 
   reloadable_patch do
