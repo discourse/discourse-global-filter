@@ -26,7 +26,8 @@ export default {
 
     const globalFilters = siteSettings.global_filters.split("|");
     const currentUser = container.lookup("service:current-user");
-    // TODO: fix this deprecation
+    // TODO: Use `router` service instead
+    // eslint-disable-next-line ember/no-private-routing-service
     const router = container.lookup("router:main");
 
     router.on("routeWillChange", (transition) => {
