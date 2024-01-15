@@ -49,9 +49,11 @@ acceptance("Discourse Global Filter - Context", function (needs) {
 
   test("sets global filter from a 'tags' query param", async function (assert) {
     await visit("/latest?tags=support");
-    assert.ok(
-      document.body.classList.contains("global-filter-tag-support"),
-      "it contains the right body class"
-    );
+    assert
+      .dom(document.body)
+      .hasClass(
+        "global-filter-tag-support",
+        "it contains the right body class"
+      );
   });
 });
