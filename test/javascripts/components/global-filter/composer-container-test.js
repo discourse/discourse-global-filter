@@ -1,6 +1,6 @@
 import { click, visit } from "@ember/test-helpers";
-import { acceptance, exists } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
+import { acceptance, exists } from "discourse/tests/helpers/qunit-helpers";
 
 acceptance("Discourse Global Filter - Composer Container", function (needs) {
   needs.settings({

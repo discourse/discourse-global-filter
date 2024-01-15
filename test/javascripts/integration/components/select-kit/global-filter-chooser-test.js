@@ -1,14 +1,15 @@
-import { module, test } from "qunit";
-import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import { render } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
-import selectKit from "discourse/tests/helpers/select-kit-helper";
+import { module, test } from "qunit";
+import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import pretender, { response } from "discourse/tests/helpers/create-pretender";
+import selectKit from "discourse/tests/helpers/select-kit-helper";
 
 module(
   "Integration | Component | select-kit/global-filter-chooser",
   function (hooks) {
     setupRenderingTest(hooks);
+
     hooks.beforeEach(function () {
       pretender.get(
         "/global_filter/filter_tags/categories_for_current_filter.json",

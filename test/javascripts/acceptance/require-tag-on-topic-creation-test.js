@@ -1,13 +1,13 @@
 import { click, fillIn, visit } from "@ember/test-helpers";
+import { test } from "qunit";
+import DiscoveryFixtures from "discourse/tests/fixtures/discovery-fixtures";
 import {
   acceptance,
   query,
   visible,
 } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
-import { test } from "qunit";
 import { cloneJSON } from "discourse-common/lib/object";
-import DiscoveryFixtures from "discourse/tests/fixtures/discovery-fixtures";
 
 acceptance(
   "Discourse Global Filter - Require Tag on Topic Creation",

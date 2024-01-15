@@ -1,7 +1,7 @@
-import SelectKitRowComponent from "select-kit/components/select-kit/select-kit-row";
 import { computed } from "@ember/object";
-import I18n from "I18n";
 import { escapeExpression } from "discourse/lib/utilities";
+import I18n from "I18n";
+import SelectKitRowComponent from "select-kit/components/select-kit/select-kit-row";
 
 export default SelectKitRowComponent.extend({
   classNames: ["global-filter-chooser-row"],

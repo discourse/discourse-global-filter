@@ -1,6 +1,6 @@
 import { visit } from "@ember/test-helpers";
-import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
+import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 
 acceptance("Discourse Global Filter - Context", function (needs) {
   needs.user({ custom_fields: { global_filter_preference: "support" } });

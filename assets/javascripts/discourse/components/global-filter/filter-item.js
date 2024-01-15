@@ -1,6 +1,6 @@
 import Component from "@glimmer/component";
-import { defaultHomepage } from "discourse/lib/utilities";
 import { inject as service } from "@ember/service";
+import { defaultHomepage } from "discourse/lib/utilities";
 
 export default class GlobalFilterFilterItem extends Component {
   @service site;

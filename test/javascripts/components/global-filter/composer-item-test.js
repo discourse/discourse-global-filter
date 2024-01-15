@@ -1,6 +1,6 @@
 import { click, visit } from "@ember/test-helpers";
-import { acceptance, query } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
+import { acceptance, query } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
 
 acceptance(

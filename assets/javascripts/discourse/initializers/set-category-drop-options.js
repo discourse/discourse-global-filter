@@ -1,5 +1,5 @@
-import { withPluginApi } from "discourse/lib/plugin-api";
 import { ajax } from "discourse/lib/ajax";
+import { withPluginApi } from "discourse/lib/plugin-api";
 import { ALL_CATEGORIES_ID } from "select-kit/components/category-drop";
 
 const PLUGIN_ID = "discourse-global-filter-category-drop-options";

@@ -34,14 +34,16 @@
         <td>
           <DButton
             @ariaLabel="global_filter.admin.edit_filter_child"
-            @action={{(fn @editFilterChildForFilter @filterTag.name values)}}
+            @action={{fn @editFilterChildForFilter @filterTag.name values}}
             @icon="pencil-alt"
           />
           <DButton
             @ariaLabel="global_filter.admin.delete_filter_child"
-            @action={{(fn
-              @deleteFilterChildForFilter @filterTag.name values.name
-            )}}
+            @action={{fn
+              @deleteFilterChildForFilter
+              @filterTag.name
+              values.name
+            }}
             @icon="far-trash-alt"
           />
         </td>

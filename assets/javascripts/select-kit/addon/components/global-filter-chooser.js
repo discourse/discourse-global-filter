@@ -1,7 +1,7 @@
 import { computed } from "@ember/object";
-import MultiSelectComponent from "select-kit/components/multi-select";
 import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import MultiSelectComponent from "select-kit/components/multi-select";
 
 export default MultiSelectComponent.extend({
   pluginApiIdentifiers: ["global-filter-chooser"],

@@ -34,7 +34,7 @@
     />
     <DButton
       @ariaLabel="global_filter.admin.create_filter_child"
-      @action={{(fn @setFilterChildrenForFilter @filterTag.name)}}
+      @action={{fn @setFilterChildrenForFilter @filterTag.name}}
       @icon="check"
     />
     <DButton
@@ -45,8 +45,8 @@
   </div>
 {{else}}
   <DButton
-    @label={{"global_filter.admin.new_filter_child"}}
+    @label="global_filter.admin.new_filter_child"
     class="btn btn-default"
-    @action={{(fn @setCreateChild @filterTag.name)}}
+    @action={{fn @setCreateChild @filterTag.name}}
   />
 {{/if}}

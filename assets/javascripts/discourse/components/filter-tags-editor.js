@@ -1,9 +1,9 @@
 import Component from "@glimmer/component";
+import { tracked } from "@glimmer/tracking";
 import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { debounce } from "discourse-common/utils/decorators";
-import { tracked } from "@glimmer/tracking";
 
 export default class FilterTagsEditor extends Component {
   @tracked toggleChildMenuFor;

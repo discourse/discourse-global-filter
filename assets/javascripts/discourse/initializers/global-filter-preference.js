@@ -16,7 +16,7 @@ export default {
   name: "global-filter-preference",
 
   initialize(container) {
-    const siteSettings = container.lookup("site-settings:main");
+    const siteSettings = container.lookup("service:site-settings");
     if (
       !siteSettings.discourse_global_filter_enabled ||
       !siteSettings.global_filters.length
@@ -25,8 +25,8 @@ export default {
     }
 
     const globalFilters = siteSettings.global_filters.split("|");
-    const currentUser = container.lookup("current-user:main");
-    const router = container.lookup("router:main");
+    const currentUser = container.lookup("service:current-user");
+    const router = container.lookup("service:router");
 
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
@@ -39,7 +39,7 @@ export default {
           let tagFromNewTopic = tags.find((tag) => globalFilters.includes(tag));
 
           if (!tagFromNewTopic) {
-            const site = container.lookup("site:main");
+            const site = container.lookup("service:site");
 
             const globalFilterFromChildren = site.global_filters.find(
               (globalFilter) => {
