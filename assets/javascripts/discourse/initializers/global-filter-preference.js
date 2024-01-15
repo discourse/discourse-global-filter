@@ -26,7 +26,8 @@ export default {
 
     const globalFilters = siteSettings.global_filters.split("|");
     const currentUser = container.lookup("service:current-user");
-    const router = container.lookup("service:router");
+    // TODO: fix this deprecation
+    const router = container.lookup("router:main");
 
     router.on("routeWillChange", (transition) => {
       const routeName = transition.to?.name;
