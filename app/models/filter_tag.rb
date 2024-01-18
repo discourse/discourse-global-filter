@@ -12,7 +12,7 @@ class GlobalFilter::FilterTag < ::ActiveRecord::Base
     filter_tags_category_ids =
       filter_tags
         &.pluck(:category_ids)
-        .flat_map { |c| c.present? ? c.split("|") : Category.secured(scope).pluck(:id) }
+        &.flat_map { |c| c.present? ? c.split("|") : Category.secured(scope).pluck(:id) }
 
     Category.secured(scope).where(id: filter_tags_category_ids)
   end

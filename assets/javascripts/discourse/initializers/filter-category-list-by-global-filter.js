@@ -1,6 +1,6 @@
-import CategoryList from "discourse/models/category-list";
-import PreloadStore from "discourse/lib/preload-store";
 import { ajax } from "discourse/lib/ajax";
+import PreloadStore from "discourse/lib/preload-store";
+import CategoryList from "discourse/models/category-list";
 
 export default {
   name: "filter-category-list-by-global-filter",

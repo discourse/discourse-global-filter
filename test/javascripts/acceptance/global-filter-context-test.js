@@ -1,6 +1,6 @@
 import { visit } from "@ember/test-helpers";
-import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
+import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 
 acceptance("Discourse Global Filter - Context", function (needs) {
   needs.user({ custom_fields: { global_filter_preference: "support" } });
@@ -49,9 +49,11 @@ acceptance("Discourse Global Filter - Context", function (needs) {
 
   test("sets global filter from a 'tags' query param", async function (assert) {
     await visit("/latest?tags=support");
-    assert.ok(
-      document.body.classList.contains("global-filter-tag-support"),
-      "it contains the right body class"
-    );
+    assert
+      .dom(document.body)
+      .hasClass(
+        "global-filter-tag-support",
+        "it contains the right body class"
+      );
   });
 });

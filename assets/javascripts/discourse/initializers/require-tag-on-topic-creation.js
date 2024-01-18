@@ -1,6 +1,6 @@
-import I18n from "I18n";
 import { Promise } from "rsvp";
 import { withPluginApi } from "discourse/lib/plugin-api";
+import I18n from "I18n";
 
 export default {
   name: "require-tag-on-topic-creation",
@@ -24,7 +24,7 @@ export default {
               return resolve();
             }
             const globalFilters = api.container
-              .lookup("site-settings:main")
+              .lookup("service:site-settings")
               .global_filters.split("|");
 
             if (

@@ -1,10 +1,10 @@
 import { visit } from "@ember/test-helpers";
+import { test } from "qunit";
 import {
   acceptance,
   exists,
   queryAll,
 } from "discourse/tests/helpers/qunit-helpers";
-import { test } from "qunit";
 
 acceptance("Discourse Global Filter - Filter Item", function (needs) {
   needs.user();
@@ -227,7 +227,7 @@ acceptance("Discourse Global Filter - Filter Item", function (needs) {
   });
 
   test("navigating to a topic maintains correct global-filter css class", async function (assert) {
-    const currentUser = this.container.lookup("current-user:main");
+    const currentUser = this.container.lookup("service:current-user");
     // set global filter pref to a value that is not the first option
     currentUser.custom_fields.global_filter_preference = "feature";
     await visit("/t/54077");

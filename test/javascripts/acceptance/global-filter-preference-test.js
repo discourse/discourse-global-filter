@@ -1,18 +1,18 @@
 import { click, currentURL, visit } from "@ember/test-helpers";
+import { test } from "qunit";
+import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
   acceptance,
   query,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
-import { test } from "qunit";
-import { setDefaultHomepage } from "discourse/lib/utilities";
 
 acceptance(
   "Discourse Global Filter - Filter Preference Initializer",
   function (needs) {
     needs.user();
 
-    needs.hooks.beforeEach(() => {
+    needs.hooks.beforeEach(function () {
       updateCurrentUser({
         custom_fields: { global_filter_preference: "support" },
       });
@@ -25,6 +25,7 @@ acceptance(
         { id: 2, name: "feature", filter_children: { "bug-report": {} } },
       ],
     });
+
     needs.settings({
       discourse_global_filter_enabled: true,
       global_filters: "support|feature",
@@ -150,7 +151,7 @@ acceptance(
     });
 
     test("doesn't store tag as preference if not included in global_filters", async function (assert) {
-      const currentUser = this.container.lookup("current-user:main");
+      const currentUser = this.container.lookup("service:current-user");
       await visit("/tag/blog");
 
       assert.equal(
