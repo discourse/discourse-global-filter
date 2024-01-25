@@ -44,6 +44,10 @@ acceptance(
         })
       );
 
+      server.get("/session/passkey/challenge.json", () => {
+        return helper.response({ challenge: "123" });
+      });
+
       const emptyResponseHandler = () => {
         return helper.response({
           users: [],
