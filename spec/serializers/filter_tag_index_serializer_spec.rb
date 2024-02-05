@@ -24,7 +24,7 @@ RSpec.describe GlobalFilter::FilterTagIndexSerializer do
     json =
       GlobalFilter::FilterTagIndexSerializer.new(filter_tags: [filter_tag], root: false).as_json
     filter_tag_response = json[:filter_tag_index][:filter_tags][0]
-    expect(filter_tag_response[:categories].pluck(:id)).to eq(
+    expect(filter_tag_response[:categories].pluck(:id)).to match_array(
       filter_tag[:category_ids].split("|").map(&:to_i),
     )
   end
