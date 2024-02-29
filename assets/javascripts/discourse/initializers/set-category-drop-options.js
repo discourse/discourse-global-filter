@@ -12,18 +12,7 @@ export default {
     const siteSettings = container.lookup("service:site-settings");
     if (siteSettings.discourse_global_filter_enabled) {
       withPluginApi("1.3.0", (api) => {
-        const modification = {
-          pluginId: PLUGIN_ID,
-
-          init() {
-            this._super(...arguments);
-            setCategoryDropOptionsPerGlobalFilter(api);
-          },
-        };
-
-        api.modifyClass("controller:discovery/categories", { ...modification });
-
-        api.modifyClass("controller:discovery/list", { ...modification });
+        setCategoryDropOptionsPerGlobalFilter(api);
       });
     }
   },
