@@ -12,26 +12,37 @@ export default {
     const siteSettings = container.lookup("service:site-settings");
     if (siteSettings.discourse_global_filter_enabled) {
       withPluginApi("1.3.0", (api) => {
-        setCategoryDropOptionsPerGlobalFilter(api);
+        fetchCategoriesForCurrentFilter(api);
+        replaceCategoryDropdownContent(api);
       });
     }
   },
 };
 
-function setCategoryDropOptionsPerGlobalFilter(api) {
-  // this ajax call will fetch the categories and subcategories for the current filter and store the result
-  // in the global filter service
-  ajax("/global_filter/filter_tags/categories_for_current_filter.json").then(
-    (model) => {
-      getOwnerWithFallback(this).lookup(
-        "service:global-filter"
-      ).categoryDropContent = {
-        categories: model.categories || [],
-        subcategories: model.subcategories || [],
-      };
-    }
-  );
+function fetchCategoriesForCurrentFilter(api) {
+  api.modifyClass("controller:application", {
+    pluginId: PLUGIN_ID,
 
+    init() {
+      this._super(...arguments);
+
+      // this ajax call will fetch the categories and subcategories for the current filter and store the result
+      // in the global filter service
+      ajax(
+        "/global_filter/filter_tags/categories_for_current_filter.json"
+      ).then((model) => {
+        getOwnerWithFallback(this).lookup(
+          "service:global-filter"
+        ).categoryDropContent = {
+          categories: model.categories || [],
+          subcategories: model.subcategories || [],
+        };
+      });
+    },
+  });
+}
+
+function replaceCategoryDropdownContent(api) {
   // this will replace the content of the category drop with the categories and subcategories with data stored
   // in the global filter service which will be fetch asynchronously in the ajax call above
   api.modifySelectKit("category-drop").replaceContent((categoryDrop) => {
