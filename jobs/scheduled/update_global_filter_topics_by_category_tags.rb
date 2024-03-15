@@ -32,6 +32,7 @@ module Jobs
                   id: topic.user.id,
                   avatar_template: topic.user.avatar_template,
                   primary_group_name: topic.user.primary_group&.name,
+                  badges: topic.user.custom_fields&.dig("badges")
                 },
               }
             end
