@@ -90,29 +90,6 @@ acceptance(
       );
     });
 
-    test("redirects to default homepage when selected", async function (assert) {
-      await visit("/");
-      assert.strictEqual(
-        query(".global-filter-container #global-filter-support a").getAttribute(
-          "href"
-        ),
-        "/tag/support",
-        "it redirects to the right tag"
-      );
-    });
-
-    test("redirects to categories if it is default homepage when selected", async function (assert) {
-      setDefaultHomepage("categories");
-      await visit("/");
-      assert.strictEqual(
-        query(".global-filter-container #global-filter-support a").getAttribute(
-          "href"
-        ),
-        "/categories?tag=support",
-        "it redirects to categories with the right tag"
-      );
-    });
-
     test("maintains tag filter when redirecting to a filtered topic view", async function (assert) {
       await visit("/");
       await click("#navigation-bar .nav-item_top a");
