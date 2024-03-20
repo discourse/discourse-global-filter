@@ -43,11 +43,9 @@ acceptance("Discourse Global Filter - Filtered Tags Chooser", function (needs) {
   test("hides the selected global filter tag from the tag-drop chooser", async function (assert) {
     await visit("/tag/support");
 
-    assert.strictEqual(
-      query(".filtered-tag-drop .tag-drop .name").innerText,
-      "all tags",
-      "does not display the selected global filter"
-    );
+    assert
+      .dom(".filtered-tag-drop .tag-drop .name")
+      .hasText("tags", "does not display the selected global filter");
 
     const tags = selectKit(".filtered-tag-drop .tag-drop");
     await tags.expand();
