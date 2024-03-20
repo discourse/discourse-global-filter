@@ -21,6 +21,8 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
     fab!(:category_1_topic_0) { Fabricate(:topic, category: category_1, tags: [tag_0], user: user) }
     fab!(:category_1_topic_1) { Fabricate(:topic, category: category_1, tags: [tag_1], user: user) }
 
+    let!(:user_custom_field) { UserCustomField.create!(user_id: user.id, name: "badges", value: "1,2,3") }
+
     it "inserts the correct topic_tag_mappings for each category" do
       SiteSetting.global_filters = "#{tag_0.name}|#{tag_1.name}"
       GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags.new.perform
@@ -39,6 +41,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "id" => user.id,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name,
+          "badges" => user_custom_field.value,
         },
       )
 
@@ -52,6 +55,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "id" => user.id,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name,
+          "badges" => user_custom_field.value,
         },
       )
 
@@ -67,6 +71,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "id" => user.id,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name,
+          "badges" => user_custom_field.value,
         },
       )
 
@@ -80,6 +85,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
           "id" => user.id,
           "avatar_template" => user.avatar_template,
           "primary_group_name" => group.name,
+          "badges" => user_custom_field.value,
         },
       )
     end
