@@ -45,6 +45,8 @@ export default {
       if (item === tags) {
         return this._setSiteGlobalFilter(item);
       }
+
+      this._removeFilterClassFromBody(item);
     });
   },
 
@@ -65,5 +67,10 @@ export default {
 
   _setSiteGlobalFilter(filter) {
     Site.current().set("globalFilter", filter);
+    document.body.classList.add(`global-filter-tag-${filter}`);
+  },
+
+  _removeFilterClassFromBody(filter) {
+    document.body.classList.remove(`global-filter-tag-${filter}`);
   },
 };
