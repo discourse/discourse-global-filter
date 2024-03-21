@@ -3,7 +3,6 @@ import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
   acceptance,
-  query,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 
