@@ -98,6 +98,7 @@ export default {
     const additionalTags = transition.to?.params?.additional_tags;
     const tag =
       transition.to?.queryParams?.tag || transition.to?.params?.tag_id;
+    const filterIncludesTag = globalFilters.includes(tag);
     let filterPref;
     let tagCombination;
 
@@ -105,53 +106,43 @@ export default {
       tagCombination = tag + "/" + additionalTags;
     }
 
+    const includeAdditionalTags = filterIncludesTag
+      ? additionalTags
+      : tagCombination || additionalTags || tag;
+
     if (currentUser) {
-      if (globalFilters.includes(tag)) {
+      if (filterIncludesTag) {
         filterPref = this.setClientFilterPref(tag, currentUser);
-        this.redirectToFilterPref(
-          transition,
-          router,
-          filterPref,
-          true,
-          additionalTags || false
-        );
       } else {
         filterPref = currentUser.custom_fields.global_filter_preference;
         filterPref = globalFilters.includes(filterPref)
           ? filterPref
           : globalFilters[0];
-        this.redirectToFilterPref(
-          transition,
-          router,
-          filterPref,
-          false,
-          tagCombination || additionalTags || tag || false
-        );
       }
+      this.redirectToFilterPref(
+        transition,
+        router,
+        filterPref,
+        filterIncludesTag ? true : false,
+        includeAdditionalTags
+      );
     } else {
-      if (globalFilters.includes(tag)) {
+      if (filterIncludesTag) {
         filterPref = tag;
-        this.redirectToFilterPref(
-          transition,
-          router,
-          filterPref,
-          true,
-          additionalTags || false
-        );
       } else {
         filterPref =
           transition.from?.params?.tag_id ||
           transition.from?.queryParams?.tag ||
           this.firstGlobalFilterFromParent(router, globalFilters) ||
           globalFilters[0];
-        this.redirectToFilterPref(
-          transition,
-          router,
-          filterPref,
-          false,
-          tagCombination || additionalTags || tag || false
-        );
       }
+      this.redirectToFilterPref(
+        transition,
+        router,
+        filterPref,
+        filterIncludesTag ? true : false,
+        includeAdditionalTags
+      );
     }
   },
 
@@ -204,11 +195,10 @@ export default {
   },
 
   firstGlobalFilterFromParent(router, globalFilters) {
-    let tags = router.currentRoute?.parent?.attributes?.tags || null;
-    if (tags) {
-      tags = tags.filter((tag) => globalFilters.includes(tag));
-      tags = tags[0];
-    }
+    const tags =
+      router.currentRoute?.parent?.attributes?.tags?.find((tag) =>
+        globalFilters.includes(tag)
+      ) || null;
     return tags;
   },
 };
