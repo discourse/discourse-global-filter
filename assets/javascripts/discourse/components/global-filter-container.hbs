@@ -1,8 +1,0 @@
-{{#if this.globalFilters}}
-  <PluginOutlet @name="above-global-filter-container" />
-  <div class="global-filter-button-container">
-    {{#each globalFilters as |filter|}}
-      <GlobalFilter::FilterItem @filter={{filter}} />
-    {{/each}}
-  </div>
-{{/if}}

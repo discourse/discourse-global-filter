@@ -3,7 +3,6 @@ import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
   acceptance,
-  query,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 
@@ -67,14 +66,10 @@ acceptance(
       const successResponseHandler = () => helper.response({ success: true });
 
       server.get("/tags/intersection/support/blog.json", emptyResponseHandler);
-
       server.get("/tag/support/l/top.json", emptyResponseHandler);
       server.get("/tag/support/l/latest.json", emptyResponseHandler);
-
       server.get("/tag/blog/l/latest.json", emptyResponseHandler);
-
       server.get("/tag/feature/l/latest.json", emptyResponseHandler);
-
       server.put(
         "/global_filter/filter_tags/support/assign.json",
         successResponseHandler
@@ -83,33 +78,19 @@ acceptance(
         "/global_filter/filter_tags/feature/assign.json",
         successResponseHandler
       );
-
       server.get(
         "/global_filter/filter_tags/categories_for_current_filter.json",
         successResponseHandler
       );
     });
 
-    test("redirects to default homepage when selected", async function (assert) {
-      await visit("/");
-      assert.strictEqual(
-        query(".global-filter-container #global-filter-support a").getAttribute(
-          "href"
-        ),
-        "/tag/support",
-        "it redirects to the right tag"
-      );
-    });
-
     test("redirects to categories if it is default homepage when selected", async function (assert) {
       setDefaultHomepage("categories");
       await visit("/");
-      assert.strictEqual(
-        query(".global-filter-container #global-filter-support a").getAttribute(
-          "href"
-        ),
+      assert.equal(
+        currentURL(),
         "/categories?tag=support",
-        "it redirects to categories with the right tag"
+        "it redirects to categories with the users global filter preference"
       );
     });
 

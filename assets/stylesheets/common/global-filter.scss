@@ -1,16 +1,3 @@
-.global-filter-button-container {
-  display: flex;
-  justify-content: center;
-
-  .global-filter-item {
-    padding: 1rem;
-
-    a.active {
-      background-color: var(--tertiary-medium);
-    }
-  }
-}
-
 .global-filter-composer-container {
   display: flex;
   margin-bottom: 4px;

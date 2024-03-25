@@ -1,8 +1,7 @@
 import Site from "discourse/models/site";
-import { debounce } from "discourse-common/utils/decorators";
 
 export default {
-  name: "apply-global-filter-styles",
+  name: "apply-global-filter",
 
   initialize(container) {
     const siteSettings = container.lookup("service:site-settings");
@@ -18,15 +17,11 @@ export default {
     const globalFilters = siteSettings.global_filters.split("|");
     const currentUser = container.lookup("service:current-user");
     router.one("routeDidChange", () => {
-      this._applyFilterStyles(router, globalFilters, currentUser, container);
+      this._applyGlobalFilter(router, globalFilters, currentUser, container);
     });
   },
 
-  // we need a slight delay to allow for IDs to be applied to each global filter item
-  // as we need to query against these ids and then apply styles. If we move too quickly
-  // the global-filter-item ID will not exist and the correct styles won't be applied.
-  @debounce(100)
-  _applyFilterStyles(router, globalFilters, currentUser, container) {
+  _applyGlobalFilter(router, globalFilters, currentUser, container) {
     // if there is not a filter pref for the current user, tag_id or tag in the params
     // select the first tag from the parent that matches a global filter
     let tags;
@@ -43,17 +38,15 @@ export default {
     }
 
     if (!tags) {
-      this._setSiteGlobalFilter(filterPref ?? globalFilters[0]);
-      return;
+      return this._setSiteGlobalFilter(filterPref ?? globalFilters[0]);
     }
 
     globalFilters.forEach((item) => {
       if (item === tags) {
-        this._setSiteGlobalFilter(item);
-        return;
+        return this._setSiteGlobalFilter(item);
       }
 
-      this._removeSiteGlobalFilter(item);
+      this._removeFilterClassFromBody(item);
     });
   },
 
@@ -73,17 +66,11 @@ export default {
   },
 
   _setSiteGlobalFilter(filter) {
-    document
-      .querySelector(`#global-filter-${filter} > a`)
-      .classList.add("active");
-    document.body.classList.add(`global-filter-tag-${filter}`);
     Site.current().set("globalFilter", filter);
+    document.body.classList.add(`global-filter-tag-${filter}`);
   },
 
-  _removeSiteGlobalFilter(filter) {
-    document
-      .querySelector(`#global-filter-${filter} > a`)
-      .classList.remove("active");
+  _removeFilterClassFromBody(filter) {
     document.body.classList.remove(`global-filter-tag-${filter}`);
   },
 };
