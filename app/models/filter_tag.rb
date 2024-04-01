@@ -8,12 +8,14 @@ class GlobalFilter::FilterTag < ::ActiveRecord::Base
   ]
 
   def self.categories_for_tags(tags, scope)
-    filter_tags = self.where(name: tags)
-    filter_tags_category_ids =
-      filter_tags
-        &.pluck(:category_ids)
-        &.flat_map { |c| c.present? ? c.split("|") : Category.secured(scope).pluck(:id) }
+    @cached_categories ||= begin
+      filter_tags = self.where(name: tags)
+      filter_tags_category_ids =
+        filter_tags
+          &.pluck(:category_ids)
+          &.flat_map { |c| c.present? ? c.split("|") : Category.secured(scope).pluck(:id) }
 
-    Category.secured(scope).where(id: filter_tags_category_ids)
+      Category.secured(scope).where(id: filter_tags_category_ids)
+    end
   end
 end

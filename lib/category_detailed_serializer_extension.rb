@@ -30,15 +30,13 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   end
 
   def subcategory_list
-    filter_tag_ids = GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
-    filtered_categories =
-      (
-        if object.subcategory_list.present?
-          object.subcategory_list.filter { |c| filter_tag_ids.include?(c.id) }
-        else
-          []
-        end
-      )
-    filtered_categories
+    @filtered_categories ||= begin
+      filter_tag_ids = GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
+      if object.subcategory_list.present?
+        object.subcategory_list.filter { |c| filter_tag_ids.include?(c.id) }
+      else
+        []
+      end
+    end
   end
 end
