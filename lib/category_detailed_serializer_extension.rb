@@ -30,7 +30,11 @@ module GlobalFilter::CategoryDetailedSerializerExtension
   end
 
   def subcategory_list
-    filter_tag_ids = GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).pluck(:id)
+    # subcategory_list is called in the include_subcategory_list? method.
+    # memoizing it here saves the result to be used when the value is serialized if the include? method returns true.
+    return @subcategory_list if defined?(@subcategory_list)
+
+    filter_tag_ids = scope.secure_categories_for_filter_tags_ids(filter_tag)
     filtered_categories =
       (
         if object.subcategory_list.present?
@@ -39,6 +43,7 @@ module GlobalFilter::CategoryDetailedSerializerExtension
           []
         end
       )
-    filtered_categories
+
+    @subcategory_list = filtered_categories
   end
 end
