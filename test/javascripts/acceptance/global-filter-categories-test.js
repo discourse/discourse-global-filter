@@ -69,9 +69,9 @@ acceptance(
         assert.strictEqual(
           cbGlobalFilter,
           "feature",
-          "globalFilter is set to feature"
+          "globalFilter is set correctly"
         );
-        assert.strictEqual(cbCategoryId, 101, "category id is set to 100");
+        assert.strictEqual(cbCategoryId, 101, "category id matches");
       } finally {
         CategoryList.globalFilterListCallbacks = [];
       }
