@@ -27,6 +27,7 @@ RSpec.shared_examples "#categories_and_topics" do
     category_list = json["category_list"]
 
     expect(category_list["categories"].size).to eq(1)
+    expect(category_list["categories"].map { |c| c["id"] }).to contain_exactly(category_2.id)
     expect(category_list["subcategories"].size).to eq(0)
   end
 
@@ -36,13 +37,16 @@ RSpec.shared_examples "#categories_and_topics" do
     category_list = json["category_list"]
 
     expect(category_list["categories"].size).to eq(2)
+    expect(category_list["categories"].map { |c| c["id"] }).to contain_exactly(category.id, category_2.id)
     expect(category_list["subcategories"].size).to eq(1)
+    expect(category_list["subcategories"].map { |c| c["id"] }).to contain_exactly(category_2_subcategory.id)
 
     get "/categories.json?tag=#{filter_tag_2.name}"
     json = response.parsed_body
     category_list = json["category_list"]
 
     expect(category_list["categories"].size).to eq(1)
+    expect(category_list["categories"].map { |c| c["id"] }).to contain_exactly(category_2.id)
     expect(category_list["subcategories"].size).to eq(0)
   end
 end
