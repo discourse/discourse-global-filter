@@ -10,7 +10,7 @@ export default {
     const site = container.lookup("service:site");
     if (siteSettings.discourse_global_filter_enabled) {
       CategoryList.reopenClass({
-        listCallbacks: [],
+        globalFilterListCallbacks: [],
 
         list(store) {
           const tagParam =
@@ -35,7 +35,7 @@ export default {
 
             // trigger any callbacks that have been registered with the update categories list
             // at the moment this is to update the categories in the sidebar without performing another API call
-            this.listCallbacks.forEach((callback) => {
+            this.globalFilterListCallbacks.forEach((callback) => {
               callback(list);
             });
 
