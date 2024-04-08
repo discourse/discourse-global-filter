@@ -41,14 +41,14 @@ acceptance(
           name: "happyCat",
           slug: "happyCat",
           permission: 1,
-          parentCategory: mazeCategory,
+          parent_category_id: mazeCategory.id,
         },
         {
           id: 103,
           name: "grumpyCat",
           slug: "grumpyCat",
           permission: 1,
-          parentCategory: mazeCategory,
+          parent_category_id: mazeCategory.id,
         },
         {
           id: 104,
