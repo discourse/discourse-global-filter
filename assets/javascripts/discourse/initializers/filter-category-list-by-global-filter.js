@@ -19,7 +19,7 @@ export default {
         api.modifyClass("model:category", {
           pluginId: `${PLUGIN_ID}:${NAME}`,
 
-          @computed("site.categories.[]", "subcategory_list")
+          @computed("subcategory_list.[]")
           get subcategories() {
             // the global filter plugin returns a filtered list of subcategories
             // so we need to override the subcategories getter to use the filtered list provided
