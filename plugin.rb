@@ -34,6 +34,7 @@ after_initialize do
     ../jobs/scheduled/update_category_stats.rb
     ../jobs/scheduled/update_global_filter_topics_by_category_tags.rb
     ../lib/category_extension.rb
+    ../lib/category_guardian_extension.rb
     ../lib/category_list_serializer_extension.rb
     ../lib/category_detailed_serializer_extension.rb
     ../lib/category_list_extension.rb
@@ -74,6 +75,7 @@ after_initialize do
 
   reloadable_patch do
     Category.class_eval { prepend GlobalFilter::CategoryExtension }
+    CategoryGuardian.class_eval { prepend GlobalFilter::CategoryGuardianExtension }
     CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
     CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
     CategoryDetailedSerializer.class_eval do
