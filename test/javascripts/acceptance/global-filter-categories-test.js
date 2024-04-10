@@ -1,4 +1,4 @@
-import { visit } from "@ember/test-helpers";
+import { settled, visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import CategoryList from "discourse/models/category-list";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
@@ -63,7 +63,8 @@ acceptance(
 
       CategoryList.globalFilterListCallbacks.push(cb);
       try {
-        await visit("/categories?tag=support");
+        await visit("/categories?tag=feature");
+        await settled();
 
         assert.strictEqual(cbCalled, true, "callback was called");
         assert.strictEqual(
