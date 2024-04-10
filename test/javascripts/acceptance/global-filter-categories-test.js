@@ -64,7 +64,6 @@ acceptance(
       CategoryList.globalFilterListCallbacks.push(cb);
       try {
         await visit("/categories?tag=feature");
-        await settled();
 
         assert.strictEqual(cbCalled, true, "callback was called");
         assert.strictEqual(
