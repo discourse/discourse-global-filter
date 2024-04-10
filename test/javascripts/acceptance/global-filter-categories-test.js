@@ -1,5 +1,6 @@
 import { visit } from "@ember/test-helpers";
 import { test } from "qunit";
+import sinon from "sinon";
 import CategoryList from "discourse/models/category-list";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
 
@@ -26,7 +27,7 @@ acceptance(
         { id: 1, name: "support" },
         { id: 2, name: "feature" },
       ],
-      globalFilter: "feature",
+      globalFilter: "support",
     });
 
     needs.pretender((server, helper) => {
@@ -50,6 +51,14 @@ acceptance(
       );
     });
 
+    needs.hooks.beforeEach(function () {
+      CategoryList.globalFilterListCallbacks = [];
+    });
+
+    needs.hooks.afterEach(function () {
+      CategoryList.globalFilterListCallbacks = [];
+    });
+
     test("callback is called with the category list and global filter used", async function (assert) {
       let cbCalled = false;
       let cbGlobalFilter = null;
@@ -62,19 +71,21 @@ acceptance(
       };
 
       CategoryList.globalFilterListCallbacks.push(cb);
-      try {
-        await visit("/categories?tag=feature");
 
-        assert.strictEqual(cbCalled, true, "callback was called");
-        assert.strictEqual(
-          cbGlobalFilter,
-          "feature",
-          "globalFilter is set correctly"
-        );
-        assert.strictEqual(cbCategoryId, 101, "category id matches");
-      } finally {
-        CategoryList.globalFilterListCallbacks = [];
-      }
+      const expectedTagParam = "feature";
+
+      sinon
+        .stub(CategoryList, "globalFilterQueryParam")
+        .returns(expectedTagParam);
+      await visit(`/categories?tag=${expectedTagParam}`);
+
+      assert.strictEqual(cbCalled, true, "callback was called");
+      assert.strictEqual(
+        cbGlobalFilter,
+        expectedTagParam,
+        "globalFilter is set correctly"
+      );
+      assert.strictEqual(cbCategoryId, 101, "category id matches");
     });
   }
 );

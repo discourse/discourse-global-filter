@@ -42,10 +42,13 @@ export default {
 
           globalFilterListCallbacks: [],
 
+          globalFilterQueryParam() {
+            return new URLSearchParams(window.location.search).get("tag");
+          },
+
           list(store) {
-            const tagParam =
-              new URLSearchParams(window.location.search).get("tag") ||
-              site.globalFilter;
+            const tagParam = this.globalFilterQueryParam() || site.globalFilter;
+
             // Since core makes an additional ajax call to /categories
             // we need to override the list function to pass a tag parameter
             // so that we serve filtered (by GFT) categories
