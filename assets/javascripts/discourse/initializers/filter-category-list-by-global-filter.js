@@ -19,7 +19,7 @@ export default {
         api.modifyClass("model:category", {
           pluginId: `${PLUGIN_ID}:${NAME}`,
 
-          @computed("site.categories.[]", "subcategory_list")
+          @computed("subcategory_list.[]")
           get subcategories() {
             // the global filter plugin returns a filtered list of subcategories
             // so we need to override the subcategories getter to use the filtered list provided
@@ -42,10 +42,13 @@ export default {
 
           globalFilterListCallbacks: [],
 
+          globalFilterQueryParam() {
+            return new URLSearchParams(window.location.search).get("tag");
+          },
+
           list(store) {
-            const tagParam =
-              new URLSearchParams(window.location.search).get("tag") ||
-              site.globalFilter;
+            const tagParam = this.globalFilterQueryParam() || site.globalFilter;
+
             // Since core makes an additional ajax call to /categories
             // we need to override the list function to pass a tag parameter
             // so that we serve filtered (by GFT) categories
