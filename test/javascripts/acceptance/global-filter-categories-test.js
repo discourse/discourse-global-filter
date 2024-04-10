@@ -1,4 +1,4 @@
-import { settled, visit } from "@ember/test-helpers";
+import { visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import CategoryList from "discourse/models/category-list";
 import { acceptance } from "discourse/tests/helpers/qunit-helpers";
