@@ -24,21 +24,19 @@ after_initialize do
 
   add_admin_route "global_filter.admin.title", "filter_tags"
 
-  %w[
-    ../app/controllers/filter_tags_controller.rb
-    ../app/controllers/admin/filter_tags_controller.rb
-    ../app/models/filter_tag.rb
-    ../app/models/global_filter_topics_by_category_tag.rb
-    ../app/serializers/filter_tag_detailed_serializer.rb
-    ../app/serializers/filter_tag_index_serializer.rb
-    ../jobs/scheduled/update_category_stats.rb
-    ../jobs/scheduled/update_global_filter_topics_by_category_tags.rb
-    ../lib/category_extension.rb
-    ../lib/category_guardian_extension.rb
-    ../lib/category_list_serializer_extension.rb
-    ../lib/category_detailed_serializer_extension.rb
-    ../lib/category_list_extension.rb
-  ].each { |path| load File.expand_path(path, __FILE__) }
+  require_relative "app/controllers/filter_tags_controller"
+  require_relative "app/controllers/admin/filter_tags_controller"
+  require_relative "app/models/filter_tag"
+  require_relative "app/models/global_filter_topics_by_category_tag"
+  require_relative "app/serializers/filter_tag_detailed_serializer"
+  require_relative "app/serializers/filter_tag_index_serializer"
+  require_relative "jobs/scheduled/update_category_stats"
+  require_relative "jobs/scheduled/update_global_filter_topics_by_category_tags"
+  require_relative "lib/category_extension"
+  require_relative "lib/category_guardian_extension"
+  require_relative "lib/category_list_serializer_extension"
+  require_relative "lib/category_detailed_serializer_extension"
+  require_relative "lib/category_list_extension"
 
   GlobalFilter::Engine.routes.draw do
     put "/filter_tags/:tag/assign" => "filter_tags#assign"
@@ -74,13 +72,11 @@ after_initialize do
   DiscoursePluginRegistry.serialized_current_user_fields << GlobalFilter::GLOBAL_FILTER_PREFERENCE
 
   reloadable_patch do
-    Category.class_eval { prepend GlobalFilter::CategoryExtension }
-    CategoryGuardian.class_eval { prepend GlobalFilter::CategoryGuardianExtension }
-    CategoryListSerializer.class_eval { prepend GlobalFilter::CategoryListSerializerExtension }
-    CategoryList.class_eval { prepend GlobalFilter::CategoryListExtension }
-    CategoryDetailedSerializer.class_eval do
-      prepend GlobalFilter::CategoryDetailedSerializerExtension
-    end
+    Category.prepend(GlobalFilter::CategoryExtension)
+    CategoryGuardian.prepend(GlobalFilter::CategoryGuardianExtension)
+    CategoryListSerializer.prepend(GlobalFilter::CategoryListSerializerExtension)
+    CategoryList.prepend(GlobalFilter::CategoryListExtension)
+    CategoryDetailedSerializer.prepend(GlobalFilter::CategoryDetailedSerializerExtension)
   end
 
   add_to_serializer(:site, :global_filters) do
@@ -121,7 +117,7 @@ after_initialize do
     GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(&:parent_category_id)
   end
 
-  DiscourseEvent.on(:site_setting_changed) do |name, old_value, new_value|
+  on(:site_setting_changed) do |name, old_value, new_value|
     if name === :global_filters
       old_values = old_value.split("|")
       new_values = new_value.split("|")

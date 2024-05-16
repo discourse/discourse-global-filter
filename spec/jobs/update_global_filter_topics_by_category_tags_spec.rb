@@ -10,7 +10,7 @@ RSpec.describe GlobalFilter::UpdateGlobalFilterTopicsByCategoryTags do
     fab!(:tag_0) { Fabricate(:tag) }
     fab!(:tag_1) { Fabricate(:tag) }
 
-    fab!(:group) { Fabricate(:group) }
+    fab!(:group)
     fab!(:user) { Fabricate(:user, primary_group: group) }
 
     # Category 0 topics

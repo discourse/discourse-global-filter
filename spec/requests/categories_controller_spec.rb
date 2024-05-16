@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.shared_examples "#categories_and_topics" do
-  fab!(:category) { Fabricate(:category) }
+  fab!(:category)
   fab!(:category_2) { Fabricate(:category) }
   fab!(:category_2_subcategory) { Fabricate(:category, parent_category_id: category_2.id) }
-  fab!(:filter_tag) { Fabricate(:filter_tag) }
+  fab!(:filter_tag)
   fab!(:filter_tag_2) { Fabricate(:filter_tag) }
   let(:user) { nil }
 

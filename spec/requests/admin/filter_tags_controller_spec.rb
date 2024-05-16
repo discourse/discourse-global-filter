@@ -3,9 +3,9 @@
 require "rails_helper"
 
 describe GlobalFilter::FilterTagsController do
-  fab!(:admin) { Fabricate(:admin) }
-  fab!(:user) { Fabricate(:user) }
-  fab!(:tag) { Fabricate(:tag) }
+  fab!(:admin)
+  fab!(:user)
+  fab!(:tag)
   fab!(:second_tag) { Fabricate(:tag) }
   fab!(:third_tag) { Fabricate(:tag) }
   fab!(:filter_tag) { Fabricate(:filter_tag, name: tag.name) }
