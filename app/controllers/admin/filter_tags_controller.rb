@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class GlobalFilter::AdminFilterTagsController < Admin::AdminController
+  requires_plugin GlobalFilter::PLUGIN_NAME
+
   def index
     render_serialized(
       { filter_tags: GlobalFilter::FilterTag.all.order(:name) },
