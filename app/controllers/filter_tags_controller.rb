@@ -6,7 +6,7 @@ class GlobalFilter::FilterTagsController < ::ApplicationController
   def assign
     params.require(:tag)
 
-    unless SiteSetting.global_filters.split("|").include?(params[:tag])
+    if SiteSetting.global_filters.split("|").exclude?(params[:tag])
       raise Discourse::InvalidParameters
     end
     UserCustomField.upsert(
