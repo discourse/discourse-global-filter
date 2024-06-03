@@ -46,7 +46,7 @@ export default {
           return new URLSearchParams(window.location.search).get("tag");
         },
 
-        list(store) {
+        list(store, parentCategory = null) {
           const site = getOwnerWithFallback(this).lookup("service:site");
           const tagParam = this.globalFilterQueryParam() || site.globalFilter;
 
@@ -59,7 +59,9 @@ export default {
             getCategories
           ).then((result) => {
             const list = CategoryList.create({
-              categories: this.categoriesFrom(store, result),
+              store,
+              categories: this.categoriesFrom(store, result, parentCategory),
+              parentCategory,
               can_create_category: result.category_list.can_create_category,
               can_create_topic: result.category_list.can_create_topic,
             });
