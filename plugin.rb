@@ -114,7 +114,10 @@ after_initialize do
   end
 
   add_to_serializer(:category_list, :subcategories) do
-    GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(&:parent_category_id)
+    ActiveModel::ArraySerializer.new(
+      GlobalFilter::FilterTag.categories_for_tags(filter_tag, scope).filter(&:parent_category_id),
+      each_serializer: BasicCategorySerializer,
+    ).as_json
   end
 
   on(:site_setting_changed) do |name, old_value, new_value|
