@@ -34,7 +34,6 @@ after_initialize do
   require_relative "jobs/scheduled/update_global_filter_topics_by_category_tags"
   require_relative "lib/category_extension"
   require_relative "lib/category_guardian_extension"
-  require_relative "lib/category_list_serializer_extension"
   require_relative "lib/category_detailed_serializer_extension"
   require_relative "lib/category_list_extension"
 
@@ -74,7 +73,6 @@ after_initialize do
   reloadable_patch do
     Category.prepend(GlobalFilter::CategoryExtension)
     CategoryGuardian.prepend(GlobalFilter::CategoryGuardianExtension)
-    CategoryListSerializer.prepend(GlobalFilter::CategoryListSerializerExtension)
     CategoryList.prepend(GlobalFilter::CategoryListExtension)
     CategoryDetailedSerializer.prepend(GlobalFilter::CategoryDetailedSerializerExtension)
   end
@@ -111,6 +109,14 @@ after_initialize do
     object.instance_variable_get("@options")&.dig(:tag) ||
       scope.user&.custom_fields&.dig("global_filter_preference") || scope.request.params[:tag] ||
       GlobalFilter::FilterTag.first.name
+  end
+
+  # we don't need to serialize the categories here, as core already does that
+  add_to_serializer(:category_list, :categories) do
+    tags = options[:tags] || filter_tag
+    filter_tag_ids = scope.secure_categories_for_filter_tags_ids(tags)
+    filtered_categories = object.categories.filter { |c| filter_tag_ids.include?(c.id) }
+    filtered_categories
   end
 
   add_to_serializer(:category_list, :subcategories) do
