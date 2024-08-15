@@ -1,4 +1,4 @@
-import { click, currentURL, visit } from "@ember/test-helpers";
+import { currentURL, visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
