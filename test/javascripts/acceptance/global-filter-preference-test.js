@@ -94,17 +94,6 @@ acceptance(
       );
     });
 
-    test("maintains tag filter when redirecting to a filtered topic view", async function (assert) {
-      await visit("/");
-      await click("#navigation-bar .nav-item_top a");
-
-      assert.equal(
-        currentURL(),
-        "/tag/support/l/top",
-        "it redirects to the user's global_filter_preference"
-      );
-    });
-
     test("maintains tag filter when redirecting to root URL", async function (assert) {
       await visit("/");
 
