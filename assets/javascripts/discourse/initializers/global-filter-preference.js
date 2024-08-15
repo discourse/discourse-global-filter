@@ -184,12 +184,15 @@ export default {
     });
   },
 
-  setClientAndServerFilterPref(tag, user) {
-    return ajax(`/global_filter/filter_tags/${tag}/assign.json`, {
-      type: "PUT",
-    })
-      .then(() => this.setClientFilterPref(tag, user))
-      .catch(popupAjaxError);
+  async setClientAndServerFilterPref(tag, user) {
+    try {
+      await ajax(`/global_filter/filter_tags/${tag}/assign.json`, {
+        type: "PUT",
+      });
+      this.setClientFilterPref(tag, user);
+    } catch (error) {
+      popupAjaxError(error);
+    }
   },
 
   setClientFilterPref(tag, user) {

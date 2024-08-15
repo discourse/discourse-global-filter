@@ -1,5 +1,6 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
+import CategoriesOnly from "discourse/components/categories-only";
 import { ajax } from "discourse/lib/ajax";
 
 export default class SubcategoriesDisplay extends Component {
@@ -26,4 +27,13 @@ export default class SubcategoriesDisplay extends Component {
       );
     });
   }
+
+  <template>
+    <div class="filtered-subcategories">
+      <CategoriesOnly
+        @categories={{this.filteredSubcategories}}
+        @showTopics={{false}}
+      />
+    </div>
+  </template>
 }
