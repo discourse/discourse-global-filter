@@ -32,24 +32,6 @@ ol.category-breadcrumb > li:nth-child(-n + 2) {
   gap: 0 0.5rem;
 }
 
-.filtered-tags-chooser .filtered-tag-drop li[data-value="no-tags"] {
-  // hide no-tags option from tag-dropdown
-  display: none;
-}
-
-.mobile-view {
-  .nav.nav-pills {
-    .inline-extra-nav-item-outlet.filtered-tags-chooser {
-      margin-left: 0.5rem;
-      border: none;
-
-      .filtered-tag-drop .tag-drop {
-        height: 100%;
-      }
-    }
-  }
-}
-
 .admin-plugins {
   .global-filter-wrapper {
     border-left: 2px solid var(--primary);

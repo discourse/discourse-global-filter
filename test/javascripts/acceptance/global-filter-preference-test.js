@@ -1,4 +1,4 @@
-import { click, currentURL, visit } from "@ember/test-helpers";
+import { currentURL, visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
@@ -91,17 +91,6 @@ acceptance(
         currentURL(),
         "/categories?tag=support",
         "it redirects to categories with the users global filter preference"
-      );
-    });
-
-    test("maintains tag filter when redirecting to a filtered topic view", async function (assert) {
-      await visit("/");
-      await click("#navigation-bar .nav-item_top a");
-
-      assert.equal(
-        currentURL(),
-        "/tag/support/l/top",
-        "it redirects to the user's global_filter_preference"
       );
     });
 
