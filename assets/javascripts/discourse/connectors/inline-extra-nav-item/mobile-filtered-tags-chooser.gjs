@@ -9,8 +9,8 @@ export default class MobileFilteredTagsChooser extends Component {
   <template>
     {{#if this.site.mobileView}}
       <FilteredTagsChooser
-        @currentCategory={{this.category}}
-        @options={{hash categoryId=this.category.id}}
+        @currentCategory={{@category}}
+        @options={{hash categoryId=@category.id}}
       />
     {{/if}}
   </template>
