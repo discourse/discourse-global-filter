@@ -54,7 +54,7 @@ const FilterChildrenForm = <template>
   {{else}}
     <DButton
       @label="global_filter.admin.new_filter_child"
-      class="btn btn-default"
+      class="btn-default"
       @action={{fn @setCreateChild @filterTag.name}}
     />
   {{/if}}
