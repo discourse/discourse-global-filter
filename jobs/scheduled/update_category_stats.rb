@@ -33,7 +33,7 @@ module Jobs
           posts =
             Post
               .joins(:topic)
-              .where(topics: { id: category_and_subcategory_topics.pluck(:id) })
+              .where(topics: { id: category_and_subcategory_topics.select(:id) })
               .where("topics.visible = true")
               .where("posts.deleted_at IS NULL")
               .where("posts.user_deleted = false")
