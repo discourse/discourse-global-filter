@@ -2,5 +2,4 @@ en:
   site_settings:
     discourse_global_filter_enabled: "Enable the Global Filter plugin"
     global_filters: "The tag(s) that will be the foundation of the global filter system."
-    display_subcategories_for_tag_intersection: "Display a list of a category's subcategories on category/tag intersection routes"
     replace_global_filter_with_children: "When building a list of available global filters in the composer, replace a global filter with its filter children if present"
