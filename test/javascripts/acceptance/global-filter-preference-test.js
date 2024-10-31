@@ -1,4 +1,4 @@
-import { currentURL, visit } from "@ember/test-helpers";
+import { click, currentURL, visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
@@ -205,6 +205,36 @@ acceptance(
       assert.ok(
         document.body.classList.contains("global-filter-tag-feature"),
         "it shows the global filter preference app"
+      );
+    });
+
+    test("scrolls correctly when navigating from categories to topic lists", async function (assert) {
+      await visit("/");
+
+      const topLocation = [0, 0];
+      // This line comes from:
+      // https://github.com/discourse/discourse/blob/766e0f7b364c09e383528e3771746aabebaa1d30/app/assets/javascripts/discourse/app/services/route-scroll-manager.js#L6-L7
+      const STORE_KEY = Symbol("scroll-location");
+      const historyStore = this.owner.lookup("service:history-store");
+      window.scroll({
+        top: 1000,
+        left: 0,
+      });
+
+      // click on the first category
+      await click(".category-title-link");
+      let scrollLocation = historyStore.get(STORE_KEY);
+      assert.equal(
+        scrollLocation,
+        topLocation,
+        "scrolls to the top of the page"
+      );
+      history.back();
+      scrollLocation = historyStore.get(STORE_KEY);
+      assert.equal(
+        scrollLocation,
+        [0, 1000],
+        "scrolls back to last location in the page"
       );
     });
   }
