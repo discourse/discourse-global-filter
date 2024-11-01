@@ -3,9 +3,11 @@
 describe "scrolls correctly in categories", type: :system do
   fab!(:support_tag) { Fabricate(:tag, name: "support") }
   fab!(:feature_tag) { Fabricate(:tag, name: "feature") }
+  let(:topic_list) { PageObjects::Components::TopicList.new }
+
   before do
     Fabricate.times(21, :topic, tags: [support_tag])
-    Fabricate.times(50, :post, topic: Topic.first)
+    Topic.all.each { |t| t.posts << Fabricate(:post, topic: t) }
     SiteSetting.discourse_global_filter_enabled = true
     SiteSetting.global_filters = "support|feature"
     sign_in(Fabricate(:admin))
@@ -18,15 +20,11 @@ describe "scrolls correctly in categories", type: :system do
   it "scrolls correctly when navigating from categories to topic lists, and remembers scroll position when going back" do
     visit "/"
 
-    expect(page).to have_css(".topic-list-item")
-    page.execute_script <<~JS
-      document.querySelectorAll('.topic-list-item')[20].scrollIntoView(true);
-    JS
-
+    page.scroll_to(0, 1000)
     topic_list_scroll_y = current_scroll_y
     try_until_success { expect(topic_list_scroll_y).to be > 0 }
 
-    find(".link-top-line", text: Topic.first.title).click
+    topic_list.visit_topic(Topic.first)
     try_until_success { expect(current_scroll_y).to eq(0) }
 
     page.go_back
