@@ -1,4 +1,4 @@
-import { click, currentURL, visit } from "@ember/test-helpers";
+import { click, currentURL, settled, visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
@@ -63,9 +63,63 @@ acceptance(
         });
       };
 
+      const responseHandlerWithTopics = () => {
+        return helper.response({
+          users: [],
+          primary_groups: [],
+          topic_list: {
+            can_create_topic: true,
+            draft: null,
+            draft_key: "new_topic",
+            draft_sequence: 1,
+            per_page: 30,
+            tags: [],
+            topics: [
+              {
+                id: 42,
+                title: "Hello world",
+                fancy_title: "Hello world",
+                slug: "hello-world",
+                posts_count: 1,
+                reply_count: 1,
+                highest_post_number: 1,
+                created_at: "2020-01-01T00:00:00.000Z",
+                last_posted_at: "2020-01-01T00:00:00.000Z",
+                bumped: true,
+                bumped_at: "2020-01-01T00:00:00.000Z",
+                archetype: "regular",
+                unseen: false,
+                last_read_post_number: 1,
+                unread_posts: 1,
+                pinned: false,
+                unpinned: null,
+                visible: true,
+                closed: true,
+                archived: false,
+                notification_level: 3,
+                bookmarked: false,
+                liked: true,
+                tags: ["test"],
+                tags_descriptions: { test: "test description" },
+                views: 42,
+                like_count: 42,
+                has_summary: false,
+                last_poster_username: "foo",
+                pinned_globally: false,
+                featured_link: null,
+                posters: [],
+              },
+            ],
+          },
+        });
+      };
+
       const successResponseHandler = () => helper.response({ success: true });
 
-      server.get("/tags/intersection/support/blog.json", emptyResponseHandler);
+      server.get(
+        "/tags/intersection/support/blog.json",
+        responseHandlerWithTopics
+      );
       server.get("/tag/support/l/top.json", emptyResponseHandler);
       server.get("/tag/support/l/latest.json", emptyResponseHandler);
       server.get("/tag/blog/l/latest.json", emptyResponseHandler);
@@ -82,6 +136,8 @@ acceptance(
         "/global_filter/filter_tags/categories_for_current_filter.json",
         successResponseHandler
       );
+
+      server.get("/t/42/1.json", successResponseHandler);
     });
 
     test("redirects to categories if it is default homepage when selected", async function (assert) {
@@ -209,31 +265,26 @@ acceptance(
     });
 
     test("scrolls correctly when navigating from categories to topic lists", async function (assert) {
-      await visit("/");
+      const toPosition = 100000;
+      const container = document.querySelector("#ember-testing-container");
+      await visit("/tag/blog");
 
-      const topLocation = [0, 0];
-      // This line comes from:
-      // https://github.com/discourse/discourse/blob/766e0f7b364c09e383528e3771746aabebaa1d30/app/assets/javascripts/discourse/app/services/route-scroll-manager.js#L6-L7
-      const STORE_KEY = Symbol("scroll-location");
-      const historyStore = this.owner.lookup("service:history-store");
-      window.scroll({
-        top: 1000,
-        left: 0,
-      });
+      container.scrollTop = toPosition;
+      await settled();
+      await click(".raw-topic-link");
 
-      // click on the first category
-      await click(".category-title-link");
-      let scrollLocation = historyStore.get(STORE_KEY);
-      assert.equal(
-        scrollLocation,
-        topLocation,
+      assert.deepEqual(
+        container.scrollTop,
+        0,
         "scrolls to the top of the page"
       );
-      history.back();
-      scrollLocation = historyStore.get(STORE_KEY);
-      assert.equal(
-        scrollLocation,
-        [0, 1000],
+
+      let router = this.owner.lookup("service:router");
+      router.transitionTo("tag.show", "blog");
+
+      assert.notEqual(
+        container.scrollTop,
+        0,
         "scrolls back to last location in the page"
       );
     });
