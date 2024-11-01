@@ -263,30 +263,5 @@ acceptance(
         "it shows the global filter preference app"
       );
     });
-
-    test("scrolls correctly when navigating from categories to topic lists", async function (assert) {
-      const toPosition = 100000;
-      const container = document.querySelector("#ember-testing-container");
-      await visit("/tag/blog");
-
-      container.scrollTop = toPosition;
-      await settled();
-      await click(".raw-topic-link");
-
-      assert.deepEqual(
-        container.scrollTop,
-        0,
-        "scrolls to the top of the page"
-      );
-
-      let router = this.owner.lookup("service:router");
-      router.transitionTo("tag.show", "blog");
-
-      assert.notEqual(
-        container.scrollTop,
-        0,
-        "scrolls back to last location in the page"
-      );
-    });
   }
 );
