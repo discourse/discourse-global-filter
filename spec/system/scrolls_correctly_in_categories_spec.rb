@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe "scrolls correctly in categories", type: :system, requires: [:scroll], focus_: true do
+describe "scrolls correctly in categories", type: :system do
   let(:topic_list) { PageObjects::Components::TopicList.new }
 
   fab!(:support_tag) { Fabricate(:tag, name: "support") }
