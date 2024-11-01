@@ -1,4 +1,4 @@
-import { click, currentURL, settled, visit } from "@ember/test-helpers";
+import { currentURL, visit } from "@ember/test-helpers";
 import { test } from "qunit";
 import { setDefaultHomepage } from "discourse/lib/utilities";
 import {
@@ -63,63 +63,9 @@ acceptance(
         });
       };
 
-      const responseHandlerWithTopics = () => {
-        return helper.response({
-          users: [],
-          primary_groups: [],
-          topic_list: {
-            can_create_topic: true,
-            draft: null,
-            draft_key: "new_topic",
-            draft_sequence: 1,
-            per_page: 30,
-            tags: [],
-            topics: [
-              {
-                id: 42,
-                title: "Hello world",
-                fancy_title: "Hello world",
-                slug: "hello-world",
-                posts_count: 1,
-                reply_count: 1,
-                highest_post_number: 1,
-                created_at: "2020-01-01T00:00:00.000Z",
-                last_posted_at: "2020-01-01T00:00:00.000Z",
-                bumped: true,
-                bumped_at: "2020-01-01T00:00:00.000Z",
-                archetype: "regular",
-                unseen: false,
-                last_read_post_number: 1,
-                unread_posts: 1,
-                pinned: false,
-                unpinned: null,
-                visible: true,
-                closed: true,
-                archived: false,
-                notification_level: 3,
-                bookmarked: false,
-                liked: true,
-                tags: ["test"],
-                tags_descriptions: { test: "test description" },
-                views: 42,
-                like_count: 42,
-                has_summary: false,
-                last_poster_username: "foo",
-                pinned_globally: false,
-                featured_link: null,
-                posters: [],
-              },
-            ],
-          },
-        });
-      };
-
       const successResponseHandler = () => helper.response({ success: true });
 
-      server.get(
-        "/tags/intersection/support/blog.json",
-        responseHandlerWithTopics
-      );
+      server.get("/tags/intersection/support/blog.json", emptyResponseHandler);
       server.get("/tag/support/l/top.json", emptyResponseHandler);
       server.get("/tag/support/l/latest.json", emptyResponseHandler);
       server.get("/tag/blog/l/latest.json", emptyResponseHandler);
@@ -136,8 +82,6 @@ acceptance(
         "/global_filter/filter_tags/categories_for_current_filter.json",
         successResponseHandler
       );
-
-      server.get("/t/42/1.json", successResponseHandler);
     });
 
     test("redirects to categories if it is default homepage when selected", async function (assert) {
