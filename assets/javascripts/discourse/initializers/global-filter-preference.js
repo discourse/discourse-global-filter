@@ -178,7 +178,10 @@ export default {
         } else {
           const categoryURL = categorySlug ? `s/c/${categorySlug}` : "";
           url = `/tag${categoryURL}/${filterPref}`;
-          router.transitionTo(url, null, { queryParams });
+          transition.abort();
+          next(() => {
+            router.transitionTo(url, null, { queryParams });
+          });
         }
       }
     });

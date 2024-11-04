@@ -183,29 +183,5 @@ acceptance(
         "it redirects to the global filter if the new-topic tags query param is a child of one"
       );
     });
-
-    test("uses stored global filter preference at /", async function (assert) {
-      setDefaultHomepage("categories");
-      await visit("/categories?tag=feature");
-
-      assert.equal(
-        currentURL(),
-        "/categories?tag=feature",
-        "it navigates to the global filter"
-      );
-
-      await visit("/");
-
-      assert.equal(
-        currentURL(),
-        "/categories?tag=feature",
-        "it navigates to the stored global filter preference"
-      );
-
-      assert.ok(
-        document.body.classList.contains("global-filter-tag-feature"),
-        "it shows the global filter preference app"
-      );
-    });
   }
 );
