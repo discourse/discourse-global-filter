@@ -1,5 +1,5 @@
 import Component from "@glimmer/component";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 import GlobalFilterChooser from "../../../select-kit/addon/components/global-filter-chooser";
 
 export default class GlobalFilterComposerContainer extends Component {

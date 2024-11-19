@@ -1,6 +1,6 @@
 import Component from "@glimmer/component";
 import { concat } from "@ember/helper";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 import categoryBadge from "discourse/helpers/category-badge";
 import i18n from "discourse-common/helpers/i18n";
 import CategoryMatrixCheckbox from "./category-matrix-checkbox";
