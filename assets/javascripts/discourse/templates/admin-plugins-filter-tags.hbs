@@ -1,8 +1,8 @@
-<FilterTagsEditor @filterTags={{model.filter_tags}} />
+<FilterTagsEditor @filterTags={{this.model.filter_tags}} />
 <h3>{{i18n "global_filter.admin.category_matrix"}}</h3>
 <div class="filter-tag-admin-pane">
   <CategoryMatrix
-    @filterTags={{model.filter_tags}}
+    @filterTags={{this.model.filter_tags}}
     @setCategoryIdsForTag={{this.setCategoryIdsForTag}}
   />
 </div>

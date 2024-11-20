@@ -117,9 +117,7 @@ acceptance(
     test("adds global-filter css class to body", async function (assert) {
       await visit("/");
       assert.ok(
-        document
-          .querySelector("body")
-          .classList.contains("global-filter-tag-support"),
+        document.body.classList.contains("global-filter-tag-support"),
         "includes users filter preference class on the body"
       );
     });

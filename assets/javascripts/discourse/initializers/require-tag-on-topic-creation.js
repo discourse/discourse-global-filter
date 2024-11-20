@@ -11,9 +11,8 @@ export default {
       withPluginApi("1.3.0", (api) => {
         api.composerBeforeSave(() => {
           return new Promise((resolve, reject) => {
-            const composerModel = api.container.lookup(
-              "controller:composer"
-            ).model;
+            const composerModel =
+              api.container.lookup("service:composer").model;
 
             // only require tags when creating a regular topic
             // i.e. skip validation for PMs, replies, edits, etc.
