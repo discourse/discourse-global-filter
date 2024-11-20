@@ -99,7 +99,7 @@ acceptance(
       // add feature global filter
       await selectKit(".global-filter-chooser").selectRowByValue("feature");
 
-      let composer = this.owner.lookup("controller:composer");
+      let composer = this.owner.lookup("service:composer");
       assert.deepEqual(
         composer.get("model").tags,
         ["feature"],
