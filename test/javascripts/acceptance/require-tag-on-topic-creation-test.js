@@ -89,8 +89,8 @@ acceptance(
       await selectKit(".global-filter-chooser").expand();
       await selectKit(".global-filter-chooser").selectRowByValue("support");
       await click("#reply-control button.create");
-      assert.ok(
-        !visible("#reply-control .d-editor-input"),
+      assert.notOk(
+        visible("#reply-control .d-editor-input"),
         "topic is submitted"
       );
     });
@@ -103,7 +103,10 @@ acceptance(
       await fillIn(".d-editor-input", "this is the *content* of a post");
       await click("#reply-control button.create");
 
-      assert.ok(!visible("#reply-control .d-editor-input"), "PM is submitted");
+      assert.notOk(
+        visible("#reply-control .d-editor-input"),
+        "PM is submitted"
+      );
     });
 
     test("new replies work", async function (assert) {
@@ -111,8 +114,8 @@ acceptance(
       await click(".reply.create");
       await fillIn(".d-editor-input", "this is the *content* of a reply");
       await click("#reply-control button.create");
-      assert.ok(
-        !visible("#reply-control .d-editor-input"),
+      assert.notOk(
+        visible("#reply-control .d-editor-input"),
         "reply is submitted"
       );
     });
@@ -124,8 +127,8 @@ acceptance(
       await fillIn(".d-editor-input", "this post has now been edited");
       await click("#reply-control button.create");
 
-      assert.ok(
-        !visible("#reply-control .d-editor-input"),
+      assert.notOk(
+        visible("#reply-control .d-editor-input"),
         "edit has been submitted"
       );
     });
