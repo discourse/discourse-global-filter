@@ -121,8 +121,8 @@ acceptance(
         "include category with term when filtering"
       );
 
-      assert.ok(
-        !categories.rowByName("grumpyCat").exists(),
+      assert.notOk(
+        categories.rowByName("grumpyCat").exists(),
         "does not include all categories when filtering"
       );
     });

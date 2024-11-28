@@ -79,7 +79,7 @@ acceptance(
         .returns(expectedTagParam);
       await visit(`/categories?tag=${expectedTagParam}`);
 
-      assert.strictEqual(cbCalled, true, "callback was called");
+      assert.true(cbCalled, "callback was called");
       assert.strictEqual(
         cbGlobalFilter,
         expectedTagParam,
