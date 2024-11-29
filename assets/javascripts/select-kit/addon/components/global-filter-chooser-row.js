@@ -1,14 +1,14 @@
 import { computed } from "@ember/object";
+import { classNames } from "@ember-decorators/component";
 import { escapeExpression } from "discourse/lib/utilities";
 import I18n from "I18n";
 import SelectKitRowComponent from "select-kit/components/select-kit/select-kit-row";
 
-export default SelectKitRowComponent.extend({
-  classNames: ["global-filter-chooser-row"],
-
+@classNames("global-filter-chooser-row")
+export default class GlobalFilterChooserRow extends SelectKitRowComponent {
   get icons() {
     return [escapeExpression(this.item.icon) || `gf-${this.rowName}`];
-  },
+  }
 
   @computed("rowLabel", "item.label", "title", "rowName")
   get label() {
@@ -30,5 +30,5 @@ export default SelectKitRowComponent.extend({
     return (
       this.item.alternate_name || this.item.name?.replace(/-|_/g, " ") || ""
     );
-  },
-});
+  }
+}
