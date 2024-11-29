@@ -1,40 +1,41 @@
 import { computed } from "@ember/object";
+import { classNames } from "@ember-decorators/component";
 import { ajax } from "discourse/lib/ajax";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import MultiSelectComponent from "select-kit/components/multi-select";
+import {
+  pluginApiIdentifiers,
+  selectKitOptions,
+} from "select-kit/components/select-kit";
 
-export default MultiSelectComponent.extend({
-  pluginApiIdentifiers: ["global-filter-chooser"],
-  classNames: ["global-filter-chooser"],
-  valueProperty: "name",
-  selectKitOptions: {
-    selectedChoiceComponent: "global-filter/selected-choice",
-    headerComponent: "global-filter/header",
-  },
+@selectKitOptions({
+  selectedChoiceComponent: "global-filter/selected-choice",
+  headerComponent: "global-filter/header",
+})
+@pluginApiIdentifiers("global-filter-chooser")
+@classNames("global-filter-chooser")
+export default class GlobalFilterChooser extends MultiSelectComponent {
+  valueProperty = "name";
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
     this.setCategoriesForFilter();
-  },
+  }
 
   get filtersWithChildren() {
     return this.loadAdditionalFilters(this.site.global_filters);
-  },
+  }
 
-  selectedContent: computed(
-    "value.[]",
-    "content.[]",
-    "filtersWithChildren.[]",
-    function () {
-      if (!this.value) {
-        return [];
-      }
-
-      return this.filtersWithChildren.filter((filterTag) =>
-        this.value.includes(filterTag.name)
-      );
+  @computed("value.[]", "content.[]", "filtersWithChildren.[]")
+  get selectedContent() {
+    if (!this.value) {
+      return [];
     }
-  ),
+
+    return this.filtersWithChildren.filter((filterTag) =>
+      this.value.includes(filterTag.name)
+    );
+  }
 
   get content() {
     if (!this.value) {
@@ -45,19 +46,19 @@ export default MultiSelectComponent.extend({
     return this.filtersWithChildren.filter(
       (filterTag) => !this.value.includes(filterTag.name)
     );
-  },
+  }
 
   select(value) {
     const updatedValues = [...this.value, value];
     this.updateCategoryDropdown(updatedValues);
-    this._super(...arguments);
-  },
+    super.select(...arguments);
+  }
 
   deselect(value) {
     const updatedValues = this.value.filter((tag) => tag !== value.name);
     this.updateCategoryDropdown(updatedValues);
-    this._super(...arguments);
-  },
+    super.deselect(...arguments);
+  }
 
   updateCategoryDropdown(tags) {
     withPluginApi("1.3.0", (api) => {
@@ -87,7 +88,7 @@ export default MultiSelectComponent.extend({
           });
       });
     });
-  },
+  }
 
   setCategoriesForFilter() {
     // update category dropdown with valid values
@@ -118,7 +119,7 @@ export default MultiSelectComponent.extend({
           });
       });
     });
-  },
+  }
 
   loadAdditionalFilters(globalFilters) {
     let children = [];
@@ -129,9 +130,9 @@ export default MultiSelectComponent.extend({
       ? globalFilters.filter((f) => !f.filter_children)
       : globalFilters;
     return [...filters, ...children];
-  },
+  }
 
   modifyComponentForRow() {
     return "global-filter-chooser-row";
-  },
-});
+  }
+}
