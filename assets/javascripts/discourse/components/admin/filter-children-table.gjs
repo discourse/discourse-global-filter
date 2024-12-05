@@ -42,7 +42,7 @@ const FilterChildrenTable = <template>
             <DButton
               @ariaLabel="global_filter.admin.edit_filter_child"
               @action={{fn @editFilterChildForFilter @filterTag.name values}}
-              @icon="pencil-alt"
+              @icon="pencil"
             />
             <DButton
               @ariaLabel="global_filter.admin.delete_filter_child"
@@ -51,7 +51,7 @@ const FilterChildrenTable = <template>
                 @filterTag.name
                 values.name
               }}
-              @icon="far-trash-alt"
+              @icon="far-trash-can"
             />
           </td>
         </tr>

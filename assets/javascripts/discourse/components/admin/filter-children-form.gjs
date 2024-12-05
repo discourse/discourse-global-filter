@@ -48,7 +48,7 @@ const FilterChildrenForm = <template>
       <DButton
         @ariaLabel="global_filter.admin.cancel_create_filter_child"
         @action={{@cancelSetFilterChildrenForFilter}}
-        @icon="times"
+        @icon="xmark"
       />
     </div>
   {{else}}
